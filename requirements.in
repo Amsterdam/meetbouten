@@ -1,0 +1,24 @@
+# Define all requirements, only pin when necessary (and if so, add a comment explaining why).
+# See # https://git.datapunt.amsterdam.nl/Datapunt/python-best-practices/blob/master/dependency_management/
+
+Django<4  # Django 4 not yet supported by djangorestframework-gis
+django-datetime-utc
+django-filter
+django-extensions
+django-debug-toolbar
+djangorestframework
+djangorestframework-gis
+djangorestframework-xml
+drf_amsterdam
+drf-yasg
+psycopg2-binary
+pytz
+requests
+sentry-sdk
+datapunt-data-ingress
+datapunt-authorization-django
+django-import-export
+django-leaflet
+pillow
+django-admin-tools-stats
+bower
