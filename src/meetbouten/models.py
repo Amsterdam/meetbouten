@@ -57,8 +57,8 @@ class Meting(models.Model):
 
 
 class Bouwblok(models.Model):
-    aansluitpunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE)
-    controlepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE)
+    aansluitpunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, related_name="bouwblok_aansluitpunt")
+    controlepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, related_name="bouwblok_controlepunt")
     opmerking = models.CharField(max_length=100, blank=True, null=True)
 
 
@@ -69,7 +69,7 @@ class Referentiepunt(models.Model):
 
 class Controlepunt(models.Model):
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE)
-    bouwblok = models.ForeignKey(Bouwblok, on_delete=models.CASCADE)
+    bouwblok = models.ForeignKey(Bouwblok, on_delete=models.CASCADE, related_name="controlepunt_bouwblok")
 
 
 class Kringpunt(models.Model):
