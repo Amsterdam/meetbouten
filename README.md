@@ -7,3 +7,7 @@ De applicatie beheert landmeetkundige grondslag xy, NAP- bouten, referentieboute
 
 NAP heeft een Client op ADW waarmee de meetresultaten rechtstreeks in de Oracle Database  (DB) geschreven worden en foto’s op een centrale netwerkschijf  opgeslagen. In de DB staan harde paden naar de foto’s op de centrale netwerkschijf.
 GOB raadpleegt de NAP DB. **Functioneel Beheer (FB) werkt rechtstreeks op de DB middels SQL-Developer.** Er is een Test, Acceptatie en een Productie omgeving.
+
+![praatplaat](meetbouten-outline.png)
+
+![solution outline](solution-outline-meetbouten.png)
