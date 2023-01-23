@@ -6,14 +6,6 @@ RUN apt update -y && \
     apt install -y --no-install-recommends gdal-bin && \
     rm -rf /var/lib/apt/lists/*
 
-# Install BOWER for admin graphs
-RUN curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash \
-    export NVM_DIR="$HOME/.nvm" \
-    [-s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
-    nvm install v16 \
-RUN npm install bower  --location=global
-RUN python manage.py bower_install
-
 WORKDIR /app_install
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt

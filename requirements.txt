@@ -6,8 +6,6 @@
 #
 asgiref==3.5.2
     # via django
-bower==0.0.0
-    # via -r requirements.in
 certifi==2022.9.24
     # via
     #   requests
@@ -41,23 +39,16 @@ django==3.2.15
     #   -r requirements.in
     #   datapunt-authorization-django
     #   datapunt-data-ingress
-    #   django-bower
     #   django-datetime-utc
     #   django-debug-toolbar
     #   django-extensions
     #   django-filter
     #   django-import-export
-    #   django-jsonfield
     #   django-leaflet
     #   djangorestframework
-    #   djcacheutils
     #   drf-yasg
-django-admin-tools==0.9.2
-    # via django-admin-tools-stats
-django-admin-tools-stats==0.9.0
+django-admincharts==0.4.1
     # via -r requirements.in
-django-bower==5.2.0
-    # via django-admin-tools-stats
 django-datetime-utc==1.0.3
     # via -r requirements.in
 django-debug-toolbar==3.7.0
@@ -68,14 +59,8 @@ django-filter==22.1
     # via -r requirements.in
 django-import-export==2.9.0
     # via -r requirements.in
-django-jsonfield==1.4.1
-    # via django-admin-tools-stats
 django-leaflet==0.28.3
     # via -r requirements.in
-django-nvd3==0.9.7
-    # via django-admin-tools-stats
-django-qsstats-magic==1.1.0
-    # via django-admin-tools-stats
 djangorestframework==3.14.0
     # via
     #   -r requirements.in
@@ -93,8 +78,6 @@ djangorestframework-xml==2.0.0
     # via
     #   -r requirements.in
     #   drf-amsterdam
-djcacheutils==3.0.0
-    # via django-admin-tools-stats
 drf-amsterdam==0.4.1
     # via -r requirements.in
 drf-extensions==0.7.1
@@ -110,9 +93,7 @@ inflection==0.5.1
 itypes==1.2.0
     # via coreapi
 jinja2==3.1.2
-    # via
-    #   coreschema
-    #   python-nvd3
+    # via coreschema
 jwcrypto==1.4.2
     # via datapunt-authorization-django
 markuppy==1.14
@@ -134,15 +115,7 @@ pycparser==2.21
 pyparsing==3.0.9
     # via packaging
 python-dateutil==2.8.2
-    # via
-    #   django-admin-tools-stats
-    #   django-datetime-utc
-python-memcached==1.59
-    # via djcacheutils
-python-nvd3==0.14.2
-    # via django-nvd3
-python-slugify==1.1.4
-    # via python-nvd3
+    # via django-datetime-utc
 pytz==2022.2.1
     # via
     #   -r requirements.in
@@ -164,11 +137,8 @@ sentry-sdk==1.9.9
     # via -r requirements.in
 six==1.16.0
     # via
-    #   django-bower
-    #   django-jsonfield
     #   djangorestframework-csv
     #   python-dateutil
-    #   python-memcached
 sqlparse==0.4.3
     # via
     #   django
@@ -177,8 +147,6 @@ tablib[html,ods,xls,xlsx,yaml]==3.2.1
     # via django-import-export
 unicodecsv==0.14.1
     # via djangorestframework-csv
-unidecode==1.3.6
-    # via python-slugify
 uritemplate==4.1.1
     # via
     #   coreapi

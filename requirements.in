@@ -20,5 +20,4 @@ datapunt-authorization-django
 django-import-export
 django-leaflet
 pillow
-django-admin-tools-stats
-bower
+django-admincharts
