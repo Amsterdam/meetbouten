@@ -3,12 +3,37 @@ from django.contrib import admin
 from admincharts.admin import AdminChartMixin
 from django.db.models import Count
 
-from .models import Grondslagpunt, Type
+from .models import Grondslagpunt, Type, Bron, Hoogtepunt, MetingHerzien
 
 
 @admin.register(Type)
-class MeetboutChartAdmin(AdminChartMixin, admin.ModelAdmin):
+class TypeAdmin(AdminChartMixin, admin.ModelAdmin):
     list_display = ('omschrijving', 'soort')
+
+
+@admin.register(Bron)
+class BronAdmin(AdminChartMixin, admin.ModelAdmin):
+    list_display = ('omschrijving', 'doel')
+
+
+@admin.register(Hoogtepunt)
+class HoogtepuntChartAdmin(admin.ModelAdmin):
+    list_display = (
+        "nummer",
+        "type",
+        "agi_nummer",
+        "vervaldatum",
+        "omschrijving",
+        "merk",
+        "xmuur",
+        "ymuur",
+        "windr",
+        "sigmax",
+        "sigmay",
+        "status",
+        "orde",
+    )
+
 
 @admin.register(Grondslagpunt)
 class MeetboutChartAdmin(AdminChartMixin, admin.ModelAdmin):
@@ -26,14 +51,27 @@ class MeetboutChartAdmin(AdminChartMixin, admin.ModelAdmin):
     search_fields = ("nummer", "type_nummer", "omschrijving")
     # readonly_fields = ('picture_tag',)
 
-    list_chart_type = "bar"
+    list_chart_type = "line"
     list_chart_options = {"aspectRatio": 6}
     list_chart_config = None  # Override the combined settings
 
     def get_list_chart_data(self, changelist):
         return {
-            "labels": ["test1", "test2", "test3"],
+            "labels": ["test1", "test2", "test3", "test4", "test5"],
             "datasets": [
-                {"label": "New accounts", "data": [7,3,8], "backgroundColor": "green"},
+                {"label": "New accounts", "data": [7,6,5,3,2], "backgroundColor": "green", "color": "green", "borderColor": "green"},
             ],
         }
+
+
+@admin.register(MetingHerzien)
+class MetingHerzienChartAdmin(admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "inwindatum",
+        "wijze_inwinning",
+        "sigmaz",
+        "bron",
+        "hoogte",
+        "metingtype",
+    )
