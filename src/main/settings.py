@@ -28,9 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 X_FRAME_OPTIONS = "ALLOW-FROM *"
 INTERNAL_IPS = ("127.0.0.1", "0.0.0.0")
-DATA_UPLOAD_MAX_MEMORY_SIZE = (
-    1024 * 1024 * 20
-)  # max upload size; 20MB (instead of the default 2.5MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 20  # max upload size; 20MB (instead of the default 2.5MB)
 
 
 # Application definition
@@ -48,21 +46,22 @@ INSTALLED_APPS = [
     "admincharts",
     "meetbouten",
     "contrib",
+    "django.contrib.gis",
 ]
 
 # Specifie path to components root (you need to use absolute path)
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, "components")
 
 
 BOWER_INSTALLED_APPS = (
-    'jquery#3.4.1',
-    'jquery-ui#1.12.1',
-    'd3#3.3.13',
-    'nvd3#1.7.1',
+    "jquery#3.4.1",
+    "jquery-ui#1.12.1",
+    "d3#3.3.13",
+    "nvd3#1.7.1",
 )
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\','/')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")
+MEDIA_URL = "/media/"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -174,9 +173,7 @@ REST_FRAMEWORK = dict(
     MAX_PAGINATE_BY=100,
     UNAUTHENTICATED_USER={},
     UNAUTHENTICATED_TOKEN={},
-    DEFAULT_AUTHENTICATION_CLASSES=(
-        "contrib.rest_framework.authentication.SimpleTokenAuthentication",
-    ),
+    DEFAULT_AUTHENTICATION_CLASSES=("contrib.rest_framework.authentication.SimpleTokenAuthentication",),
     DEFAULT_PAGINATION_CLASS="datapunt_api.pagination.HALPagination",
     DEFAULT_RENDERER_CLASSES=(
         "rest_framework.renderers.JSONRenderer",
