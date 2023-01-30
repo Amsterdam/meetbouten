@@ -1,19 +1,31 @@
+# from cffi.setuptools_ext import execfile
 from django.contrib import admin
+
 # from django.utils.html import format_html
 from admincharts.admin import AdminChartMixin
 from django.db.models import Count
 
-from .models import Grondslagpunt, Type, Bron, Hoogtepunt, MetingHerzien
+from .models import Grondslagpunt, Type, Bron, Hoogtepunt, MetingHerzien, Merk, Status
 
 
 @admin.register(Type)
-class TypeAdmin(AdminChartMixin, admin.ModelAdmin):
-    list_display = ('omschrijving', 'soort')
+class TypeAdmin(admin.ModelAdmin):
+    list_display = ("omschrijving", "soort")
+
+
+@admin.register(Merk)
+class MerkAdmin(admin.ModelAdmin):
+    list_display = ("omschrijving", "omschrijving_verkort")
+
+
+@admin.register(Status)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = ("omschrijving",)
 
 
 @admin.register(Bron)
-class BronAdmin(AdminChartMixin, admin.ModelAdmin):
-    list_display = ('omschrijving', 'doel')
+class BronAdmin(admin.ModelAdmin):
+    list_display = ("omschrijving", "doel")
 
 
 @admin.register(Hoogtepunt)
@@ -59,7 +71,13 @@ class MeetboutChartAdmin(AdminChartMixin, admin.ModelAdmin):
         return {
             "labels": ["test1", "test2", "test3", "test4", "test5"],
             "datasets": [
-                {"label": "New accounts", "data": [7,6,5,3,2], "backgroundColor": "green", "color": "green", "borderColor": "green"},
+                {
+                    "label": "New accounts",
+                    "data": [7, 6, 5, 3, 2],
+                    "backgroundColor": "green",
+                    "color": "green",
+                    "borderColor": "green",
+                },
             ],
         }
 
@@ -75,3 +93,4 @@ class MetingHerzienChartAdmin(admin.ModelAdmin):
         "hoogte",
         "metingtype",
     )
+
