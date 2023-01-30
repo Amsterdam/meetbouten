@@ -15,9 +15,8 @@ psycopg2-binary
 pytz
 requests
 sentry-sdk
-datapunt-data-ingress
-datapunt-authorization-django
 django-import-export
 django-leaflet
 pillow
 django-admincharts
+setuptools

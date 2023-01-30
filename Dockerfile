@@ -1,10 +1,16 @@
-FROM amsterdam/python:3.9-buster as app
+FROM python:3.10-buster as app
 MAINTAINER datapunt@amsterdam.nl
 
-# GDAL is needed for leaflet, which is used in the django-admin
-RUN apt update -y && \
-    apt install -y --no-install-recommends gdal-bin && \
-    rm -rf /var/lib/apt/lists/*
+ENV PYTHONUNBUFFERED 1 \
+    PIP_NO_CACHE_DIR=off
+
+RUN apt-get update \
+ && apt-get dist-upgrade -y \
+ && apt-get install --no-install-recommends -y \
+        gdal-bin \
+ && pip install --upgrade pip \
+ && pip install uwsgi \
+ && useradd --user-group --system datapunt
 
 WORKDIR /app_install
 COPY requirements.txt requirements.txt
