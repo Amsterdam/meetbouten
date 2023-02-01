@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+        db: postgresql
+    spec:
+      initContainers:
+        - name: wait
+          image: 127.0.0.1:5001/meetbouten:latest
+          command:
+            - /deploy/wait-for-it.sh
+            - database:5432
+            - -t
+            - "60"
+      containers:
+        - name: main
+          image: 127.0.0.1:5001/meetbouten:latest
+
+          envFrom:
+            - configMapRef:
+                name: app-config
+
+          volumeMounts:
+            - mountPath: "/config"
+              name: config
+      volumes:
+        - name: config
+          configMap:
+            name: app-config

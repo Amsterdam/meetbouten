@@ -40,6 +40,7 @@ services:
     build:
       context: .
       target: dev
+    image: 127.0.0.1:5001/meetbouten:${VERSION:-latest}
     command: python manage.py runserver 0.0.0.0:8000
 
   test:
