@@ -55,20 +55,9 @@ INSTALLED_APPS = [
     "django_filters",
     "django_extensions",
     "django.contrib.gis",
-    'import_export',
-    "datapunt_api",
     "rest_framework",
     "rest_framework_gis",
-    "contrib.timescale",
-    'leaflet',
-    'health',
-    'datetimeutc',
-    'peoplemeasurement',
-    'ingress',
-    'telcameras_v2',
-    'telcameras_v3',
-    'centralerekenapplicatie_v1',
-    'continuousaggregate'
+    "meetbouten"
 ]
 
 TEMPLATES = [

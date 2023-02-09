@@ -3,29 +3,8 @@ from django.contrib import admin
 
 # from django.utils.html import format_html
 from admincharts.admin import AdminChartMixin
-from django.db.models import Count
 
-from .models import Grondslagpunt, Type, Bron, Hoogtepunt, MetingHerzien, Merk, Status
-
-
-@admin.register(Type)
-class TypeAdmin(admin.ModelAdmin):
-    list_display = ("omschrijving", "soort")
-
-
-@admin.register(Merk)
-class MerkAdmin(admin.ModelAdmin):
-    list_display = ("omschrijving", "omschrijving_verkort")
-
-
-@admin.register(Status)
-class StatusAdmin(admin.ModelAdmin):
-    list_display = ("omschrijving",)
-
-
-@admin.register(Bron)
-class BronAdmin(admin.ModelAdmin):
-    list_display = ("omschrijving", "doel")
+from .models import *
 
 
 @admin.register(Hoogtepunt)
@@ -48,7 +27,7 @@ class HoogtepuntChartAdmin(admin.ModelAdmin):
 
 
 @admin.register(Grondslagpunt)
-class MeetboutChartAdmin(AdminChartMixin, admin.ModelAdmin):
+class GrondslagpuntChartAdmin(AdminChartMixin, admin.ModelAdmin):
     list_display = (
         "id",
         "inwindatum",
@@ -83,7 +62,7 @@ class MeetboutChartAdmin(AdminChartMixin, admin.ModelAdmin):
 
 
 @admin.register(MetingHerzien)
-class MetingHerzienChartAdmin(admin.ModelAdmin):
+class MetingHerzienAdmin(admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "inwindatum",
@@ -93,4 +72,68 @@ class MetingHerzienChartAdmin(admin.ModelAdmin):
         "hoogte",
         "metingtype",
     )
+
+
+@admin.register(Meting)
+class MetingAdmin(admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "inwindatum",
+        "wijze_inwinning",
+        "sigmaz",
+        "bron",
+        "hoogte",
+        "metingtype",
+    )
+
+
+@admin.register(Bouwblok)
+class MetingAdmin(admin.ModelAdmin):
+    list_display = (
+        "aansluitpunt",
+        "controlepunt",
+        "opmerking"
+    )
+
+
+@admin.register(Controlepunt)
+class MetingAdmin(admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "bouwblok",
+    )
+
+
+@admin.register(Referentiepunt)
+class MetingAdmin(admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "bouwblok",
+    )
+
+
+@admin.register(MetingReferentiepunt)
+class MetingAdmin(admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "meting",
+    )
+
+
+@admin.register(MetRefPuntenHerz)
+class MetingAdmin(admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "meting",
+    )
+
+
+@admin.register(Kringpunt)
+class MetingAdmin(admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "bouwblok",
+        "volgorde",
+    )
+
 

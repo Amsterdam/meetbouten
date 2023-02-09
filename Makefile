@@ -66,9 +66,25 @@ clean:                              ## Clean docker stuff
 env:                                ## Print current env
 	env | sort
 
+load_csv:                           ## Load csv file into database
+	$(manage) load_csv_data
+
 trivy: 								## Detect image vulnerabilities
 	$(dc) build --no-cache app
 	trivy image --ignore-unfixed docker-registry.data.amsterdam.nl/datapunt/meetbouten
+
+deploy_kubectl: build
+	$(dc) push dev
+	kubectl apply -f manifests
+
+undeploy_kubectl:
+	kubectl delete -f manifests
+
+# Function called "fn", which references the Django commands $1
+fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
+init_kubectl:
+	$(call fn, migrate)
+	$(call fn, createsuperuser --noinput)
 
 deploy_kubectl: build
 	$(dc) push dev
@@ -82,3 +98,6 @@ fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
 init_kubectl:
 	$(call fn, migrate)
 	$(call fn, createsuperuser --noinput)
+
+test_data: migrate
+	$(manage) generate_test_data --num 100
