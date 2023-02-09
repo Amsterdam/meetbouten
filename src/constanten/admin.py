@@ -1,11 +1,7 @@
-# from cffi.setuptools_ext import execfile
 from django.contrib import admin
 
-# from django.utils.html import format_html
-from admincharts.admin import AdminChartMixin
-from django.db.models import Count
-
 from .models import *
+
 
 @admin.register(WijzenInwinning)
 class StatusAdmin(admin.ModelAdmin):

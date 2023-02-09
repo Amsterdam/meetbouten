@@ -43,6 +43,10 @@ services:
     build:
       context: .
       target: dev
+    environment:
+      DJANGO_SUPERUSER_PASSWORD: "0000"
+      DJANGO_SUPERUSER_USERNAME: "admin"
+      DJANGO_SUPERUSER_EMAIL: "admin@amsterdam.nl"
     image: 127.0.0.1:5001/meetbouten:${VERSION:-latest}
     command: python manage.py runserver 0.0.0.0:8000
 

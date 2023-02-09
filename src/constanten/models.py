@@ -8,6 +8,9 @@ class WijzenInwinning(models.Model):
     id = models.AutoField(primary_key=True)
     omschrijving = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.omschrijving
+
 
 class Type(models.Model):
     class Meta:
@@ -17,6 +20,9 @@ class Type(models.Model):
     omschrijving = models.CharField(max_length=50)
     soort = models.IntegerField()
 
+    def __str__(self):
+        return self.omschrijving
+
 
 class Status(models.Model):
     class Meta:
@@ -25,6 +31,9 @@ class Status(models.Model):
     id = models.AutoField(primary_key=True)
     omschrijving = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.omschrijving
+
 
 class Metingtype(models.Model):
     class Meta:
@@ -32,6 +41,9 @@ class Metingtype(models.Model):
 
     id = models.AutoField(primary_key=True)
     omschrijving = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.omschrijving
 
 
 class Merk(models.Model):
@@ -42,6 +54,9 @@ class Merk(models.Model):
     omschrijving_verkort = models.CharField(max_length=30, db_column='omschr_verkort')
     omschrijving = models.CharField(max_length=256)
 
+    def __str__(self):
+        return self.omschrijving_verkort
+
 
 class Bron(models.Model):
     class Meta:
@@ -50,3 +65,6 @@ class Bron(models.Model):
     id = models.AutoField(primary_key=True)
     omschrijving = models.CharField(max_length=20)
     doel = models.CharField(max_length=1)
+
+    def __str__(self):
+        return self.omschrijving

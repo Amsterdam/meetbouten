@@ -2,16 +2,17 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from meetbouten.factories import (
+from metingen.factories import (
     GrondslagpuntFactory,
     MetingReferentiepuntFactory,
     MetRefPuntenHerzFactory,
-    ControlepuntFactory,
-    ReferentiepuntFactory,
-    KringpuntFactory, MetingFactory, HoogtepuntFactory, MetingHerzFactory, BouwblokFactory,
+    MetingFactory,
+    HoogtepuntFactory,
+    MetingHerzFactory,
 )
-from meetbouten.models import Grondslagpunt, MetingReferentiepunt, MetRefPuntenHerz, Controlepunt, Referentiepunt, \
-    Kringpunt, Meting, Hoogtepunt, MetingHerzien, Bouwblok
+from bouwblokken.factories import ControlepuntFactory, ReferentiepuntFactory, KringpuntFactory, BouwblokFactory
+from metingen.models import Grondslagpunt, MetingReferentiepunt, MetRefPuntenHerz, Meting, Hoogtepunt, MetingHerzien
+from bouwblokken.models import Bouwblok, Controlepunt, Referentiepunt, Kringpunt
 
 log = logging.getLogger(__name__)
 
@@ -43,7 +44,6 @@ class Command(BaseCommand):
         ]
         for factory, model in factories_list:
             factory_data = factory.build_batch(size=num)
-            [r.save() for r in factory_data]
-            # model.objects.bulk_create(factory_data)
+            model.objects.bulk_create(factory_data)
 
         log.info(f"Created data")

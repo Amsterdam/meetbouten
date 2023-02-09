@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
     """
 
     dependencies = [
-        ('meetbouten', '0001_initial'),
+        ('metingen', '0001_initial'),
         ('constanten', '0001_initial'),
     ]
     operations = [

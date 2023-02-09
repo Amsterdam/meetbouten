@@ -1,4 +1,3 @@
-# 3rd party
 import string
 import datetime
 
@@ -11,14 +10,10 @@ from constanten.models import Bron, Type, Metingtype, Status, Merk, WijzenInwinn
 from .models import (
     Hoogtepunt,
     Grondslagpunt,
-    Bouwblok,
     Meting,
     MetingHerzien,
     MetingReferentiepunt,
     MetRefPuntenHerz,
-    Referentiepunt,
-    Controlepunt,
-    Kringpunt,
 )
 
 
@@ -34,7 +29,7 @@ class HoogtepuntFactory(DjangoModelFactory):
     merk = factory.Iterator(Merk.objects.all())
     xmuur = fuzzy.FuzzyDecimal(low=-100, high=100)
     ymuur = fuzzy.FuzzyDecimal(low=-100, high=100)
-    windr = fuzzy.FuzzyChoice(choices=["Z", "NW", "W", "N", "0", "NO", "ZW", "ZO", "O"])
+    windr = fuzzy.FuzzyChoice(choices=["Z", "NW", "W", "N", "NO", "ZW", "ZO", "O"])
     sigmax = 1
     sigmay = 1
     geom = "POINT (119411.7 487201.6)"
@@ -88,44 +83,7 @@ class MetingReferentiepuntFactory(DjangoModelFactory):
     meting = factory.Iterator(Meting.objects.all())
 
 
-class MetRefPuntenHerzFactory(DjangoModelFactory):
+class MetRefPuntenHerzFactory(MetingReferentiepuntFactory):
     class Meta:
         model = MetRefPuntenHerz
 
-    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
-    meting = factory.Iterator(MetingHerzien.objects.all())
-
-
-class BouwblokFactory(DjangoModelFactory):
-    class Meta:
-        model = Bouwblok
-
-    nummer = fuzzy.FuzzyText(length=4, prefix="MB", chars=string.digits)
-    opmerking = fuzzy.FuzzyText(length=50)
-    aansluitpunt = factory.Iterator(Hoogtepunt.objects.all())
-    controlepunt = factory.Iterator(Hoogtepunt.objects.all())
-
-
-class ControlepuntFactory(DjangoModelFactory):
-    class Meta:
-        model = Controlepunt
-
-    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
-    bouwblok = factory.Iterator(Bouwblok.objects.all())
-
-
-class ReferentiepuntFactory(DjangoModelFactory):
-    class Meta:
-        model = Referentiepunt
-
-    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
-    bouwblok = factory.Iterator(Bouwblok.objects.all())
-
-
-class KringpuntFactory(DjangoModelFactory):
-    class Meta:
-        model = Kringpunt
-
-    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
-    bouwblok = factory.Iterator(Bouwblok.objects.all())
-    volgorde = fuzzy.FuzzyInteger(low=1, high=160)

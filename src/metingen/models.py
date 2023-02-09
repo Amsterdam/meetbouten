@@ -7,16 +7,26 @@ class Hoogtepunt(models.Model):
     class Meta:
         verbose_name_plural = "Hoogtepunten"
 
+    class Windrichtingen(models.TextChoices):
+        N = "N", "Noord"
+        NO = "NO", "Noord-Oost"
+        NW = "NW", "Noord-West"
+        O = "O", "Oost"
+        W = "W", "West"
+        Z = "Z", "Zuid"
+        ZO = "ZO", "Zuid-Oost"
+        ZW = "ZW", "Zuid-West"
+
     id = models.AutoField(primary_key=True)
     nummer = models.CharField(max_length=8)
     type = models.ForeignKey(Type, on_delete=models.CASCADE, db_column="typ_nummer")
-    agi_nummer = models.CharField(max_length=8, null=True)
+    agi_nummer = models.CharField(max_length=8, null=True)  # Rijkswaterstaat nummer
     vervaldatum = models.DateField(null=True)
     omschrijving = models.CharField(max_length=256, blank=True, null=True)
     merk = models.ForeignKey(Merk, on_delete=models.CASCADE, db_column="mer_id")
     xmuur = models.FloatField(blank=True, null=True)
     ymuur = models.FloatField(blank=True, null=True)
-    windr = models.CharField(max_length=2)
+    windr = models.CharField(max_length=2, null=True, choices=Windrichtingen.choices)
     sigmax = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     sigmay = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     geom = PointField(srid=28992)
@@ -36,7 +46,7 @@ class Grondslagpunt(models.Model):
     inwindatum = models.DateField()
     vervaldatum = models.DateField(null=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
-    wijze_inwinning = models.ForeignKey(WijzenInwinning, on_delete=models.CASCADE, null=True)
+    wijze_inwinning = models.ForeignKey(WijzenInwinning, on_delete=models.CASCADE, null=True, db_column="wijze_inwinning")
     sigmax = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     sigmay = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     sigmaz = models.DecimalField(max_digits=4, decimal_places=2, null=True)
@@ -58,7 +68,7 @@ class Meting(models.Model):
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
     inwindatum = models.DateField()
-    wijze_inwinning = models.ForeignKey(WijzenInwinning, on_delete=models.CASCADE, null=True)
+    wijze_inwinning = models.ForeignKey(WijzenInwinning, on_delete=models.CASCADE, null=True, db_column="wijze_inwinning")
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
     hoogte = models.FloatField()
@@ -66,6 +76,7 @@ class Meting(models.Model):
 
 
 class MetingHerzien(models.Model):
+    """ In 2008 herziening NAP stelsel hoogtes. Bouten bleken toch te zakken. Amsterdam 15mm gezakt """
     class Meta:
         verbose_name = "Meting herziening"
         verbose_name_plural = "Metingen herzieningen"
@@ -73,45 +84,11 @@ class MetingHerzien(models.Model):
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
     inwindatum = models.DateField()
-    wijze_inwinning = models.ForeignKey(WijzenInwinning, on_delete=models.CASCADE, null=True)
+    wijze_inwinning = models.ForeignKey(WijzenInwinning, on_delete=models.CASCADE, null=True, db_column="wijze_inwinning")
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
     hoogte = models.FloatField()
     metingtype = models.ForeignKey(Metingtype, on_delete=models.CASCADE, db_column="mty_id")
-
-
-class Bouwblok(models.Model):
-    class Meta:
-        verbose_name_plural = "Bouwblokken"
-
-    nummer = models.CharField(max_length=8, primary_key=True)
-    aansluitpunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, related_name="bouwblok_aansluitpunt", db_column="aansluitpnt"
-    )
-    controlepunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, related_name="bouwblok_controlepunt", db_column="controlepnt"
-    )
-    opmerking = models.CharField(max_length=256, blank=True, null=True)
-
-
-class Controlepunt(models.Model):
-    class Meta:
-        verbose_name_plural = "Controlepunten"
-
-    id = models.AutoField(primary_key=True)
-    hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
-    bouwblok = models.ForeignKey(
-        Bouwblok, on_delete=models.CASCADE, related_name="controlepunt_bouwblok", db_column="bou_nummer"
-    )
-
-
-class Referentiepunt(models.Model):
-    class Meta:
-        verbose_name_plural = "Referentiepunten"
-
-    id = models.AutoField(primary_key=True)
-    hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
-    bouwblok = models.ForeignKey(Bouwblok, on_delete=models.CASCADE, db_column="bou_nummer")
 
 
 class MetingReferentiepunt(models.Model):
@@ -132,14 +109,3 @@ class MetRefPuntenHerz(models.Model):
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
     meting = models.ForeignKey(MetingHerzien, on_delete=models.CASCADE, db_column="met_id")
-
-
-class Kringpunt(models.Model):
-    class Meta:
-        verbose_name_plural = "Kringpunten"
-
-    id = models.AutoField(primary_key=True)
-    hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
-    bouwblok = models.ForeignKey(Bouwblok, on_delete=models.CASCADE, db_column="bou_nummer")
-    volgorde = models.IntegerField()
-

@@ -66,7 +66,8 @@ clean:                              ## Clean docker stuff
 env:                                ## Print current env
 	env | sort
 
-load_csv:                           ## Load csv file into database
+load_csv: migrate                     ## Load csv file into database
+	$(manage) createsuperuser --noinput
 	$(manage) load_csv_data
 
 trivy: 								## Detect image vulnerabilities

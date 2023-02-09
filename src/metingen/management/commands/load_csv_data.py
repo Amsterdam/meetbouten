@@ -3,7 +3,8 @@ import logging
 from django.core.management.base import BaseCommand
 from django.db import connection
 
-from meetbouten.models import *
+from metingen.models import *
+from bouwblokken.models import *
 
 log = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ data_config = [
             "STA_ID",
             "ORDE",
         ],
-        "nullable_fields": ["VERVALDATUM"]
+        "nullable_fields": ["VERVALDATUM", "WINDR"]
     },
     {
         "model": Grondslagpunt,

@@ -61,19 +61,6 @@ class GrondslagpuntChartAdmin(AdminChartMixin, admin.ModelAdmin):
         }
 
 
-@admin.register(MetingHerzien)
-class MetingHerzienAdmin(admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "inwindatum",
-        "wijze_inwinning",
-        "sigmaz",
-        "bron",
-        "hoogte",
-        "metingtype",
-    )
-
-
 @admin.register(Meting)
 class MetingAdmin(admin.ModelAdmin):
     list_display = (
@@ -87,33 +74,21 @@ class MetingAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Bouwblok)
-class MetingAdmin(admin.ModelAdmin):
-    list_display = (
-        "aansluitpunt",
-        "controlepunt",
-        "opmerking"
-    )
-
-
-@admin.register(Controlepunt)
-class MetingAdmin(admin.ModelAdmin):
+@admin.register(MetingHerzien)
+class MetingHerzienAdmin(admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
-        "bouwblok",
-    )
-
-
-@admin.register(Referentiepunt)
-class MetingAdmin(admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "bouwblok",
+        "inwindatum",
+        "wijze_inwinning",
+        "sigmaz",
+        "bron",
+        "hoogte",
+        "metingtype",
     )
 
 
 @admin.register(MetingReferentiepunt)
-class MetingAdmin(admin.ModelAdmin):
+class MetingReferentiepuntAdmin(admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "meting",
@@ -121,19 +96,8 @@ class MetingAdmin(admin.ModelAdmin):
 
 
 @admin.register(MetRefPuntenHerz)
-class MetingAdmin(admin.ModelAdmin):
+class MetRefPuntenHerzAdmin(admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "meting",
     )
-
-
-@admin.register(Kringpunt)
-class MetingAdmin(admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "bouwblok",
-        "volgorde",
-    )
-
-
