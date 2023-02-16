@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('constanten', '0001_initial'),
+        ('referentie_tabellen', '0001_initial'),
     ]
 
     operations = [
@@ -29,9 +29,9 @@ class Migration(migrations.Migration):
                 ('sigmay', models.DecimalField(decimal_places=2, max_digits=4, null=True)),
                 ('geom', django.contrib.gis.db.models.fields.PointField(srid=28992)),
                 ('orde', models.IntegerField(null=True)),
-                ('merk', models.ForeignKey(db_column='mer_id', on_delete=django.db.models.deletion.CASCADE, to='constanten.merk')),
-                ('status', models.ForeignKey(db_column='sta_id', null=True, on_delete=django.db.models.deletion.CASCADE, to='constanten.status')),
-                ('type', models.ForeignKey(db_column='typ_nummer', on_delete=django.db.models.deletion.CASCADE, to='constanten.type')),
+                ('merk', models.ForeignKey(db_column='mer_id', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.merk')),
+                ('status', models.ForeignKey(db_column='sta_id', null=True, on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.status')),
+                ('type', models.ForeignKey(db_column='typ_nummer', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.type')),
             ],
             options={
                 'verbose_name_plural': 'Hoogtepunten',
@@ -44,10 +44,10 @@ class Migration(migrations.Migration):
                 ('inwindatum', models.DateField()),
                 ('sigmaz', models.DecimalField(decimal_places=4, max_digits=6, null=True)),
                 ('hoogte', models.FloatField()),
-                ('bron', models.ForeignKey(db_column='bro_id', on_delete=django.db.models.deletion.CASCADE, to='constanten.bron')),
+                ('bron', models.ForeignKey(db_column='bro_id', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.bron')),
                 ('hoogtepunt', models.ForeignKey(db_column='hoo_id', on_delete=django.db.models.deletion.CASCADE, to='metingen.hoogtepunt')),
-                ('metingtype', models.ForeignKey(db_column='mty_id', on_delete=django.db.models.deletion.CASCADE, to='constanten.metingtype')),
-                ('wijze_inwinning', models.ForeignKey(db_column='wijze_inwinning', null=True, on_delete=django.db.models.deletion.CASCADE, to='constanten.wijzeninwinning')),
+                ('metingtype', models.ForeignKey(db_column='mty_id', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.metingtype')),
+                ('wijze_inwinning', models.ForeignKey(db_column='wijze_inwinning', null=True, on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.wijzeninwinning')),
             ],
             options={
                 'verbose_name_plural': 'Metingen',
@@ -84,10 +84,10 @@ class Migration(migrations.Migration):
                 ('inwindatum', models.DateField()),
                 ('sigmaz', models.DecimalField(decimal_places=4, max_digits=6, null=True)),
                 ('hoogte', models.FloatField()),
-                ('bron', models.ForeignKey(db_column='bro_id', on_delete=django.db.models.deletion.CASCADE, to='constanten.bron')),
+                ('bron', models.ForeignKey(db_column='bro_id', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.bron')),
                 ('hoogtepunt', models.ForeignKey(db_column='hoo_id', on_delete=django.db.models.deletion.CASCADE, to='metingen.hoogtepunt')),
-                ('metingtype', models.ForeignKey(db_column='mty_id', on_delete=django.db.models.deletion.CASCADE, to='constanten.metingtype')),
-                ('wijze_inwinning', models.ForeignKey(db_column='wijze_inwinning', null=True, on_delete=django.db.models.deletion.CASCADE, to='constanten.wijzeninwinning')),
+                ('metingtype', models.ForeignKey(db_column='mty_id', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.metingtype')),
+                ('wijze_inwinning', models.ForeignKey(db_column='wijze_inwinning', null=True, on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.wijzeninwinning')),
             ],
             options={
                 'verbose_name': 'Meting herziening',
@@ -109,9 +109,9 @@ class Migration(migrations.Migration):
                 ('geom', django.contrib.gis.db.models.fields.PointField(srid=28992)),
                 ('omschrijving', models.CharField(blank=True, max_length=256, null=True)),
                 ('z', models.FloatField(null=True)),
-                ('bron', models.ForeignKey(db_column='bro_id', on_delete=django.db.models.deletion.CASCADE, to='constanten.bron')),
-                ('type', models.ForeignKey(db_column='typ_nummer', on_delete=django.db.models.deletion.CASCADE, to='constanten.type')),
-                ('wijze_inwinning', models.ForeignKey(db_column='wijze_inwinning', null=True, on_delete=django.db.models.deletion.CASCADE, to='constanten.wijzeninwinning')),
+                ('bron', models.ForeignKey(db_column='bro_id', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.bron')),
+                ('type', models.ForeignKey(db_column='typ_nummer', on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.type')),
+                ('wijze_inwinning', models.ForeignKey(db_column='wijze_inwinning', null=True, on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.wijzeninwinning')),
             ],
             options={
                 'verbose_name_plural': 'Gronslagpunten',

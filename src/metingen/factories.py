@@ -1,12 +1,13 @@
 import string
 import datetime
+from random import random
 
 import factory
 from django.utils import timezone
 from factory import fuzzy
 from factory.django import DjangoModelFactory
 
-from constanten.models import Bron, Type, Metingtype, Status, Merk, WijzenInwinning
+from referentie_tabellen.models import Bron, Type, Metingtype, Status, Merk, WijzenInwinning
 from .models import (
     Hoogtepunt,
     Grondslagpunt,
@@ -14,6 +15,7 @@ from .models import (
     MetingHerzien,
     MetingReferentiepunt,
     MetRefPuntenHerz,
+    MetingControle,
 )
 
 
@@ -83,7 +85,19 @@ class MetingReferentiepuntFactory(DjangoModelFactory):
     meting = factory.Iterator(Meting.objects.all())
 
 
-class MetRefPuntenHerzFactory(MetingReferentiepuntFactory):
+class MetRefPuntenHerzFactory(DjangoModelFactory):
     class Meta:
         model = MetRefPuntenHerz
 
+    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
+    meting = factory.Iterator(MetingHerzien.objects.all())
+
+
+class MetingControleFactory(DjangoModelFactory):
+    class Meta:
+        model = MetingControle
+
+    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all().order_by("?"))
+    x = fuzzy.FuzzyDecimal(low=-100, high=100)
+    y = fuzzy.FuzzyDecimal(low=-100, high=100)
+    hoogte = fuzzy.FuzzyDecimal(low=0, high=5)

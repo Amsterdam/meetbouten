@@ -1,11 +1,11 @@
 from django.db import migrations
 
-from constanten.constants import wijzen_inwinning, types, statussen, metingtypen, merken, bronnen
+from referentie_tabellen.referentie_waardes import wijzen_inwinning, types, statussen, metingtypen, merken, bronnen
 
 
 def seed_tables(apps, schema_editor):
     """
-    Seed the static tables with the data from the constants.py file
+    Seed the static tables with the data from the referentie_waardes.py file
     """
     data_mapping = [
         {"model": "WijzenInwinning", "values": wijzen_inwinning},
@@ -16,7 +16,7 @@ def seed_tables(apps, schema_editor):
         {"model": "Bron", "values": bronnen},
     ]
     for mapping in data_mapping:
-        model = apps.get_model('constanten', mapping["model"])
+        model = apps.get_model('referentie_tabellen', mapping["model"])
         data = [model(**value._asdict()) for value in mapping["values"]]
         model.objects.bulk_create(data)
 
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('metingen', '0001_initial'),
-        ('constanten', '0001_initial'),
+        ('referentie_tabellen', '0001_initial'),
     ]
     operations = [
         migrations.RunPython(

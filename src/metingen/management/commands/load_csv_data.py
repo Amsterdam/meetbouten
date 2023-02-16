@@ -82,10 +82,6 @@ class Command(BaseCommand):
     #     )
 
     def handle(self, *args, **options):
-        command_datestyle = 'ALTER DATABASE meetbouten SET datestyle TO "ISO, DMY";'
-        with connection.cursor() as cursor:
-            cursor.execute(command_datestyle)
-
         for dump in data_config:
             table_name = dump["model"]._meta.db_table
             force_null = f", FORCE_NULL({','.join(dump['nullable_fields'])})" if "nullable_fields" in dump else ""

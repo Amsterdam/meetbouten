@@ -28,7 +28,7 @@ requirements: pip-tools             ## Upgrade requirements (in requirements.in)
 upgrade: requirements install       ## Run 'requirements' and 'install' targets
 
 migrations:                         ## Make migrations
-	$(manage) makemigrations $(ARGS)
+	$(manage) makemigrations referentie_tabellen
 
 migrate:                            ## Migrate
 	$(manage) migrate
@@ -55,10 +55,10 @@ dev: migrate				        ## Run the development app (and run extra migrations fir
 	$(run) --service-ports dev
 
 test: migrate                              ## Execute tests
-	$(run) test pytest /tests $(ARGS)
+	$(run) test pytest /tests -m 'not migration' $(ARGS)
 
 superuser:                          ## Create a new superuser
-	$(manage) createsuperuser
+	$(manage) createsuperuser --noinput
 
 clean:                              ## Clean docker stuff
 	$(dc) down -v --remove-orphans
@@ -67,8 +67,13 @@ env:                                ## Print current env
 	env | sort
 
 load_csv: migrate                     ## Load csv file into database
-	$(manage) createsuperuser --noinput
 	$(manage) load_csv_data
+
+test_data: migrate
+	$(manage) generate_test_data --num 100
+
+test_cor_load: migrate
+	$(manage) generate_cor_load --num 10
 
 trivy: 								## Detect image vulnerabilities
 	$(dc) build --no-cache app
@@ -86,19 +91,3 @@ fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
 init_kubectl:
 	$(call fn, migrate)
 	$(call fn, createsuperuser --noinput)
-
-deploy_kubectl: build
-	$(dc) push dev
-	kubectl apply -f manifests
-
-undeploy_kubectl:
-	kubectl delete -f manifests
-
-# Function called "fn", which references the Django command $1
-fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
-init_kubectl:
-	$(call fn, migrate)
-	$(call fn, createsuperuser --noinput)
-
-test_data: migrate
-	$(manage) generate_test_data --num 100

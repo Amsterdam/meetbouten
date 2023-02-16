@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "admincharts",
-    "constanten",
+    "referentie_tabellen",
     "metingen",
     "bouwblokken",
     "contrib",

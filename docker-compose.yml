@@ -26,9 +26,9 @@ services:
       POSTGRES_DB: meetbouten
       POSTGRES_USER: meetbouten
       POSTGRES_PASSWORD: insecure
-      PGDATESTYLE: "iso, dmy"
     volumes:
       - ./local/csv_dump:/csv_dump
+    command: postgres -c datestyle='iso, dmy'
 
   app:
     <<: *base-app
