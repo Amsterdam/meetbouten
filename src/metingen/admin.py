@@ -1,6 +1,10 @@
 # from cffi.setuptools_ext import execfile
 from datetime import datetime
 from django.contrib import admin
+from import_export.admin import ImportMixin
+from .resource import MetingControleResource
+from .cor_loader import CORFormatClass
+
 
 # from django.utils.html import format_html
 from admincharts.admin import AdminChartMixin
@@ -25,6 +29,8 @@ class HoogtepuntChartAdmin(admin.ModelAdmin):
         "status",
         "orde",
     )
+
+    search_fields = ('nummer',)
 
 
 @admin.register(Grondslagpunt)
@@ -79,7 +85,8 @@ def make_graph(modeladmin, request, queryset):
 
 
 @admin.register(MetingControle)
-class MetingControleAdmin(AdminChartMixin, admin.ModelAdmin):
+class MetingControleAdmin(AdminChartMixin, ImportMixin, admin.ModelAdmin):
+    resource_classes = [MetingControleResource]
     list_display = (
         "hoogtepunt",
         "inwindatum",
@@ -105,6 +112,15 @@ class MetingControleAdmin(AdminChartMixin, admin.ModelAdmin):
     list_chart_config = None  # Override the combined settings
     actions = [make_graph]
     measurement_points = []
+
+    def get_import_formats(self):
+        """
+        Returns available import formats.
+        """
+        self.formats = list(set(self.formats + [CORFormatClass]))
+        return [CORFormatClass]
+        #return [f for f in self.formats if f().can_import()]
+
 
     def get_labels(self, querysets):
         return [str(qs[0].hoogtepunt) for qs in querysets]

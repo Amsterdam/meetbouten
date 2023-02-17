@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "bouwblokken",
     "contrib",
     "django.contrib.gis",
+    "import_export",
 ]
 
 # Specifie path to components root (you need to use absolute path)
