@@ -188,3 +188,5 @@ REST_FRAMEWORK = dict(
     DEFAULT_VERSIONING_CLASS="rest_framework.versioning.NamespaceVersioning",
     COERCE_DECIMAL_TO_STRING=True,
 )
+
+IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True

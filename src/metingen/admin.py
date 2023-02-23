@@ -86,6 +86,7 @@ def make_graph(modeladmin, request, queryset):
 
 @admin.register(MetingControle)
 class MetingControleAdmin(AdminChartMixin, ImportMixin, admin.ModelAdmin):
+
     resource_classes = [MetingControleResource]
     list_display = (
         "hoogtepunt",
@@ -113,14 +114,13 @@ class MetingControleAdmin(AdminChartMixin, ImportMixin, admin.ModelAdmin):
     actions = [make_graph]
     measurement_points = []
 
+
     def get_import_formats(self):
-        """
-        Returns available import formats.
-        """
+        """ Returns available import formats."""
+
         self.formats = list(set(self.formats + [CORFormatClass]))
         return [CORFormatClass]
-        #return [f for f in self.formats if f().can_import()]
-
+ 
 
     def get_labels(self, querysets):
         return [str(qs[0].hoogtepunt) for qs in querysets]
