@@ -122,19 +122,4 @@ class Migration(migrations.Migration):
             name='wijze_inwinning',
             field=models.ForeignKey(blank=True, db_column='wijze_inwinning', null=True, on_delete=django.db.models.deletion.CASCADE, to='referentie_tabellen.wijzeninwinning'),
         ),
-        migrations.CreateModel(
-            name='MetingControle',
-            fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('x', models.FloatField()),
-                ('y', models.FloatField()),
-                ('hoogte', models.FloatField()),
-                ('inwindatum', models.DateField(auto_now_add=True)),
-                ('hoogtepunt', models.ForeignKey(db_column='hoo_id', on_delete=django.db.models.deletion.CASCADE, to='metingen.hoogtepunt')),
-            ],
-            options={
-                'verbose_name': 'Meting [ter controle]',
-                'verbose_name_plural': 'Metingen [ter contole]',
-            },
-        ),
     ]

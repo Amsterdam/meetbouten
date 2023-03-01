@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ["*"]
 X_FRAME_OPTIONS = "ALLOW-FROM *"
 INTERNAL_IPS = ("127.0.0.1", "0.0.0.0")
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 20  # max upload size; 20MB (instead of the default 2.5MB)
+IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 
 # Application definition
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "import_export",
     "referentie_tabellen",
     "metingen",
     "bouwblokken",
@@ -127,6 +129,13 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "django_cache",
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache',
     }
 }
 

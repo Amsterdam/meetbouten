@@ -28,7 +28,7 @@ requirements: pip-tools             ## Upgrade requirements (in requirements.in)
 upgrade: requirements install       ## Run 'requirements' and 'install' targets
 
 migrations:                         ## Make migrations
-	$(manage) makemigrations referentie_tabellen
+	$(manage) makemigrations
 
 migrate:                            ## Migrate
 	$(manage) migrate

@@ -1,10 +1,16 @@
 # from cffi.setuptools_ext import execfile
+
 from datetime import datetime
 from django.contrib import admin
 
 # from django.utils.html import format_html
-from admin_chart.admin import AdminChartMixin
+from import_export.tmp_storages import CacheStorage
 
+from admin_chart.admin import AdminChartMixin
+from import_export.admin import ImportExportModelAdmin
+
+from .resource import CORFormat, MetingControleResource
+from .form import CustomImportForm, CustomConfirmImportForm
 from .models import *
 
 
@@ -44,19 +50,6 @@ class GrondslagpuntChartAdmin(admin.ModelAdmin):
     # readonly_fields = ('picture_tag',)
 
 
-@admin.register(Meting)
-class MetingAdmin(admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "inwindatum",
-        "wijze_inwinning",
-        "sigmaz",
-        "bron",
-        "hoogte",
-        "metingtype",
-    )
-
-
 @admin.register(MetingHerzien)
 class MetingHerzienAdmin(admin.ModelAdmin):
     list_display = (
@@ -79,27 +72,47 @@ def make_graph(modeladmin, request, queryset):
 
 
 @admin.register(MetingControle)
-class MetingControleAdmin(AdminChartMixin, admin.ModelAdmin):
+class MetingControleAdmin(AdminChartMixin, ImportExportModelAdmin, admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "inwindatum",
-        "x",
-        "y",
         "hoogte",
+        "sigmaz",
+        "bron",
+        "wijze_inwinning",
+        "metingtype",
     )
     actions = [make_graph]
+    tmp_storage_class = CacheStorage
+    resource_class = MetingControleResource
+    import_form_class = CustomImportForm
+    confirm_form_class = CustomConfirmImportForm
 
+    def get_import_formats(self):
+        return [CORFormat]
 
-@admin.register(MetingReferentiepunt)
-class MetingReferentiepuntAdmin(admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "meting",
-    )
+    def get_confirm_form_initial(self, request, import_form):
+        # Pass the import form data to the confirm form
+        initial = super().get_confirm_form_initial(request, import_form)
+        if import_form:
+            fields = ["wijze_inwinning", "bron", "metingtype", "inwindatum"]
+            for f in fields:
+                initial[f] = import_form.cleaned_data[f]
+        return initial
+
+    def get_import_data_kwargs(self, request, *args, **kwargs):
+        """
+        Prepare kwargs for import_data.
+        """
+        form = kwargs.get('form')
+        if form:
+            kwargs.pop('form')
+            return form.cleaned_data
+        return {}
 
 
 @admin.register(MetRefPuntenHerz)
-class MetRefPuntenHerzAdmin(admin.ModelAdmin):
+class MetingReferentiepuntAdmin(admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "meting",
