@@ -39,24 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "admincharts",
     "referentie_tabellen",
     "metingen",
     "bouwblokken",
-    "contrib",
+    "admin_chart",
     "django.contrib.gis",
 ]
-
-# Specifie path to components root (you need to use absolute path)
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, "components")
-
-
-BOWER_INSTALLED_APPS = (
-    "jquery#3.4.1",
-    "jquery-ui#1.12.1",
-    "d3#3.3.13",
-    "nvd3#1.7.1",
-)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")
 MEDIA_URL = "/media/"
@@ -76,7 +64,7 @@ ROOT_URLCONF = "main.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "src/metingen/../admin_chart/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

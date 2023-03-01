@@ -18,5 +18,4 @@ sentry-sdk
 django-import-export
 django-leaflet
 pillow
-django-admincharts
 setuptools
