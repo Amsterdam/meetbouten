@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     "bouwblokken",
     "admin_chart",
     "django.contrib.gis",
-    "import_export",
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")

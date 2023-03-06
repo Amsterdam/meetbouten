@@ -1,6 +1,5 @@
 # from cffi.setuptools_ext import execfile
 
-from datetime import datetime
 from django.contrib import admin
 
 # from django.utils.html import format_html
@@ -9,7 +8,8 @@ from import_export.tmp_storages import CacheStorage
 from admin_chart.admin import AdminChartMixin
 from import_export.admin import ImportMixin
 
-from .resource import CORFormat, MetingControleResource
+from .resource import MetingControleResource
+from .cor_loader import CORFormatClass
 from .form import CustomImportForm, CustomConfirmImportForm
 from .models import *
 
@@ -89,7 +89,7 @@ class MetingControleAdmin(AdminChartMixin, ImportMixin, admin.ModelAdmin):
     confirm_form_class = CustomConfirmImportForm
 
     def get_import_formats(self):
-        return [CORFormat]
+        return [CORFormatClass]
 
     def get_confirm_form_initial(self, request, import_form):
         # Pass the import form data to the confirm form
