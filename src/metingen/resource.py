@@ -8,21 +8,25 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import connection
 
 
-
 class MetingControleResource(ModelResource):
-
     hoogtepunt = Field(
         column_name="hoogtepunt",
         attribute="hoogtepunt",
         widget=ForeignKeyWidget(Hoogtepunt, field="nummer"),
     )
- 
+
+    class Meta:
+        model = MetingControle
+        import_id_fields = ('hoogtepunt',)
+        exclude = ('id',)
+        use_bulk = True
+
     def before_import(self, dataset, using_transactions, dry_run, **kwargs):
- 
+
         # mapping of the model.py columnnames
         col_mapping = {
-            'z' : 'hoogte',
-            'puntnummer' : 'hoogtepunt',
+            'z': 'hoogte',
+            'puntnummer': 'hoogtepunt',
         }
 
         dataset.headers = [col_mapping.get(item, item) for item in dataset.headers]
@@ -30,12 +34,16 @@ class MetingControleResource(ModelResource):
         if not dry_run:
             truncate(MetingControle)
 
-        
     def before_import_row(self, row, row_number=None, **kwargs):
-
-        if not(Hoogtepunt.objects.filter(nummer= row['hoogtepunt']).exists()):
+        if not (Hoogtepunt.objects.filter(nummer=row['hoogtepunt']).exists()):
             error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
             raise error
+
+        row["hoogtepunt"] = Hoogtepunt.objects.get(nummer=row["hoogtepunt"]).id
+        row["inwindatum"] = kwargs.get("inwindatum")
+        row["bron"] = kwargs.get("bron").id
+        row["wijze_inwinning"] = kwargs.get("wijze_inwinning").id
+        row["metingtype"] = kwargs.get("metingtype").id
 
     @classmethod
     def get_error_result_class(self):
@@ -44,13 +52,6 @@ class MetingControleResource(ModelResource):
         Used here to simplify the trace error
         """
         return SimpleError
-
-
-    class Meta:
-        model = MetingControle
-        import_id_fields = ('hoogtepunt',)
-        exclude = ('id', 'inwindatum')
-        use_bulk = True
 
 
 class SimpleError(Error):

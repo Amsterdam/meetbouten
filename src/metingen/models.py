@@ -95,8 +95,8 @@ class MetingHerzien(models.Model):
     """In 2008 herziening NAP stelsel hoogtes. Bouten bleken toch te zakken. Amsterdam 15mm gezakt"""
 
     class Meta:
-        verbose_name = "Meting [Herzien]"
-        verbose_name_plural = "Metingen [Herzien]"
+        verbose_name = "Meting"
+        verbose_name_plural = "Metingen"
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
@@ -125,8 +125,8 @@ class MetingReferentiepunt(models.Model):
 
 class MetRefPuntenHerz(models.Model):
     class Meta:
-        verbose_name = "Referentiepunt [Herzien]"
-        verbose_name_plural = "Referentiepunten [Herzien]"
+        verbose_name = "Referentiepunt"
+        verbose_name_plural = "Referentiepunten"
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
@@ -140,10 +140,14 @@ class MetingControle(models.Model):
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
-    x = models.FloatField()
-    y = models.FloatField()
+    inwindatum = models.DateField()
+    sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
     hoogte = models.FloatField()
-    inwindatum = models.DateField(auto_now_add=True, blank=True)
+    wijze_inwinning = models.ForeignKey(
+        WijzenInwinning, on_delete=models.CASCADE, null=True, blank=True, db_column="wijze_inwinning"
+    )
+    bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
+    metingtype = models.ForeignKey(Metingtype, on_delete=models.CASCADE, db_column="mty_id")
 
     def __str__(self):
         return f"{self.hoogtepunt}"

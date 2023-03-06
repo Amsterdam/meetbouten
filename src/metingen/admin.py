@@ -1,14 +1,16 @@
 # from cffi.setuptools_ext import execfile
+
 from datetime import datetime
 from django.contrib import admin
-from import_export.admin import ImportMixin
-from .resource import MetingControleResource
-from .cor_loader import CORFormatClass
-
 
 # from django.utils.html import format_html
-from admincharts.admin import AdminChartMixin
+from import_export.tmp_storages import CacheStorage
 
+from admin_chart.admin import AdminChartMixin
+from import_export.admin import ImportMixin
+
+from .resource import CORFormat, MetingControleResource
+from .form import CustomImportForm, CustomConfirmImportForm
 from .models import *
 
 
@@ -30,8 +32,6 @@ class HoogtepuntChartAdmin(admin.ModelAdmin):
         "orde",
     )
 
-    search_fields = ('nummer',)
-
 
 @admin.register(Grondslagpunt)
 class GrondslagpuntChartAdmin(admin.ModelAdmin):
@@ -48,19 +48,6 @@ class GrondslagpuntChartAdmin(admin.ModelAdmin):
     list_filter = ("inwindatum", "vervaldatum")
     search_fields = ("nummer", "type_nummer", "omschrijving")
     # readonly_fields = ('picture_tag',)
-
-
-@admin.register(Meting)
-class MetingAdmin(admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "inwindatum",
-        "wijze_inwinning",
-        "sigmaz",
-        "bron",
-        "hoogte",
-        "metingtype",
-    )
 
 
 @admin.register(MetingHerzien)
@@ -86,117 +73,46 @@ def make_graph(modeladmin, request, queryset):
 
 @admin.register(MetingControle)
 class MetingControleAdmin(AdminChartMixin, ImportMixin, admin.ModelAdmin):
-
-    resource_classes = [MetingControleResource]
     list_display = (
         "hoogtepunt",
         "inwindatum",
-        "x",
-        "y",
         "hoogte",
+        "sigmaz",
+        "bron",
+        "wijze_inwinning",
+        "metingtype",
     )
-    list_chart_type = "line"
-    list_chart_options = {
-        "aspectRatio": 6,
-        "spanGaps": True,
-        "autoSkip": True,
-        "line": {"tension": 0.1},
-        "scales": {
-            "x": {
-                "ticks": {
-                    # 'callback': 'function(value, index) { return value; }',
-                    # "color": "green"
-                }
-            }
-        },
-    }
-    list_chart_config = None  # Override the combined settings
     actions = [make_graph]
-    measurement_points = []
-
+    tmp_storage_class = CacheStorage
+    resource_class = MetingControleResource
+    import_form_class = CustomImportForm
+    confirm_form_class = CustomConfirmImportForm
 
     def get_import_formats(self):
-        """ Returns available import formats."""
+        return [CORFormat]
 
-        self.formats = list(set(self.formats + [CORFormatClass]))
-        return [CORFormatClass]
- 
+    def get_confirm_form_initial(self, request, import_form):
+        # Pass the import form data to the confirm form
+        initial = super().get_confirm_form_initial(request, import_form)
+        if import_form:
+            fields = ["wijze_inwinning", "bron", "metingtype", "inwindatum"]
+            for f in fields:
+                initial[f] = import_form.cleaned_data[f]
+        return initial
 
-    def get_labels(self, querysets):
-        return [str(qs[0].hoogtepunt) for qs in querysets]
-
-    def get_list_chart_queryset(self, changelist):
-        if self.measurement_points:
-            querysets = []
-            for mp in self.measurement_points:
-                metingen = MetingHerzien.objects.filter(hoogtepunt=mp.hoogtepunt).order_by("inwindatum")
-                # metingen.append(mp)  # Add the measurement point itself
-                querysets.append(metingen)
-            return querysets
-        return []
-
-    def get_list_chart_data(self, querysets):
-        def get_datestr(datum):
-            return datum.strftime("%Y-%m-%d")
-
-        def get_timestamp(d):
-            return datetime(d.year, d.month, d.day).timestamp()
-
-        # Get labels
-        date_labels = []
-        for qs in querysets:
-            for meting in qs:
-                date = meting.inwindatum
-                if date not in date_labels:
-                    date_labels.append(date)
-        date_labels.sort()
-        timestamp_labels = [get_timestamp(date) for date in date_labels]
-
-        datasets = []
-        for qs in querysets:
-            init_val = None
-            hoogtes_dict = {ts: None for ts in timestamp_labels}
-            for meting in qs:
-                hoogtes_dict[get_timestamp(meting.inwindatum)] = meting.hoogte
-                if not init_val:
-                    init_val = meting.hoogte
-
-            if init_val:
-                if len(querysets) == 1:
-                    hoogtes = [hoogtes_dict[ts] if hoogtes_dict[ts] else None for ts in timestamp_labels]
-                else:
-                    hoogtes = [hoogtes_dict[ts] - init_val if hoogtes_dict[ts] else None for ts in timestamp_labels]
-
-                # data = [{'x': ts, 'y': hoogte} for ts, hoogte in zip(timestamp_labels, hoogtes)]
-                label = str(qs[0].hoogtepunt)
-                if label not in [ds["label"] for ds in datasets]:
-                    datasets.append(
-                        {
-                            "label": label,
-                            "data": hoogtes,
-                            "backgroundColor": "green",
-                            "color": "green",
-                            "borderColor": "green",
-                            "showLine": True,
-                        }
-                    )
-
-        return {
-            "labels": [get_datestr(date) for date in date_labels],
-            "datasets": datasets,
-        }
-
-
-@admin.register(MetingReferentiepunt)
-class MetingReferentiepuntAdmin(admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "meting",
-    )
+    def get_import_data_kwargs(self, request, *args, **kwargs):
+        """
+        Prepare kwargs for import_data.
+        """
+        form = kwargs.get('form')
+        if form:
+            kwargs.pop('form')
+            return form.cleaned_data
+        return {}
 
 
 @admin.register(MetRefPuntenHerz)
-class MetRefPuntenHerzAdmin(admin.ModelAdmin):
+class MetingReferentiepuntAdmin(admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "meting",

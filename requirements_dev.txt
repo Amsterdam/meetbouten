@@ -43,7 +43,7 @@ coreschema==0.0.4
     #   -r ./requirements.txt
     #   coreapi
     #   drf-yasg
-coverage[toml]==7.2.0
+coverage[toml]==7.2.1
     # via pytest-cov
 decorator==5.1.1
     # via ipython
@@ -68,8 +68,6 @@ django==3.2.18
     #   djangorestframework
     #   drf-yasg
     #   model-bakery
-django-admincharts==0.4.1
-    # via -r ./requirements.txt
 django-datetime-utc==1.0.4
     # via -r ./requirements.txt
 django-debug-toolbar==3.8.1
@@ -120,7 +118,7 @@ factory-boy==3.2.1
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==17.0.0
+faker==17.4.0
     # via factory-boy
 flask==2.2.3
     # via
@@ -150,7 +148,7 @@ inflection==0.5.1
     #   pytest-factoryboy
 iniconfig==2.0.0
     # via pytest
-ipython==8.10.0
+ipython==8.11.0
     # via -r requirements_dev.in
 itsdangerous==2.1.2
     # via flask
@@ -165,7 +163,7 @@ jinja2==3.1.2
     #   -r ./requirements.txt
     #   coreschema
     #   flask
-locust==2.14.2
+locust==2.15.0
     # via -r requirements_dev.in
 markuppy==1.14
     # via
@@ -208,7 +206,7 @@ pip-tools==6.12.2
     # via -r requirements_dev.in
 pluggy==1.0.0
     # via pytest
-prompt-toolkit==3.0.37
+prompt-toolkit==3.0.38
     # via ipython
 psutil==5.9.4
     # via locust
@@ -267,7 +265,7 @@ ruamel-yaml-clib==0.2.7
     # via
     #   -r ./requirements.txt
     #   ruamel-yaml
-sentry-sdk==1.15.0
+sentry-sdk==1.16.0
     # via -r ./requirements.txt
 six==1.16.0
     # via

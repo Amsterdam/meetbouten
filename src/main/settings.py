@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ["*"]
 X_FRAME_OPTIONS = "ALLOW-FROM *"
 INTERNAL_IPS = ("127.0.0.1", "0.0.0.0")
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 20  # max upload size; 20MB (instead of the default 2.5MB)
+IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 
 # Application definition
 
@@ -39,25 +40,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "admincharts",
+    "import_export",
     "referentie_tabellen",
     "metingen",
     "bouwblokken",
-    "contrib",
+    "admin_chart",
     "django.contrib.gis",
     "import_export",
 ]
-
-# Specifie path to components root (you need to use absolute path)
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, "components")
-
-
-BOWER_INSTALLED_APPS = (
-    "jquery#3.4.1",
-    "jquery-ui#1.12.1",
-    "d3#3.3.13",
-    "nvd3#1.7.1",
-)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")
 MEDIA_URL = "/media/"
@@ -77,7 +67,7 @@ ROOT_URLCONF = "main.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "src/metingen/../admin_chart/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -140,6 +130,13 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "django_cache",
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache',
     }
 }
 

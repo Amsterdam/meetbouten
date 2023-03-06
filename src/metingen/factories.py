@@ -97,7 +97,10 @@ class MetingControleFactory(DjangoModelFactory):
     class Meta:
         model = MetingControle
 
-    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all().order_by("?"))
-    x = fuzzy.FuzzyDecimal(low=-100, high=100)
-    y = fuzzy.FuzzyDecimal(low=-100, high=100)
-    hoogte = fuzzy.FuzzyDecimal(low=0, high=5)
+    hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
+    inwindatum = fuzzy.FuzzyDate(start_date=datetime.date(year=1950, month=1, day=1), end_date=timezone.now().date())
+    wijze_inwinning = factory.Iterator(WijzenInwinning.objects.all())
+    sigmaz = fuzzy.FuzzyDecimal(low=0, high=0.01, precision=4)
+    bron = factory.Iterator(Bron.objects.all())
+    hoogte = fuzzy.FuzzyDecimal(low=-5, high=15, precision=4)
+    metingtype = factory.Iterator(Metingtype.objects.all())
