@@ -2,6 +2,9 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.gis.db.models import PointField
+from django.utils.safestring import mark_safe
+
+from main import settings
 from referentie_tabellen.models import Type, Status, Metingtype, Merk, Bron, WijzenInwinning
 
 
@@ -34,9 +37,16 @@ class Hoogtepunt(models.Model):
     geom = PointField(srid=28992)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, db_column="sta_id", null=True, blank=True)
     orde = models.IntegerField(null=True, blank=True)
+    picture = models.ImageField(upload_to="meetbouten_pictures/", blank=True, null=True)
 
     def __str__(self):
         return f"{self.nummer} - {self.type.omschrijving}"
+
+    def picture_tag(self):
+        if self.picture:
+            return mark_safe(f'<img src="{settings.MEDIA_URL}{self.picture}" width="50" height="50" />')
+
+    picture_tag.short_description = "Picture"
 
 
 class Grondslagpunt(models.Model):
@@ -60,12 +70,6 @@ class Grondslagpunt(models.Model):
     geom = PointField(srid=28992)
     omschrijving = models.CharField(max_length=256, blank=True, null=True)
     z = models.FloatField(null=True, blank=True)
-    # picture = models.ImageField(upload_to="meetbouten_pictures/",
-    #                             blank=True, null=True)
-    #
-    # def picture_tag(self):
-    #     return mark_safe(f'<img src="{settings.MEDIA_URL}{self.picture}" width="50" height="50" />')
-    # picture_tag.short_description = 'Picture'
 
     def __str__(self):
         return f"{self.nummer} - {self.type.omschrijving}"
