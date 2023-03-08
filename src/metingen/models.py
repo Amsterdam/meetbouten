@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.db import models
 from django.contrib.gis.db.models import PointField
 from referentie_tabellen.models import Type, Status, Metingtype, Merk, Bron, WijzenInwinning

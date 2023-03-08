@@ -1,54 +1,69 @@
-import re
+from import_export.resources import ModelResource, Error
+from .models import MetingControle, Hoogtepunt
 
-import tablib
-from import_export.formats.base_formats import TextFormat
-from import_export.resources import ModelResource
+from import_export.fields import Field
+from import_export.widgets import ForeignKeyWidget
 
-from metingen.models import MetingControle, Hoogtepunt
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import connection
 
 
-class CORFormat(TextFormat):
-    TABLIB_MODULE = "tablib.formats._csv"
-    CONTENT_TYPE = "text/csv"
-
-    def create_dataset(self, in_stream, **kwargs):
-        if isinstance(in_stream, bytes) and self.encoding:
-            in_stream = in_stream.decode(self.encoding)
-
-        new_stream = self.reformat_cor_to_csv(in_stream)
-        return tablib.import_set(new_stream, format=self.get_title())
-
-    def reformat_cor_to_csv(self, in_stream):
-        dollar_signs = 0
-        new_stream = "hoogtepunt,hoogte,sigmaz\n"
-        for row in in_stream.splitlines():
-            if row == "$":
-                dollar_signs += 1
-                continue
-            if dollar_signs == 3 and row:
-                meting = self._interpret_meting(meting_raw=row)
-                new_stream += ",".join(meting) + "\n"
-        return new_stream
-
-    def _interpret_meting(self, meting_raw) -> tuple:
-        # Interpret meting from raw data
-        values = meting_raw.split()
-        assert len(values) >= 4, "Each meting must have at least 4 values"
-        puntnummer, x, y, z, *_, sigmaz = values
-        z = re.sub("[^.0-9]", "", z)  # Remove all non-numeric characters
-        meting = [puntnummer, z, sigmaz]
-        return meting
+class SimpleError(Error):
+    def __init__(self, error, traceback=None, row=None):
+        super().__init__(error, traceback=traceback, row=row)
+        self.traceback = " "
 
 
 class MetingControleResource(ModelResource):
+    hoogtepunt = Field(
+        column_name="hoogtepunt",
+        attribute="hoogtepunt",
+        widget=ForeignKeyWidget(Hoogtepunt, field="nummer"),
+    )
+
     class Meta:
         model = MetingControle
-        exclude = ["id"]
-        import_id_fields = ["hoogtepunt"]
+        import_id_fields = ('hoogtepunt',)
+        exclude = ('id',)
+        use_bulk = True
+
+    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+        if not dry_run:
+            truncate(MetingControle)
 
     def before_import_row(self, row, row_number=None, **kwargs):
-        row["hoogtepunt"] = Hoogtepunt.objects.get(nummer=row["hoogtepunt"]).id
+        if not (Hoogtepunt.objects.filter(nummer=row['hoogtepunt']).exists()):
+            error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
+            raise error
+
         row["inwindatum"] = kwargs.get("inwindatum")
         row["bron"] = kwargs.get("bron").id
         row["wijze_inwinning"] = kwargs.get("wijze_inwinning").id
         row["metingtype"] = kwargs.get("metingtype").id
+
+    @classmethod
+    def get_error_result_class(self):
+        """
+        Returns a class which has custom formatting of the error.
+        Used here to simplify the trace error
+        """
+        return SimpleError
+
+
+def truncate(model):
+    """
+    truncate db table and restart AutoField primary_key for import
+
+    use as follows:
+    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+        # truncate table before import when dry_run = False
+        if not dry_run:
+            truncate(modelobject)
+    """
+
+    raw_query = f"""
+        TRUNCATE TABLE {model._meta.db_table} RESTART IDENTITY
+        """
+
+    with connection.cursor() as cursor:
+        cursor.execute(raw_query, {})
