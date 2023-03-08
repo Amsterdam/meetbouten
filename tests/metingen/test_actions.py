@@ -86,3 +86,18 @@ class TestActions:
 
         assert MetingControle.objects.count() == 0
         assert MetingHerzien.objects.count() == len(metingen)
+
+    def test_save_part_of_measurements(self, client, model_admin, metingtype_nap):
+        MetingControleFactory.create_batch(
+            5, hoogtepunt=HoogtepuntFactory.create(type=Type.objects.get(pk=6)), metingtype=metingtype_nap
+        )
+        metingen = MetingControle.objects.all()
+
+        request = Mock()
+        request.POST.getlist.return_value = [f.pk for f in metingen[:3]]
+
+        model_admin.save_measurements(request, metingen)
+
+        assert MetingControle.objects.count() == 2
+        assert MetingHerzien.objects.count() == 3
+
