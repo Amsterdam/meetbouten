@@ -30,6 +30,7 @@ class HoogtepuntChartAdmin(admin.ModelAdmin):
         "sigmay",
         "status",
         "orde",
+        "picture_tag",
     )
 
 
