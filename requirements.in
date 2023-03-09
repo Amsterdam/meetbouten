@@ -20,3 +20,5 @@ django-import-export>=3.0.1
 django-leaflet
 pillow
 setuptools
+django-storages[azure]
+azure-storage-blob
