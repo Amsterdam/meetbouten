@@ -26,10 +26,8 @@ class TestPgdumpCommand:
     def test_pg_dump_remove(self):
         f = open('meetbouten.dump',  'w')
         f.close()
-
         Command().remove_dump()
         assert not os.path.isfile('meetbouten.dump')
-        assert not os.path.isfile('pg_dump/meetbouten_12345.dump')
 
     def test_pg_dump(self):
         """

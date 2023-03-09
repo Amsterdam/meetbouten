@@ -185,10 +185,8 @@ REST_FRAMEWORK = dict(
     COERCE_DECIMAL_TO_STRING=True,
 )
 
-
-
 #AZURE
-AZURE_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STeRING")  # Note: Key and variable name differ
+AZURE_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")  # Note: Key and variable name differ
 AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
 if AZURE_CONNECTION_STRING:
     DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
