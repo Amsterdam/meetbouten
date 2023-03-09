@@ -20,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-o6h+2jprp-q@&wfw%crkuu)s%&s^do=5(alw=75ov#(%vpnb0p"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.getenv("DEBUG", False))
 
 ALLOWED_HOSTS = ["*"]
 X_FRAME_OPTIONS = "ALLOW-FROM *"
@@ -132,13 +132,6 @@ CACHES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'django_cache',
-    }
-}
-
 if DEBUG:
     INSTALLED_APPS += ("debug_toolbar",)
     MIDDLEWARE += (
@@ -190,5 +183,6 @@ AZURE_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")  # Note: Key
 AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
 if AZURE_CONNECTION_STRING:
     DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+    STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True

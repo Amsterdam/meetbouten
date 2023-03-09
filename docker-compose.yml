@@ -13,8 +13,8 @@ x-app: &base-app
   environment: &base-app-env
     SECRET_KEY: "insecure"
     DEBUG: "true"
-    AUTHORIZATION_TOKEN: "auth-token"
-    GET_AUTHORIZATION_TOKEN: "get-auth-token"
+    AZURE_BLOB_CONNECTION_STRING: ""
+    AZURE_CONTAINER: ""
   entrypoint: /deploy/wait-for-it.sh database:5432 --
 
 services:
@@ -44,6 +44,7 @@ services:
       context: .
       target: dev
     environment:
+      <<: *base-app-env
       DJANGO_SUPERUSER_PASSWORD: "0000"
       DJANGO_SUPERUSER_USERNAME: "admin"
       DJANGO_SUPERUSER_EMAIL: "admin@amsterdam.nl"
@@ -58,5 +59,3 @@ services:
     environment:
       <<: *base-app-env
       DJANGO_SETTINGS_MODULE: "main.settings"
-      AZURE_BLOB_CONNECTION_STRING: ""
-      AZURE_CONTAINER: ""
