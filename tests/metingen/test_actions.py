@@ -1,13 +1,13 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, MagicMock
 
 import pytest
 from django.contrib.admin import AdminSite
+from django.core.checks import messages
 
 from metingen.admin import MetingControleAdmin
 from metingen.factories import MetingControleFactory, HoogtepuntFactory
 from metingen.models import MetingHerzien, MetingControle, MetRefPuntenHerz
 from referentie_tabellen.models import Metingtype, Type
-
 
 @pytest.fixture
 def model_admin():
@@ -54,6 +54,8 @@ class TestActions:
 
         assert MetingControle.objects.count() == len(metingen)
         assert MetingHerzien.objects.count() == 0
+        request.POST.getlist.assert_called_once()
+        request._messages.add.assert_called_with(messages.ERROR, 'De metingen hebben verschillende metingtypes', '')
 
     def test_save_deformatie_measurements(self, client, model_admin, metingtype_deformatie):
         bout_types = [7, 7, 7, 7, 6, 8, 9]
@@ -64,7 +66,7 @@ class TestActions:
             )
         metingen = MetingControle.objects.all()
 
-        request = Mock()
+        request = MagicMock()
         request.POST.getlist.return_value = [f.pk for f in metingen]
 
         model_admin.save_measurements(request, metingen)

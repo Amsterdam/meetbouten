@@ -2,6 +2,8 @@ from django.contrib import admin, messages
 
 from metingen.models import MetRefPuntenHerz, MetingHerzien
 
+DEFORMATIEBOUT = 7
+
 
 class ControleActionsMixin:
     @admin.action(description="Maak grafiek")
@@ -29,7 +31,7 @@ class ControleActionsMixin:
 
     def save_deformatie_metingen(self, queryset):
         queryset = list(queryset)
-        metingen = [m for m in queryset if m.hoogtepunt.type.nummer == 7]
+        metingen = [m for m in queryset if m.hoogtepunt.type.nummer == DEFORMATIEBOUT]
         ref_points = set([m.hoogtepunt for m in queryset if m not in metingen])  # Make unique set
 
         saved_metingen = self.save_metingen(metingen)
