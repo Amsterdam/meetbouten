@@ -8,6 +8,7 @@ from import_export.tmp_storages import CacheStorage
 from admin_chart.admin import AdminChartMixin
 from import_export.admin import ImportMixin
 
+from .actions import ControleActionsMixin
 from .resource import MetingControleResource
 from .cor_loader import CORFormatClass
 from .form import CustomImportForm, CustomConfirmImportForm
@@ -64,16 +65,8 @@ class MetingHerzienAdmin(admin.ModelAdmin):
     )
 
 
-@admin.action(description="Maak grafiek")
-def make_graph(modeladmin, request, queryset):
-    selected = request.POST.getlist("_selected_action")
-    if selected:
-        queryset = queryset.filter(pk__in=selected)
-    modeladmin.measurement_points = queryset
-
-
 @admin.register(MetingControle)
-class MetingControleAdmin(AdminChartMixin, ImportMixin, admin.ModelAdmin):
+class MetingControleAdmin(AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "inwindatum",
@@ -83,7 +76,7 @@ class MetingControleAdmin(AdminChartMixin, ImportMixin, admin.ModelAdmin):
         "wijze_inwinning",
         "metingtype",
     )
-    actions = [make_graph]
+    actions = ["make_graph", "save_measurements"]
     tmp_storage_class = CacheStorage
     resource_class = MetingControleResource
     import_form_class = CustomImportForm
