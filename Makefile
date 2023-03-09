@@ -4,7 +4,7 @@
 # VERSION = 2020.01.29
 .PHONY: app
 
-dc = docker-compose
+dc = docker compose
 run = $(dc) run --rm
 manage = $(run) dev python manage.py
 

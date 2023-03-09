@@ -16,7 +16,7 @@ psycopg2-binary
 pytz
 requests
 sentry-sdk
-django-import-export
+django-import-export>=3.0.1
 django-leaflet
 pillow
 setuptools
