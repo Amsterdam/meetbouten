@@ -6,11 +6,12 @@ from django.contrib import admin
 from import_export.tmp_storages import CacheStorage
 
 from admin_chart.admin import AdminChartMixin
-from import_export.admin import ImportMixin
+from import_export.admin import ImportMixin, ImportExportMixin
 
 from .actions import ControleActionsMixin
-from .resource import MetingControleResource
+from .resource import MetingControleResource, MetingVerrijkingResource
 from .cor_loader import CORFormatClass
+from .tco_loader import TCOFormatClass
 from .form import CustomImportForm, CustomConfirmImportForm
 from .models import *
 
@@ -66,7 +67,9 @@ class MetingHerzienAdmin(admin.ModelAdmin):
 
 
 @admin.register(MetingControle)
-class MetingControleAdmin(AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin):
+class MetingControleAdmin(
+    AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin
+):
     list_display = (
         "hoogtepunt",
         "inwindatum",
@@ -98,9 +101,9 @@ class MetingControleAdmin(AdminChartMixin, ImportMixin, ControleActionsMixin, ad
         """
         Prepare kwargs for import_data.
         """
-        form = kwargs.get('form')
+        form = kwargs.get("form")
         if form:
-            kwargs.pop('form')
+            kwargs.pop("form")
             return form.cleaned_data
         return {}
 
@@ -111,3 +114,25 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
         "hoogtepunt",
         "meting",
     )
+
+
+@admin.register(MetingVerrijking)
+class MetingControleAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "x",
+        "y",
+        "hoogte",
+        "inwindatum",
+        "c1",
+        "c2",
+        "c3",
+    )
+    ordering = ("hoogtepunt",)
+    resource_class = MetingVerrijkingResource
+
+    def get_import_formats(self):
+        return [TCOFormatClass]
+
+    def get_export_formats(self):
+        return [TCOFormatClass]
