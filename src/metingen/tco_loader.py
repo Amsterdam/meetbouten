@@ -7,7 +7,7 @@ from import_export.formats.base_formats import TablibFormat
 from io import StringIO
 
 
-class Meting(NamedTuple):
+class MetingTCO(NamedTuple):
     hoogtepunt: str
     x: float
     y: float
@@ -20,20 +20,21 @@ class TCOFormatClass(TablibFormat):
         return "tco"
 
     def get_extension(self):
+        "extension for export-file"
         return "tco"
 
-    def create_dataset(self, in_stream, **kwargs):
+    def create_dataset(self, in_stream, **kwargs) -> Dataset():
         """
         Create tablib.dataset from .tco file
         """
-        metingen = self.get_tco_metingen(self._string_output(in_stream))
+        metingen = self.get_metingen(self._string_output(in_stream))
         data = [tuple(i) for i in metingen]
 
-        return Dataset(*data, headers=Meting._fields)
+        return Dataset(*data, headers=MetingTCO._fields)
 
     def export_data(self, dataset, escape_output=False, **kwargs):
         """
-        Create .tco with correctformat from dataset
+        Create .tco with pre-defined-format from arg dataset
         """
 
         with StringIO() as tmp:
@@ -67,7 +68,7 @@ class TCOFormatClass(TablibFormat):
 
         return dataset
 
-    def get_tco_metingen(self, stream) -> list[Meting]:
+    def get_metingen(self, stream) -> list[MetingTCO]:
         """
         Extract metingen from data
         """
@@ -77,20 +78,21 @@ class TCOFormatClass(TablibFormat):
         metingen_raw = _data[3].splitlines()
         for raw in metingen_raw:
             if raw:
-                meting = self._interpret_tco_meting(raw, _header)
+                meting = self._interpret_meting(raw, _header)
                 metingen.append(meting)
+
         return metingen
 
     @staticmethod
-    def _interpret_tco_meting(meting_raw, _header) -> Meting:
+    def _interpret_meting(meting_raw, _header) -> MetingTCO:
         """
         Interpret meting from raw data
         """
         values = meting_raw.split()
         assert len(values) >= 4, "Each meting must have at least 4 values"
-        hoogtepunt, x, y, z = values  # for tco less values than in cor
+        hoogtepunt, x, y, z, *_ = values  # for tco less values than in cor
         z = re.sub("[^.0-9]", "", z)  # Remove all non-numeric characters
-        meting = Meting(hoogtepunt, x, y, hoogte=float(z), header=_header)
+        meting = MetingTCO(hoogtepunt, x, y, hoogte=float(z), header=_header)
         return meting
 
     @staticmethod

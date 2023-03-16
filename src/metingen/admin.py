@@ -117,7 +117,7 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
 
 
 @admin.register(MetingVerrijking)
-class MetingControleAdmin(ImportExportMixin, admin.ModelAdmin):
+class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "x",
