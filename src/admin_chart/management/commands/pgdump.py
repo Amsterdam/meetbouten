@@ -42,9 +42,8 @@ class Command(BaseCommand):
     def upload_to_blob(self) -> str:
         storage = get_storage_class()()
         with open(self.file_name, "rb") as f:
-            name = storage.save(name=f"pg_dump/{self.file_name}", content=f)
+            storage.save(name=f"pg_dump/{self.file_name}", content=f)
         logger.info("PG dump uploaded to storage")
-        return name
 
     def remove_dump(self):
         """
