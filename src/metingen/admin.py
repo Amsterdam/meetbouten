@@ -10,8 +10,7 @@ from import_export.admin import ImportMixin, ImportExportMixin
 
 from .actions import ControleActionsMixin
 from .resource import MetingControleResource, MetingVerrijkingResource
-from .cor_loader import CORFormatClass
-from .tco_loader import TCOFormatClass
+from .formatters import CORFormatClass, TCOFormatClass
 from .form import CustomImportForm, CustomConfirmImportForm
 from .models import *
 
@@ -67,9 +66,7 @@ class MetingHerzienAdmin(admin.ModelAdmin):
 
 
 @admin.register(MetingControle)
-class MetingControleAdmin(
-    AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin
-):
+class MetingControleAdmin(AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "inwindatum",

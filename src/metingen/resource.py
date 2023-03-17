@@ -33,9 +33,7 @@ class MetingControleResource(ModelResource):
 
     def before_import_row(self, row, row_number=None, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
-            error = ObjectDoesNotExist(
-                f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
-            )
+            error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
             raise error
 
         row["inwindatum"] = kwargs.get("inwindatum")
@@ -70,9 +68,7 @@ class MetingVerrijkingResource(ModelResource):
 
     def before_import_row(self, row, row_number=None, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
-            error = ObjectDoesNotExist(
-                f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
-            )
+            error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
             raise error
 
         _hoogtepunt = Hoogtepunt.objects.get(nummer=row["hoogtepunt"])
@@ -81,9 +77,7 @@ class MetingVerrijkingResource(ModelResource):
         row["y"] = _hoogtepunt.geom.y
 
         if Meting.objects.filter(hoogtepunt=_hoogtepunt.id).exists():
-            _last_meting = Meting.objects.filter(hoogtepunt=_hoogtepunt.id).latest(
-                "inwindatum"
-            )
+            _last_meting = Meting.objects.filter(hoogtepunt=_hoogtepunt.id).latest("inwindatum")
 
             row["hoogte"] = _last_meting.hoogte
             row["inwindatum"] = _last_meting.inwindatum
