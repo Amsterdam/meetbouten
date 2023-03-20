@@ -16,7 +16,7 @@ from .models import *
 
 
 @admin.register(Hoogtepunt)
-class HoogtepuntChartAdmin(admin.ModelAdmin):
+class HoogtepuntAdmin(admin.ModelAdmin):
     list_display = (
         "nummer",
         "type",
@@ -36,7 +36,7 @@ class HoogtepuntChartAdmin(admin.ModelAdmin):
 
 
 @admin.register(Grondslagpunt)
-class GrondslagpuntChartAdmin(admin.ModelAdmin):
+class GrondslagpuntAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "inwindatum",
