@@ -131,7 +131,6 @@ class TCOFormatClass(TablibFormat, BaseformatsClass):
                     _row += _mvar
 
                 _row += "\n"
-                print(_row)
                 tmp.write(_row)
             tmp.write("$")
 
