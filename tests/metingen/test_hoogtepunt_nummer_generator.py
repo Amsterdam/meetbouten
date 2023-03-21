@@ -16,7 +16,7 @@ class TestHoogtepuntNummerGenerator:
     def test_load_bladnummers_subset(self):
         generator = HoogtepuntNummerGenerator()
 
-        bladen = generator.load_bladnummers(filename="kaartbladen-test.csv")
+        bladen = generator.load_bladnummers(filename="/tests/metingen/kaartbladen-test.csv")
 
         assert bladen == [
             Kaartblad(bladnr="101", xmin=117650, ymin=487000, xmax=118600, ymax=487750),
