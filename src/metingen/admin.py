@@ -1,9 +1,7 @@
-# from cffi.setuptools_ext import execfile
-
 from django.contrib import admin
 
-# from django.utils.html import format_html
 from import_export.tmp_storages import CacheStorage
+from leaflet.admin import LeafletGeoAdminMixin
 
 from admin_chart.admin import AdminChartMixin
 from import_export.admin import ImportMixin
@@ -11,14 +9,17 @@ from import_export.admin import ImportMixin
 from .actions import ControleActionsMixin
 from .resource import MetingControleResource
 from .cor_loader import CORFormatClass
-from .form import CustomImportForm, CustomConfirmImportForm
+from .form import CustomImportForm, CustomConfirmImportForm, HoogtepuntForm
 from .models import *
 
 
 @admin.register(Hoogtepunt)
-class HoogtepuntAdmin(admin.ModelAdmin):
+class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
+    tmp_storage_class = CacheStorage
+    form = HoogtepuntForm
+    modifiable = False  # Make the leaflet map read-only
+    readonly_fields = ["nummer"]
     list_display = (
-        "nummer",
         "type",
         "agi_nummer",
         "vervaldatum",
@@ -32,6 +33,32 @@ class HoogtepuntAdmin(admin.ModelAdmin):
         "status",
         "orde",
         "picture_tag",
+    )
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": ("nummer",),
+            },
+        ),
+        (
+            "Details",
+            {
+                "fields": ("type", "merk", "status", "agi_nummer", "vervaldatum", "omschrijving", "picture"),
+            },
+        ),
+        (
+            "Positie",
+            {
+                "fields": ("xmuur", "ymuur", "windr", "sigmax", "sigmay", "orde"),
+            },
+        ),
+        (
+            "Locatie",
+            {
+                "fields": ("x", "y", "geom"),
+            },
+        ),
     )
 
 

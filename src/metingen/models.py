@@ -1,3 +1,4 @@
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.contrib.gis.db.models import PointField
 from django.utils.safestring import mark_safe
@@ -21,7 +22,7 @@ class Hoogtepunt(models.Model):
         ZW = "ZW", "Zuid-West"
 
     id = models.AutoField(primary_key=True)
-    nummer = models.CharField(max_length=8)
+    nummer = models.CharField(max_length=8, blank=True, validators=[MinLengthValidator(8)])
     type = models.ForeignKey(Type, on_delete=models.CASCADE, db_column="typ_nummer")
     agi_nummer = models.CharField(max_length=8, null=True, blank=True)  # Rijkswaterstaat nummer
     vervaldatum = models.DateField(null=True, blank=True)
@@ -32,7 +33,7 @@ class Hoogtepunt(models.Model):
     windr = models.CharField(max_length=2, null=True, blank=True, choices=Windrichtingen.choices)
     sigmax = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     sigmay = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
-    geom = PointField(srid=28992)
+    geom = PointField(srid=28992, blank=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE, db_column="sta_id", null=True, blank=True)
     orde = models.IntegerField(null=True, blank=True)
     picture = models.ImageField(upload_to="meetbouten_pictures/", blank=True, null=True)
