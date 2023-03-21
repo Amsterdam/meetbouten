@@ -1,5 +1,5 @@
 from import_export.resources import ModelResource, Error
-from .models import MetingControle, Hoogtepunt
+from .models import MetingControle, Hoogtepunt, MetingVerrijking, Meting
 
 from import_export.fields import Field
 from import_export.widgets import ForeignKeyWidget
@@ -23,8 +23,8 @@ class MetingControleResource(ModelResource):
 
     class Meta:
         model = MetingControle
-        import_id_fields = ('hoogtepunt',)
-        exclude = ('id',)
+        import_id_fields = ("hoogtepunt",)
+        exclude = ("id",)
         use_bulk = True
 
     def before_import(self, dataset, using_transactions, dry_run, **kwargs):
@@ -32,7 +32,7 @@ class MetingControleResource(ModelResource):
             truncate(MetingControle)
 
     def before_import_row(self, row, row_number=None, **kwargs):
-        if not (Hoogtepunt.objects.filter(nummer=row['hoogtepunt']).exists()):
+        if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
             error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
             raise error
 
@@ -40,6 +40,47 @@ class MetingControleResource(ModelResource):
         row["bron"] = kwargs.get("bron").id
         row["wijze_inwinning"] = kwargs.get("wijze_inwinning").id
         row["metingtype"] = kwargs.get("metingtype").id
+
+    @classmethod
+    def get_error_result_class(self):
+        """
+        Returns a class which has custom formatting of the error.
+        Used here to simplify the trace error
+        """
+        return SimpleError
+
+
+class MetingVerrijkingResource(ModelResource):
+    hoogtepunt = Field(
+        column_name="hoogtepunt",
+        attribute="hoogtepunt",
+        widget=ForeignKeyWidget(Hoogtepunt, field="nummer"),
+    )
+
+    class Meta:
+        model = MetingVerrijking
+        import_id_fields = ("hoogtepunt",)
+        exclude = "id"
+
+    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+        if not dry_run:
+            truncate(MetingVerrijking)
+
+    def before_import_row(self, row, row_number=None, **kwargs):
+        if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
+            error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
+            raise error
+
+        _hoogtepunt = Hoogtepunt.objects.get(nummer=row["hoogtepunt"])
+
+        row["x"] = _hoogtepunt.geom.x
+        row["y"] = _hoogtepunt.geom.y
+
+        if Meting.objects.filter(hoogtepunt=_hoogtepunt.id).exists():
+            _last_meting = Meting.objects.filter(hoogtepunt=_hoogtepunt.id).latest("inwindatum")
+
+            row["hoogte"] = _last_meting.hoogte
+            row["inwindatum"] = _last_meting.inwindatum
 
     @classmethod
     def get_error_result_class(self):
