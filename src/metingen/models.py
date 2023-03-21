@@ -4,7 +4,14 @@ from django.contrib.gis.db.models import PointField
 from django.utils.safestring import mark_safe
 
 from main import settings
-from referentie_tabellen.models import Type, Status, Metingtype, Merk, Bron, WijzenInwinning
+from referentie_tabellen.models import (
+    Type,
+    Status,
+    Metingtype,
+    Merk,
+    Bron,
+    WijzenInwinning,
+)
 
 
 class Hoogtepunt(models.Model):
@@ -61,7 +68,11 @@ class Grondslagpunt(models.Model):
     vervaldatum = models.DateField(null=True, blank=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
     wijze_inwinning = models.ForeignKey(
-        WijzenInwinning, on_delete=models.CASCADE, null=True, blank=True, db_column="wijze_inwinning"
+        WijzenInwinning,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        db_column="wijze_inwinning",
     )
     sigmax = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     sigmay = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
@@ -83,7 +94,11 @@ class Meting(models.Model):
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
     inwindatum = models.DateField()
     wijze_inwinning = models.ForeignKey(
-        WijzenInwinning, on_delete=models.CASCADE, null=True, blank=True, db_column="wijze_inwinning"
+        WijzenInwinning,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        db_column="wijze_inwinning",
     )
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
@@ -105,7 +120,11 @@ class MetingHerzien(models.Model):
     hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
     inwindatum = models.DateField()
     wijze_inwinning = models.ForeignKey(
-        WijzenInwinning, on_delete=models.CASCADE, null=True, blank=True, db_column="wijze_inwinning"
+        WijzenInwinning,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        db_column="wijze_inwinning",
     )
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
@@ -147,10 +166,34 @@ class MetingControle(models.Model):
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
     hoogte = models.FloatField()
     wijze_inwinning = models.ForeignKey(
-        WijzenInwinning, on_delete=models.CASCADE, null=True, blank=True, db_column="wijze_inwinning"
+        WijzenInwinning,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        db_column="wijze_inwinning",
     )
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
     metingtype = models.ForeignKey(Metingtype, on_delete=models.CASCADE, db_column="mty_id")
+
+    def __str__(self):
+        return f"{self.hoogtepunt}"
+
+
+class MetingVerrijking(models.Model):
+    class Meta:
+        verbose_name = "Meting [verrijking]"
+        verbose_name_plural = "Metingen [verrijking]"
+
+    id = models.AutoField(primary_key=True)
+    hoogtepunt = models.ForeignKey(Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id")
+    x = models.DecimalField(max_digits=10, decimal_places=4)
+    y = models.DecimalField(max_digits=10, decimal_places=4)
+    hoogte = models.FloatField(null=True, blank=True)
+    inwindatum = models.DateField(null=True, blank=True)
+    c1 = models.DecimalField(max_digits=6, decimal_places=4, default=1.0000)
+    c2 = models.DecimalField(max_digits=6, decimal_places=4, default=1.0000)
+    c3 = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000)
+    header = models.CharField(max_length=60)
 
     def __str__(self):
         return f"{self.hoogtepunt}"

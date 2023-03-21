@@ -4,11 +4,11 @@ from import_export.tmp_storages import CacheStorage
 from leaflet.admin import LeafletGeoAdminMixin
 
 from admin_chart.admin import AdminChartMixin
-from import_export.admin import ImportMixin
+from import_export.admin import ImportMixin, ImportExportMixin
 
 from .actions import ControleActionsMixin
-from .resource import MetingControleResource
-from .cor_loader import CORFormatClass
+from .resource import MetingControleResource, MetingVerrijkingResource
+from .formatters import CORFormatClass, TCOFormatClass
 from .form import CustomImportForm, CustomConfirmImportForm, HoogtepuntForm
 from .models import *
 
@@ -125,9 +125,9 @@ class MetingControleAdmin(AdminChartMixin, ImportMixin, ControleActionsMixin, ad
         """
         Prepare kwargs for import_data.
         """
-        form = kwargs.get('form')
+        form = kwargs.get("form")
         if form:
-            kwargs.pop('form')
+            kwargs.pop("form")
             return form.cleaned_data
         return {}
 
@@ -138,3 +138,25 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
         "hoogtepunt",
         "meting",
     )
+
+
+@admin.register(MetingVerrijking)
+class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
+    list_display = (
+        "hoogtepunt",
+        "x",
+        "y",
+        "hoogte",
+        "inwindatum",
+        "c1",
+        "c2",
+        "c3",
+    )
+    ordering = ("hoogtepunt",)
+    resource_class = MetingVerrijkingResource
+
+    def get_import_formats(self):
+        return [TCOFormatClass]
+
+    def get_export_formats(self):
+        return [TCOFormatClass]

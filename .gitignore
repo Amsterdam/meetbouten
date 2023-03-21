@@ -114,4 +114,7 @@ docker-compose.override.yml
 
 # local
 local/
+
+# Local settings that should never be committed
+.pre-commit-config.yaml
 src/media/
