@@ -45,7 +45,7 @@ class TestBouwblokActionsMixin:
         assert data == []
 
     def test_collect_data_hoogtepunt_without_measurement(self):
-        hoogtepunt=HoogtepuntFactory()
+        hoogtepunt = HoogtepuntFactory()
         BouwblokFactory()
         KringpuntFactory(hoogtepunt=hoogtepunt)
 
@@ -56,14 +56,12 @@ class TestBouwblokActionsMixin:
     def test_collect_data_single_measurement(self):
         hoogtepunt = HoogtepuntFactory()
         bouwblok = BouwblokFactory()
-        KringpuntFactory()
-        meting = MetingHerzFactory()
+        KringpuntFactory(hoogtepunt=hoogtepunt, bouwblok=bouwblok)
+        meting = MetingHerzFactory(hoogtepunt=hoogtepunt)
 
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())
-        assert data == [
-            [bouwblok.nummer, hoogtepunt.nummer, meting.inwindatum, float(meting.hoogte), .0, .0]
-        ]
+        assert data == [[bouwblok.nummer, hoogtepunt.nummer, meting.inwindatum, float(meting.hoogte), 0.0, 0.0]]
 
     def test_collect_data_multiple_measurements(self):
         hoogtepunt = HoogtepuntFactory()
@@ -77,7 +75,7 @@ class TestBouwblokActionsMixin:
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())
         assert data == [
-            [bouwblok.nummer, hoogtepunt.nummer, datetime.date(year=1900, month=1, day=1), 2, .0, .0],
+            [bouwblok.nummer, hoogtepunt.nummer, datetime.date(year=1900, month=1, day=1), 2, 0.0, 0.0],
             [bouwblok.nummer, hoogtepunt.nummer, datetime.date(year=1900, month=1, day=2), 1.9, -0.1, -0.1],
             [bouwblok.nummer, hoogtepunt.nummer, datetime.date(year=1900, month=1, day=3), 1.5, -0.4, -0.5],
         ]
@@ -96,9 +94,9 @@ class TestBouwblokActionsMixin:
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())
         assert data == [
-            ["A", "0000", datetime.date(year=1900, month=1, day=1), 2, .0, .0],
-            ["B", "0001", datetime.date(year=1900, month=1, day=2), 1.9, .0, .0],
-            ["C", "0002", datetime.date(year=1900, month=1, day=3), 1.5, .0, .0],
+            ["A", "0000", datetime.date(year=1900, month=1, day=1), 2, 0.0, 0.0],
+            ["B", "0001", datetime.date(year=1900, month=1, day=2), 1.9, 0.0, 0.0],
+            ["C", "0002", datetime.date(year=1900, month=1, day=3), 1.5, 0.0, 0.0],
         ]
 
     def test_collect_data_complex_case(self):
@@ -110,26 +108,26 @@ class TestBouwblokActionsMixin:
         for hp in hoogtepunten:
             KringpuntFactory(hoogtepunt=hp, bouwblok=bouwblok)
 
-        MetingHerzFactory(inwindatum='1900-01-03', hoogte=2, hoogtepunt=hoogtepunten[2])
-        MetingHerzFactory(inwindatum='1900-01-02', hoogte=3, hoogtepunt=hoogtepunten[2])
-        MetingHerzFactory(inwindatum='1900-01-01', hoogte=3.1, hoogtepunt=hoogtepunten[2])
-        MetingHerzFactory(inwindatum='1900-01-15', hoogte=5, hoogtepunt=hoogtepunten[0])
-        MetingHerzFactory(inwindatum='1900-01-15', hoogte=3, hoogtepunt=hoogtepunten[1])
-        MetingHerzFactory(inwindatum='1900-01-16', hoogte=2.5, hoogtepunt=hoogtepunten[1])
+        MetingHerzFactory(inwindatum="1900-01-03", hoogte=2, hoogtepunt=hoogtepunten[2])
+        MetingHerzFactory(inwindatum="1900-01-02", hoogte=3, hoogtepunt=hoogtepunten[2])
+        MetingHerzFactory(inwindatum="1900-01-01", hoogte=3.1, hoogtepunt=hoogtepunten[2])
+        MetingHerzFactory(inwindatum="1900-01-15", hoogte=5, hoogtepunt=hoogtepunten[0])
+        MetingHerzFactory(inwindatum="1900-01-15", hoogte=3, hoogtepunt=hoogtepunten[1])
+        MetingHerzFactory(inwindatum="1900-01-16", hoogte=2.5, hoogtepunt=hoogtepunten[1])
 
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())
         assert data == [
-            [bouwblok.nummer, hoogtepunten[0].nummer, datetime.date(year=1900, month=1, day=15), 5., .0, .0],
-            [bouwblok.nummer, hoogtepunten[1].nummer, datetime.date(year=1900, month=1, day=15), 3., .0, .0],
-            [bouwblok.nummer, hoogtepunten[1].nummer, datetime.date(year=1900, month=1, day=16), 2.5, -.5, -.5],
-            [bouwblok.nummer, hoogtepunten[2].nummer, datetime.date(year=1900, month=1, day=1), 3.1, .0, .0],
-            [bouwblok.nummer, hoogtepunten[2].nummer, datetime.date(year=1900, month=1, day=2), 3., -.1, -.1],
-            [bouwblok.nummer, hoogtepunten[2].nummer, datetime.date(year=1900, month=1, day=3), 2., -1, -1.1],
+            [bouwblok.nummer, hoogtepunten[0].nummer, datetime.date(year=1900, month=1, day=15), 5.0, 0.0, 0.0],
+            [bouwblok.nummer, hoogtepunten[1].nummer, datetime.date(year=1900, month=1, day=15), 3.0, 0.0, 0.0],
+            [bouwblok.nummer, hoogtepunten[1].nummer, datetime.date(year=1900, month=1, day=16), 2.5, -0.5, -0.5],
+            [bouwblok.nummer, hoogtepunten[2].nummer, datetime.date(year=1900, month=1, day=1), 3.1, 0.0, 0.0],
+            [bouwblok.nummer, hoogtepunten[2].nummer, datetime.date(year=1900, month=1, day=2), 3.0, -0.1, -0.1],
+            [bouwblok.nummer, hoogtepunten[2].nummer, datetime.date(year=1900, month=1, day=3), 2.0, -1, -1.1],
         ]
 
     def teardown_method(self, _):
-        """ Reset the database after each test """
+        """Reset the database after each test"""
         MetingHerzien.objects.all().delete()
         Kringpunt.objects.all().delete()
         Bouwblok.objects.all().delete()
