@@ -1,7 +1,7 @@
 from openpyxl import Workbook
 from datetime import datetime
 
-from django.contrib import admin, messages
+from django.contrib import admin
 from django.http import HttpResponse
 
 from bouwblokken.models import Kringpunt
@@ -40,7 +40,10 @@ class BouwblokActionsMixin:
             ).order_by("nummer")
             for hoogtepunt in hoogtepunten:
                 metingen = MetingHerzien.objects.filter(hoogtepunt=hoogtepunt.id).order_by("inwindatum")
-                start_hoogte = metingen.first().hoogte
+                start_meting = metingen.first()
+                if not start_meting:
+                    continue
+                start_hoogte = start_meting.hoogte
                 laatste_hoogte = start_hoogte
                 for meting in metingen:
                     data.append(

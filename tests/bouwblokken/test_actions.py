@@ -44,6 +44,15 @@ class TestBouwblokActionsMixin:
         data = admin.collect_data(Bouwblok.objects.all())
         assert data == []
 
+    def test_collect_data_hoogtepunt_without_measurement(self):
+        hoogtepunt=HoogtepuntFactory()
+        BouwblokFactory()
+        KringpuntFactory(hoogtepunt=hoogtepunt)
+
+        admin = BouwblokAdmin(Bouwblok, None)
+        data = admin.collect_data(Bouwblok.objects.all())
+        assert data == []
+
     def test_collect_data_single_measurement(self):
         hoogtepunt = HoogtepuntFactory()
         bouwblok = BouwblokFactory()
