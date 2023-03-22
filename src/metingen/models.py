@@ -4,6 +4,7 @@ from django.contrib.gis.db.models import PointField
 from django.utils.safestring import mark_safe
 
 from main import settings
+from metingen.hoogtepunt_nummer_generator import HoogtepuntNummerGenerator
 from referentie_tabellen.models import (
     Type,
     Status,
@@ -12,6 +13,10 @@ from referentie_tabellen.models import (
     Bron,
     WijzenInwinning,
 )
+
+
+GENERATOR = HoogtepuntNummerGenerator()
+GENERATOR.load_bladnummers()
 
 
 class Hoogtepunt(models.Model):
@@ -47,6 +52,11 @@ class Hoogtepunt(models.Model):
 
     def __str__(self):
         return f"{self.nummer} - {self.type.omschrijving}"
+
+    def save(self, *args, **kwargs):
+        if not self.nummer:
+            self.nummer = GENERATOR.generate(self)
+        super().save(*args, **kwargs)
 
     def picture_tag(self):
         if self.picture:

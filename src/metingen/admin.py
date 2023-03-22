@@ -12,7 +12,6 @@ from .formatters import CORFormatClass, TCOFormatClass
 from .form import CustomImportForm, CustomConfirmImportForm, HoogtepuntForm
 from .models import *
 
-
 @admin.register(Hoogtepunt)
 class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     tmp_storage_class = CacheStorage
@@ -20,6 +19,7 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     modifiable = False  # Make the leaflet map read-only
     readonly_fields = ["nummer"]
     list_display = (
+        "nummer",
         "type",
         "agi_nummer",
         "vervaldatum",
