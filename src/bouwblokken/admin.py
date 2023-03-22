@@ -7,6 +7,7 @@ from .actions import BouwblokActionsMixin
 class BouwblokAdmin(admin.ModelAdmin, BouwblokActionsMixin):
     actions = ["get_report"]
     list_display = (
+        "nummer",
         "aansluitpunt",
         "controlepunt",
         "opmerking"
@@ -16,6 +17,7 @@ class BouwblokAdmin(admin.ModelAdmin, BouwblokActionsMixin):
 @admin.register(Referentiepunt)
 class ReferentiepuntAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "hoogtepunt",
         "bouwblok",
     )
@@ -24,6 +26,7 @@ class ReferentiepuntAdmin(admin.ModelAdmin):
 @admin.register(Controlepunt)
 class ControlepuntAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "hoogtepunt",
         "bouwblok",
     )
@@ -32,6 +35,7 @@ class ControlepuntAdmin(admin.ModelAdmin):
 @admin.register(Kringpunt)
 class KringpuntAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "hoogtepunt",
         "bouwblok",
         "volgorde",
