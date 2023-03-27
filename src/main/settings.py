@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "bouwblokken",
     "admin_chart",
     "django.contrib.gis",
-    "leaflet"
+    "leaflet",
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")
@@ -179,11 +179,28 @@ REST_FRAMEWORK = dict(
     COERCE_DECIMAL_TO_STRING=True,
 )
 
-#AZURE
+# AZURE
 AZURE_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")  # Note: Key and variable name differ
 AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
 if AZURE_CONNECTION_STRING:
-    DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-    STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+    DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
+    STATICFILES_STORAGE = "storages.backends.azure_storage.AzureStorage"
 
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
+
+# Leaflet settings
+LEAFLET_CONFIG = {
+    "TILES": [
+        (
+            "Amsterdam",
+            "https://t1.data.amsterdam.nl/topo_wm_light/{z}/{x}/{y}.png",
+            {"attribution": 'Kaartgegevens &copy; <a href="https://data.amsterdam.nl/">Gemeente Amsterdam </a>'},
+        ),
+    ],
+    "DEFAULT_CENTER": (4.9020727, 52.3717204),
+    "DEFAULT_ZOOM": 12,
+    "MIN_ZOOM": 11,
+    "MAX_ZOOM": 21,
+    "SPATIAL_EXTENT": (3.2, 50.75, 7.22, 53.7),
+    "RESET_VIEW": False,
+}
