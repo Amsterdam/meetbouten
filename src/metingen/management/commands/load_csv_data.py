@@ -83,7 +83,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for dump in data_config:
-            table_name = dump["model"]._meta.db_table
+            model = dump["model"]
+            table_name = model._meta.db_table
             force_null = f", FORCE_NULL({','.join(dump['nullable_fields'])})" if "nullable_fields" in dump else ""
             command = (
                 f"COPY {table_name}({','.join(dump['fields'])}) "
@@ -93,3 +94,14 @@ class Command(BaseCommand):
             print(command)
             with connection.cursor() as cursor:
                 cursor.execute(command)
+
+            if model in (Meting, MetingHerzien, Hoogtepunt, Grondslagpunt):
+                self.set_id_sequence_value(table_name)
+
+    def set_id_sequence_value(self, table_name):
+        command = f"""SELECT setval('{table_name}_id_seq', (
+                        select max(id) from {table_name}  where id <> '99999999'
+                ), true);"""
+        print(command)
+        with connection.cursor() as cursor:
+            cursor.execute(command)
