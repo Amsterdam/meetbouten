@@ -1,5 +1,7 @@
 from django.contrib import admin, messages
 
+from bouwblokken.actions import BouwblokActionsMixin
+from bouwblokken.models import Kringpunt, Bouwblok
 from metingen.models import MetRefPuntenHerz, MetingHerzien
 
 DEFORMATIEBOUT = 7
@@ -27,7 +29,20 @@ class ControleActionsMixin:
             self.save_NAP_metingen(queryset)
         else:
             self.message_user(request, "Het metingtype wordt niet herkend", level=messages.ERROR)
+
+        response = self.generate_bouwblok_report(queryset, request)
         queryset.delete()
+        return response
+
+    def generate_bouwblok_report(self, queryset, request):
+        hoogtepunten = set([m.hoogtepunt for m in queryset])
+        bouwblok_nrs = Kringpunt.objects.filter(hoogtepunt__in=hoogtepunten).values_list("bouwblok", flat=True)
+        bouwblokken = Bouwblok.objects.filter(nummer__in=bouwblok_nrs)
+        response = BouwblokActionsMixin().get_report(request, bouwblokken)
+        self.message_user(
+            request, f"{len(queryset)} metingen opgeslagen voor {len(bouwblokken)} bouwblokken"
+        )
+        return response
 
     def save_deformatie_metingen(self, queryset):
         queryset = list(queryset)
