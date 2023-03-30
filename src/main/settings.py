@@ -28,7 +28,9 @@ DEBUG = bool(os.getenv("DEBUG", False))
 ALLOWED_HOSTS = ["*"]
 X_FRAME_OPTIONS = "ALLOW-FROM *"
 INTERNAL_IPS = ("127.0.0.1", "0.0.0.0")
-DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 20  # max upload size; 20MB (instead of the default 2.5MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = (
+    1024 * 1024 * 20
+)  # max upload size; 20MB (instead of the default 2.5MB)
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 
 # Application definition
@@ -162,7 +164,9 @@ REST_FRAMEWORK = dict(
     MAX_PAGINATE_BY=100,
     UNAUTHENTICATED_USER={},
     UNAUTHENTICATED_TOKEN={},
-    DEFAULT_AUTHENTICATION_CLASSES=("contrib.rest_framework.authentication.SimpleTokenAuthentication",),
+    DEFAULT_AUTHENTICATION_CLASSES=(
+        "contrib.rest_framework.authentication.SimpleTokenAuthentication",
+    ),
     DEFAULT_PAGINATION_CLASS="datapunt_api.pagination.HALPagination",
     DEFAULT_RENDERER_CLASSES=(
         "rest_framework.renderers.JSONRenderer",
@@ -180,7 +184,9 @@ REST_FRAMEWORK = dict(
 )
 
 # AZURE
-AZURE_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")  # Note: Key and variable name differ
+AZURE_CONNECTION_STRING = os.getenv(
+    "AZURE_BLOB_CONNECTION_STRING"
+)  # Note: Key and variable name differ
 AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
 if AZURE_CONNECTION_STRING:
     DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
@@ -194,7 +200,9 @@ LEAFLET_CONFIG = {
         (
             "Amsterdam",
             "https://t1.data.amsterdam.nl/topo_wm_light/{z}/{x}/{y}.png",
-            {"attribution": 'Kaartgegevens &copy; <a href="https://data.amsterdam.nl/">Gemeente Amsterdam </a>'},
+            {
+                "attribution": 'Kaartgegevens &copy; <a href="https://data.amsterdam.nl/">Gemeente Amsterdam </a>'
+            },
         ),
     ],
     "DEFAULT_CENTER": (4.9020727, 52.3717204),

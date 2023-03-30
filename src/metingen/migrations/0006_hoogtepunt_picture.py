@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('metingen', '0005_auto_20230228_1030'),
+        ("metingen", "0005_auto_20230228_1030"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='hoogtepunt',
-            name='picture',
-            field=models.ImageField(blank=True, null=True, upload_to='meetbouten_pictures/'),
+            model_name="hoogtepunt",
+            name="picture",
+            field=models.ImageField(
+                blank=True, null=True, upload_to="meetbouten_pictures/"
+            ),
         ),
     ]

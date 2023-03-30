@@ -1,16 +1,16 @@
 from django.contrib import admin
-
+from import_export.admin import ImportExportMixin, ImportMixin
 from import_export.tmp_storages import CacheStorage
 from leaflet.admin import LeafletGeoAdminMixin
 
 from admin_chart.admin import AdminChartMixin
-from import_export.admin import ImportMixin, ImportExportMixin
 
 from .actions import ControleActionsMixin
-from .resource import MetingControleResource, MetingVerrijkingResource
+from .form import CustomConfirmImportForm, CustomImportForm, HoogtepuntForm
 from .formatters import CORFormatClass, TCOFormatClass
-from .form import CustomImportForm, CustomConfirmImportForm, HoogtepuntForm
 from .models import *
+from .resource import MetingControleResource, MetingVerrijkingResource
+
 
 @admin.register(Hoogtepunt)
 class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
@@ -44,7 +44,15 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
         (
             "Details",
             {
-                "fields": ("type", "merk", "status", "agi_nummer", "vervaldatum", "omschrijving", "picture"),
+                "fields": (
+                    "type",
+                    "merk",
+                    "status",
+                    "agi_nummer",
+                    "vervaldatum",
+                    "omschrijving",
+                    "picture",
+                ),
             },
         ),
         (
@@ -93,7 +101,9 @@ class MetingHerzienAdmin(admin.ModelAdmin):
 
 
 @admin.register(MetingControle)
-class MetingControleAdmin(AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin):
+class MetingControleAdmin(
+    AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin
+):
     list_display = (
         "hoogtepunt",
         "inwindatum",

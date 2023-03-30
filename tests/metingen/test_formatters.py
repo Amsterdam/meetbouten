@@ -1,6 +1,6 @@
 import pytest
 
-from metingen.formatters import CORFormatClass, TCOFormatClass, Meting
+from metingen.formatters import CORFormatClass, Meting, TCOFormatClass
 
 
 @pytest.fixture
@@ -47,7 +47,6 @@ class TestFormats:
         assert header == "MOVE3 V4.5.1 TCO file\n$\nAD20\n$\nPROJECTION RD\n"
 
     def test_verrijktedata_TCOFormat(self):
-
         # TODO
         # import via admin "move3_files/raw.tco"
         # test verrijking -> x en y en hoogte niet leeg / error

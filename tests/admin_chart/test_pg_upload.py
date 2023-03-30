@@ -1,14 +1,13 @@
 import os
-import pytest
 
-from django.core.management import call_command
+import pytest
 from django.conf import settings
+from django.core.management import call_command
 
 from admin_chart.management.commands.pgdump import Command
 
 
 class TestPgdumpCommand:
-
     def test_pg_dump_create_file(self):
         database = settings.DATABASES["default"]
         succesfull = Command().start_dump(database)
@@ -25,7 +24,7 @@ class TestPgdumpCommand:
         os.remove("/src/media/pg_dump/meetbouten.dump")
 
     def test_pg_dump_remove(self):
-        f = open("meetbouten.dump",  "w")
+        f = open("meetbouten.dump", "w")
         f.close()
         Command().remove_dump()
         assert not os.path.isfile("meetbouten.dump")

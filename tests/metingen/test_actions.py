@@ -1,13 +1,14 @@
-from unittest.mock import Mock, MagicMock
+from unittest.mock import MagicMock, Mock
 
 import pytest
 from django.contrib.admin import AdminSite
 from django.core.checks import messages
 
 from metingen.admin import MetingControleAdmin
-from metingen.factories import MetingControleFactory, HoogtepuntFactory
-from metingen.models import MetingHerzien, MetingControle, MetRefPuntenHerz
+from metingen.factories import HoogtepuntFactory, MetingControleFactory
+from metingen.models import MetingControle, MetingHerzien, MetRefPuntenHerz
 from referentie_tabellen.models import Metingtype, Type
+
 
 @pytest.fixture
 def model_admin():
@@ -39,12 +40,20 @@ class TestActions:
         model_admin.make_graph(request, metingen)
 
         measurement_points = MetingControle.objects.filter(pk__in=metingen_selected)
-        assert [m for m in model_admin.measurement_points] == [m for m in measurement_points]
+        assert [m for m in model_admin.measurement_points] == [
+            m for m in measurement_points
+        ]
 
-    def test_save_inconsistent_measurements(self, client, model_admin, metingtype_nap, metingtype_deformatie):
+    def test_save_inconsistent_measurements(
+        self, client, model_admin, metingtype_nap, metingtype_deformatie
+    ):
         hoogtepunt = HoogtepuntFactory.create()
-        MetingControleFactory.create_batch(5, hoogtepunt=hoogtepunt, metingtype=metingtype_deformatie)
-        MetingControleFactory.create_batch(5, hoogtepunt=hoogtepunt, metingtype=metingtype_nap)
+        MetingControleFactory.create_batch(
+            5, hoogtepunt=hoogtepunt, metingtype=metingtype_deformatie
+        )
+        MetingControleFactory.create_batch(
+            5, hoogtepunt=hoogtepunt, metingtype=metingtype_nap
+        )
         metingen = MetingControle.objects.all()
 
         request = Mock()
@@ -55,9 +64,13 @@ class TestActions:
         assert MetingControle.objects.count() == len(metingen)
         assert MetingHerzien.objects.count() == 0
         request.POST.getlist.assert_called_once()
-        request._messages.add.assert_called_with(messages.ERROR, 'De metingen hebben verschillende metingtypes', '')
+        request._messages.add.assert_called_with(
+            messages.ERROR, "De metingen hebben verschillende metingtypes", ""
+        )
 
-    def test_save_deformatie_measurements(self, client, model_admin, metingtype_deformatie):
+    def test_save_deformatie_measurements(
+        self, client, model_admin, metingtype_deformatie
+    ):
         bout_types = [7, 7, 7, 7, 6, 8, 9]
         for type_nr in bout_types:
             MetingControleFactory.create(
@@ -77,7 +90,9 @@ class TestActions:
 
     def test_save_nap_measurements(self, client, model_admin, metingtype_nap):
         MetingControleFactory.create_batch(
-            5, hoogtepunt=HoogtepuntFactory.create(type=Type.objects.get(pk=6)), metingtype=metingtype_nap
+            5,
+            hoogtepunt=HoogtepuntFactory.create(type=Type.objects.get(pk=6)),
+            metingtype=metingtype_nap,
         )
         metingen = MetingControle.objects.all()
 
@@ -91,7 +106,9 @@ class TestActions:
 
     def test_save_part_of_measurements(self, client, model_admin, metingtype_nap):
         MetingControleFactory.create_batch(
-            5, hoogtepunt=HoogtepuntFactory.create(type=Type.objects.get(pk=6)), metingtype=metingtype_nap
+            5,
+            hoogtepunt=HoogtepuntFactory.create(type=Type.objects.get(pk=6)),
+            metingtype=metingtype_nap,
         )
         metingen = MetingControle.objects.all()
 
@@ -102,4 +119,3 @@ class TestActions:
 
         assert MetingControle.objects.count() == 2
         assert MetingHerzien.objects.count() == 3
-

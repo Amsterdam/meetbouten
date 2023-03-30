@@ -5,12 +5,8 @@ from factory import fuzzy
 from factory.django import DjangoModelFactory
 
 from metingen.models import Hoogtepunt
-from .models import (
-    Bouwblok,
-    Referentiepunt,
-    Controlepunt,
-    Kringpunt,
-)
+
+from .models import Bouwblok, Controlepunt, Kringpunt, Referentiepunt
 
 
 class BouwblokFactory(DjangoModelFactory):

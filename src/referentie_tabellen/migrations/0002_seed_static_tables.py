@@ -1,6 +1,13 @@
 from django.db import migrations
 
-from referentie_tabellen.referentie_waardes import wijzen_inwinning, types, statussen, metingtypen, merken, bronnen
+from referentie_tabellen.referentie_waardes import (
+    bronnen,
+    merken,
+    metingtypen,
+    statussen,
+    types,
+    wijzen_inwinning,
+)
 
 
 def seed_tables(apps, schema_editor):
@@ -16,7 +23,7 @@ def seed_tables(apps, schema_editor):
         {"model": "Bron", "values": bronnen},
     ]
     for mapping in data_mapping:
-        model = apps.get_model('referentie_tabellen', mapping["model"])
+        model = apps.get_model("referentie_tabellen", mapping["model"])
         data = [model(**value._asdict()) for value in mapping["values"]]
         model.objects.bulk_create(data)
 
@@ -27,11 +34,9 @@ class Migration(migrations.Migration):
     """
 
     dependencies = [
-        ('metingen', '0001_initial'),
-        ('referentie_tabellen', '0001_initial'),
+        ("metingen", "0001_initial"),
+        ("referentie_tabellen", "0001_initial"),
     ]
     operations = [
-        migrations.RunPython(
-            code=seed_tables,
-            reverse_code=migrations.RunPython.noop)
+        migrations.RunPython(code=seed_tables, reverse_code=migrations.RunPython.noop)
     ]

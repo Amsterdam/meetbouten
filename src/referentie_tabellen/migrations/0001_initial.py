@@ -4,74 +4,78 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Bron',
+            name="Bron",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('omschrijving', models.CharField(max_length=20)),
-                ('doel', models.CharField(max_length=1)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("omschrijving", models.CharField(max_length=20)),
+                ("doel", models.CharField(max_length=1)),
             ],
             options={
-                'verbose_name_plural': 'Bronnen',
+                "verbose_name_plural": "Bronnen",
             },
         ),
         migrations.CreateModel(
-            name='Merk',
+            name="Merk",
             fields=[
-                ('id', models.CharField(max_length=2, primary_key=True, serialize=False)),
-                ('omschrijving_verkort', models.CharField(db_column='omschr_verkort', max_length=30)),
-                ('omschrijving', models.CharField(max_length=256)),
+                (
+                    "id",
+                    models.CharField(max_length=2, primary_key=True, serialize=False),
+                ),
+                (
+                    "omschrijving_verkort",
+                    models.CharField(db_column="omschr_verkort", max_length=30),
+                ),
+                ("omschrijving", models.CharField(max_length=256)),
             ],
             options={
-                'verbose_name_plural': 'Merken',
+                "verbose_name_plural": "Merken",
             },
         ),
         migrations.CreateModel(
-            name='Metingtype',
+            name="Metingtype",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('omschrijving', models.CharField(max_length=30)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("omschrijving", models.CharField(max_length=30)),
             ],
             options={
-                'verbose_name_plural': 'Metingtypes',
+                "verbose_name_plural": "Metingtypes",
             },
         ),
         migrations.CreateModel(
-            name='Status',
+            name="Status",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('omschrijving', models.CharField(max_length=30)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("omschrijving", models.CharField(max_length=30)),
             ],
             options={
-                'verbose_name_plural': 'Statussen',
+                "verbose_name_plural": "Statussen",
             },
         ),
         migrations.CreateModel(
-            name='Type',
+            name="Type",
             fields=[
-                ('nummer', models.AutoField(primary_key=True, serialize=False)),
-                ('omschrijving', models.CharField(max_length=50)),
-                ('soort', models.IntegerField()),
+                ("nummer", models.AutoField(primary_key=True, serialize=False)),
+                ("omschrijving", models.CharField(max_length=50)),
+                ("soort", models.IntegerField()),
             ],
             options={
-                'verbose_name_plural': 'Types',
+                "verbose_name_plural": "Types",
             },
         ),
         migrations.CreateModel(
-            name='WijzenInwinning',
+            name="WijzenInwinning",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('omschrijving', models.CharField(max_length=30)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("omschrijving", models.CharField(max_length=30)),
             ],
             options={
-                'verbose_name_plural': 'Wijzen inwinning',
+                "verbose_name_plural": "Wijzen inwinning",
             },
         ),
     ]

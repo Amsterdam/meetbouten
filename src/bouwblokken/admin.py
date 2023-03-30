@@ -1,17 +1,13 @@
 from django.contrib import admin
-from .models import *
+
 from .actions import BouwblokActionsMixin
+from .models import *
 
 
 @admin.register(Bouwblok)
 class BouwblokAdmin(admin.ModelAdmin, BouwblokActionsMixin):
     actions = ["get_report"]
-    list_display = (
-        "nummer",
-        "aansluitpunt",
-        "controlepunt",
-        "opmerking"
-    )
+    list_display = ("nummer", "aansluitpunt", "controlepunt", "opmerking")
 
 
 @admin.register(Referentiepunt)

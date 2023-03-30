@@ -54,7 +54,7 @@ shell:                              ## Run shell_plus and print sql
 dev: migrate				        ## Run the development app (and run extra migrations first)
 	$(run) --service-ports dev
 
-test: migrate                              ## Execute tests
+test: lint                              ## Execute tests
 	$(run) test pytest /tests -m 'not migration' $(ARGS)
 
 superuser:                          ## Create a new superuser
@@ -91,3 +91,13 @@ fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
 init_kubectl:
 	$(call fn, migrate)
 	$(call fn, createsuperuser --noinput)
+
+lintfix:                            ## Execute lint fixes
+	$(run) test black /src/$(APP) /tests/$(APP)
+	$(run) test autoflake /src --recursive --in-place --remove-unused-variables --remove-all-unused-imports --quiet
+	$(run) test isort /src/$(APP) /tests/$(APP)
+
+
+lint:                               ## Execute lint checks
+	$(run) test autoflake /src --check --recursive --quiet
+	$(run) test isort --diff --check /src/$(APP) /tests/$(APP)

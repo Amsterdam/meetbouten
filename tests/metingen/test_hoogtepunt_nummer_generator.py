@@ -1,4 +1,5 @@
 import pytest
+
 from metingen.factories import HoogtepuntFactory
 from metingen.hoogtepunt_nummer_generator import HoogtepuntNummerGenerator, Kaartblad
 from referentie_tabellen.models import Type
@@ -16,7 +17,9 @@ class TestHoogtepuntNummerGenerator:
     def test_load_bladnummers_subset(self):
         generator = HoogtepuntNummerGenerator()
 
-        bladen = generator.load_bladnummers(filename="/tests/metingen/kaartbladen-test.csv")
+        bladen = generator.load_bladnummers(
+            filename="/tests/metingen/kaartbladen-test.csv"
+        )
 
         assert bladen == [
             Kaartblad(bladnr="101", xmin=117650, ymin=487000, xmax=118600, ymax=487750),
@@ -79,7 +82,15 @@ class TestHoogtepuntNummerGenerator:
         ],
     )
     def test_get_volgnr(self, start_nummer, expected):
-        for nr in ["93486121", "93486002", "93486015", "23786283", "83486012", "83486002", "83486048"]:
+        for nr in [
+            "93486121",
+            "93486002",
+            "93486015",
+            "23786283",
+            "83486012",
+            "83486002",
+            "83486048",
+        ]:
             HoogtepuntFactory(nummer=nr)
         generator = HoogtepuntNummerGenerator()
 
@@ -100,11 +111,14 @@ class TestHoogtepuntNummerGenerator:
         assert result == "80581001"
 
     def test_generate_multiple(self):
-        hoogtepunten = [HoogtepuntFactory(
-            geom="POINT(114700 487100)",
-            type=Type.objects.get(omschrijving="Deformatiebout"),
-            nummer=None
-        ) for i in range(10)]
+        hoogtepunten = [
+            HoogtepuntFactory(
+                geom="POINT(114700 487100)",
+                type=Type.objects.get(omschrijving="Deformatiebout"),
+                nummer=None,
+            )
+            for i in range(10)
+        ]
         generator = HoogtepuntNummerGenerator()
         generator.load_bladnummers()
 

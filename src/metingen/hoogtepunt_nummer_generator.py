@@ -14,13 +14,17 @@ class HoogtepuntNummerGenerator:
     def __init__(self):
         self.bladnummers = []
 
-    def load_bladnummers(self, filename: str = "/src/metingen/files/kaartbladen.csv") -> list[Kaartblad]:
+    def load_bladnummers(
+        self, filename: str = "/src/metingen/files/kaartbladen.csv"
+    ) -> list[Kaartblad]:
         if len(self.bladnummers) > 0:
             return self.bladnummers
         with open(filename, "r") as f:
             csvreader = csv.DictReader(f)
             for row in csvreader:
-                values = {k: str(v) if k == "bladnr" else int(v) for k, v in row.items()}
+                values = {
+                    k: str(v) if k == "bladnr" else int(v) for k, v in row.items()
+                }
                 self.bladnummers.append(Kaartblad(**values))
         return self.bladnummers
 

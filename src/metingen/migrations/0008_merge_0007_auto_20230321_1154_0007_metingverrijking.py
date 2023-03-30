@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('metingen', '0007_auto_20230321_1154'),
-        ('metingen', '0007_metingverrijking'),
+        ("metingen", "0007_auto_20230321_1154"),
+        ("metingen", "0007_metingverrijking"),
     ]
 
-    operations = [
-    ]
+    operations = []

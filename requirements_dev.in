@@ -18,3 +18,7 @@ pytest-factoryboy
 model-bakery
 ipython
 time-machine
+
+isort
+autoflake
+black

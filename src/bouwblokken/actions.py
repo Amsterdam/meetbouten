@@ -1,8 +1,8 @@
-from openpyxl import Workbook
 from datetime import datetime
 
 from django.contrib import admin
 from django.http import HttpResponse
+from openpyxl import Workbook
 
 from bouwblokken.models import Kringpunt
 from metingen.models import Hoogtepunt, MetingHerzien
@@ -27,8 +27,10 @@ class BouwblokActionsMixin:
         ws.append(field_names)
         [ws.append(row) for row in data]
 
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response["Content-Disposition"] = f"attachment; filename={filename}.xlsx"
         wb.save(response)
         return response
 
@@ -39,7 +41,9 @@ class BouwblokActionsMixin:
                 id__in=Kringpunt.objects.filter(bouwblok=bouwblok).values("hoogtepunt")
             ).order_by("nummer")
             for hoogtepunt in hoogtepunten:
-                metingen = MetingHerzien.objects.filter(hoogtepunt=hoogtepunt.id).order_by("inwindatum")
+                metingen = MetingHerzien.objects.filter(
+                    hoogtepunt=hoogtepunt.id
+                ).order_by("inwindatum")
                 start_meting = metingen.first()
                 if not start_meting:
                     continue
