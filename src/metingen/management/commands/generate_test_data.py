@@ -2,17 +2,29 @@ import logging
 
 from django.core.management.base import BaseCommand
 
+from bouwblokken.factories import (
+    BouwblokFactory,
+    ControlepuntFactory,
+    KringpuntFactory,
+    ReferentiepuntFactory,
+)
+from bouwblokken.models import Bouwblok, Controlepunt, Kringpunt, Referentiepunt
 from metingen.factories import (
     GrondslagpuntFactory,
+    HoogtepuntFactory,
+    MetingFactory,
+    MetingHerzFactory,
     MetingReferentiepuntFactory,
     MetRefPuntenHerzFactory,
-    MetingFactory,
-    HoogtepuntFactory,
-    MetingHerzFactory,
 )
-from bouwblokken.factories import ControlepuntFactory, ReferentiepuntFactory, KringpuntFactory, BouwblokFactory
-from metingen.models import Grondslagpunt, MetingReferentiepunt, MetRefPuntenHerz, Meting, Hoogtepunt, MetingHerzien
-from bouwblokken.models import Bouwblok, Controlepunt, Referentiepunt, Kringpunt
+from metingen.models import (
+    Grondslagpunt,
+    Hoogtepunt,
+    Meting,
+    MetingHerzien,
+    MetingReferentiepunt,
+    MetRefPuntenHerz,
+)
 
 log = logging.getLogger(__name__)
 

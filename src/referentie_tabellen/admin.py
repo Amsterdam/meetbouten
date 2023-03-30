@@ -13,7 +13,7 @@ class StatusAdmin(admin.ModelAdmin):
 
 @admin.register(Type)
 class StatusAdmin(admin.ModelAdmin):
-    list_display = ("omschrijving","soort")
+    list_display = ("omschrijving", "soort")
 
     def has_change_permission(self, request, obj=None):
         return False

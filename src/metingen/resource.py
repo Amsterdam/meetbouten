@@ -1,11 +1,10 @@
-from import_export.resources import ModelResource, Error
-from .models import MetingControle, Hoogtepunt, MetingVerrijking, Meting
-
-from import_export.fields import Field
-from import_export.widgets import ForeignKeyWidget
-
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import connection
+from import_export.fields import Field
+from import_export.resources import Error, ModelResource
+from import_export.widgets import ForeignKeyWidget
+
+from .models import Hoogtepunt, Meting, MetingControle, MetingVerrijking
 
 
 class SimpleError(Error):
@@ -33,7 +32,9 @@ class MetingControleResource(ModelResource):
 
     def before_import_row(self, row, row_number=None, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
-            error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
+            error = ObjectDoesNotExist(
+                f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
+            )
             raise error
 
         row["inwindatum"] = kwargs.get("inwindatum")
@@ -68,7 +69,9 @@ class MetingVerrijkingResource(ModelResource):
 
     def before_import_row(self, row, row_number=None, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
-            error = ObjectDoesNotExist(f"Provided hoogtepunt {row['hoogtepunt']} does not exist.")
+            error = ObjectDoesNotExist(
+                f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
+            )
             raise error
 
         _hoogtepunt = Hoogtepunt.objects.get(nummer=row["hoogtepunt"])
@@ -77,7 +80,9 @@ class MetingVerrijkingResource(ModelResource):
         row["y"] = _hoogtepunt.geom.y
 
         if Meting.objects.filter(hoogtepunt=_hoogtepunt.id).exists():
-            _last_meting = Meting.objects.filter(hoogtepunt=_hoogtepunt.id).latest("inwindatum")
+            _last_meting = Meting.objects.filter(hoogtepunt=_hoogtepunt.id).latest(
+                "inwindatum"
+            )
 
             row["hoogte"] = _last_meting.hoogte
             row["inwindatum"] = _last_meting.inwindatum

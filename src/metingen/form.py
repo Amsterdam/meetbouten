@@ -1,18 +1,22 @@
 from django import forms
 from django.contrib.gis.geos import Point
-from import_export.forms import ImportForm, ConfirmImportForm
+from import_export.forms import ConfirmImportForm, ImportForm
 
 from metingen.models import Hoogtepunt
-from referentie_tabellen.models import Metingtype, Bron, WijzenInwinning
+from referentie_tabellen.models import Bron, Metingtype, WijzenInwinning
 
 
 class HoogtepuntForm(forms.ModelForm):
-    x = forms.FloatField(widget=forms.NumberInput(attrs={"class": "form-control"}), label="X coördinaat")
-    y = forms.FloatField(widget=forms.NumberInput(attrs={"class": "form-control"}), label="Y coördinaat")
+    x = forms.FloatField(
+        widget=forms.NumberInput(attrs={"class": "form-control"}), label="X coördinaat"
+    )
+    y = forms.FloatField(
+        widget=forms.NumberInput(attrs={"class": "form-control"}), label="Y coördinaat"
+    )
 
     class Meta:
         model = Hoogtepunt
-        exclude = ['']
+        exclude = [""]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -22,7 +26,7 @@ class HoogtepuntForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        x, y = cleaned_data.pop('x', None), cleaned_data.pop('y', None)
+        x, y = cleaned_data.pop("x", None), cleaned_data.pop("y", None)
         if x and y:
             cleaned_data["geom"] = f"POINT({x} {y})"
         else:
@@ -44,13 +48,23 @@ class HoogtepuntForm(forms.ModelForm):
 
 class FormMixin(forms.Form):
     inwindatum = forms.DateTimeField(
-        widget=forms.DateInput(attrs={"type": "date", "placeholder": "yyyy-mm-dd (DOB)", "class": "form-control"}),
+        widget=forms.DateInput(
+            attrs={
+                "type": "date",
+                "placeholder": "yyyy-mm-dd (DOB)",
+                "class": "form-control",
+            }
+        ),
         label="Inwindatum",
         required=True,
     )
-    wijze_inwinning = forms.ModelChoiceField(queryset=WijzenInwinning.objects.all(), required=True)
+    wijze_inwinning = forms.ModelChoiceField(
+        queryset=WijzenInwinning.objects.all(), required=True
+    )
     bron = forms.ModelChoiceField(queryset=Bron.objects.all(), required=True)
-    metingtype = forms.ModelChoiceField(queryset=Metingtype.objects.all(), required=True)
+    metingtype = forms.ModelChoiceField(
+        queryset=Metingtype.objects.all(), required=True
+    )
 
 
 class CustomImportForm(FormMixin, ImportForm):

@@ -3,8 +3,8 @@ import logging
 from django.core.management.base import BaseCommand
 from django.db import connection
 
-from metingen.models import *
 from bouwblokken.models import *
+from metingen.models import *
 
 log = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ data_config = [
             "STA_ID",
             "ORDE",
         ],
-        "nullable_fields": ["VERVALDATUM", "WINDR"]
+        "nullable_fields": ["VERVALDATUM", "WINDR"],
     },
     {
         "model": Grondslagpunt,
@@ -52,24 +52,66 @@ data_config = [
             "OMSCHRIJVING",
             "Z",
         ],
-        "nullable_fields": ["VERVALDATUM"]
+        "nullable_fields": ["VERVALDATUM"],
     },
     {
         "model": MetingHerzien,
         "file": "GRS_metingen_herz.csv",
-        "fields": ["ID", "HOO_ID", "INWINDATUM", "WIJZE_INWINNING", "SIGMAZ", "BRO_ID", "HOOGTE", "MTY_ID"],
+        "fields": [
+            "ID",
+            "HOO_ID",
+            "INWINDATUM",
+            "WIJZE_INWINNING",
+            "SIGMAZ",
+            "BRO_ID",
+            "HOOGTE",
+            "MTY_ID",
+        ],
     },
     {
         "model": Meting,
         "file": "GRS_metingen.csv",
-        "fields": ["ID", "HOO_ID", "INWINDATUM", "WIJZE_INWINNING", "SIGMAZ", "BRO_ID", "HOOGTE", "MTY_ID"],
+        "fields": [
+            "ID",
+            "HOO_ID",
+            "INWINDATUM",
+            "WIJZE_INWINNING",
+            "SIGMAZ",
+            "BRO_ID",
+            "HOOGTE",
+            "MTY_ID",
+        ],
     },
-    {"model": Bouwblok, "file": "GRS_bouwblokken.csv", "fields": ["NUMMER", "AANSLUITPNT", "CONTROLEPNT", "OPMERKING"]},
-    {"model": Controlepunt, "file": "GRS_controlepunten.csv", "fields": ["BOU_NUMMER", "HOO_ID"]},
-    {"model": Referentiepunt, "file": "GRS_referentiepunten.csv", "fields": ["BOU_NUMMER", "HOO_ID"]},
-    {"model": MetingReferentiepunt, "file": "GRS_metingenreferentiepunten.csv", "fields": ["MET_ID", "HOO_ID"]},
-    {"model": MetRefPuntenHerz, "file": "GRS_met_ref_punten_herz.csv", "fields": ["MET_ID", "HOO_ID"]},
-    {"model": Kringpunt, "file": "GRS_kringpunten.csv", "fields": ["BOU_NUMMER", "VOLGORDE", "HOO_ID"]},
+    {
+        "model": Bouwblok,
+        "file": "GRS_bouwblokken.csv",
+        "fields": ["NUMMER", "AANSLUITPNT", "CONTROLEPNT", "OPMERKING"],
+    },
+    {
+        "model": Controlepunt,
+        "file": "GRS_controlepunten.csv",
+        "fields": ["BOU_NUMMER", "HOO_ID"],
+    },
+    {
+        "model": Referentiepunt,
+        "file": "GRS_referentiepunten.csv",
+        "fields": ["BOU_NUMMER", "HOO_ID"],
+    },
+    {
+        "model": MetingReferentiepunt,
+        "file": "GRS_metingenreferentiepunten.csv",
+        "fields": ["MET_ID", "HOO_ID"],
+    },
+    {
+        "model": MetRefPuntenHerz,
+        "file": "GRS_met_ref_punten_herz.csv",
+        "fields": ["MET_ID", "HOO_ID"],
+    },
+    {
+        "model": Kringpunt,
+        "file": "GRS_kringpunten.csv",
+        "fields": ["BOU_NUMMER", "VOLGORDE", "HOO_ID"],
+    },
 ]
 
 
@@ -85,7 +127,11 @@ class Command(BaseCommand):
         for dump in data_config:
             model = dump["model"]
             table_name = model._meta.db_table
-            force_null = f", FORCE_NULL({','.join(dump['nullable_fields'])})" if "nullable_fields" in dump else ""
+            force_null = (
+                f", FORCE_NULL({','.join(dump['nullable_fields'])})"
+                if "nullable_fields" in dump
+                else ""
+            )
             command = (
                 f"COPY {table_name}({','.join(dump['fields'])}) "
                 f"FROM '/csv_dump/{dump['file']}' "

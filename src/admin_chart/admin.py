@@ -21,7 +21,11 @@ class AdminChartMixin:
         if self.measurement_points:
             querysets = []
             for mp in self.measurement_points:
-                metingen = list(MetingHerzien.objects.filter(hoogtepunt=mp.hoogtepunt).order_by("inwindatum"))
+                metingen = list(
+                    MetingHerzien.objects.filter(hoogtepunt=mp.hoogtepunt).order_by(
+                        "inwindatum"
+                    )
+                )
                 metingen.append(mp)  # Add the measurement point itself
                 querysets.append(metingen)
             return querysets
@@ -50,9 +54,7 @@ class AdminChartMixin:
             response.context_data[
                 "adminchart_chartjs_config"
             ] = self.get_list_chart_config(chart_queryset)
-            print(response.context_data[
-                "adminchart_chartjs_config"
-            ])
+            print(response.context_data["adminchart_chartjs_config"])
         else:
             response.context_data["adminchart_queryset"] = None
             response.context_data["adminchart_chartjs_config"] = None
@@ -76,7 +78,10 @@ class AdminChartMixin:
                 datasets.append(
                     {
                         "label": label,
-                        "data": [{'x': meting.inwindatum, 'y': meting.hoogte - init_val} for meting in qs],
+                        "data": [
+                            {"x": meting.inwindatum, "y": meting.hoogte - init_val}
+                            for meting in qs
+                        ],
                         "color": "green",
                         "borderColor": "green",
                         "showLine": True,

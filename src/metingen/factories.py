@@ -1,21 +1,28 @@
-import string
 import datetime
-from random import random
+import string
 
 import factory
 from django.utils import timezone
 from factory import fuzzy
 from factory.django import DjangoModelFactory
 
-from referentie_tabellen.models import Bron, Type, Metingtype, Status, Merk, WijzenInwinning
+from referentie_tabellen.models import (
+    Bron,
+    Merk,
+    Metingtype,
+    Status,
+    Type,
+    WijzenInwinning,
+)
+
 from .models import (
-    Hoogtepunt,
     Grondslagpunt,
+    Hoogtepunt,
     Meting,
+    MetingControle,
     MetingHerzien,
     MetingReferentiepunt,
     MetRefPuntenHerz,
-    MetingControle,
 )
 
 
@@ -47,7 +54,10 @@ class GrondslagpuntFactory(DjangoModelFactory):
     type = factory.Iterator(Type.objects.all())
     rdnummer = fuzzy.FuzzyDecimal(low=25000000, high=26000000)
     orde = fuzzy.FuzzyInteger(low=1, high=3)
-    inwindatum = fuzzy.FuzzyDate(start_date=datetime.date(year=1950, month=1, day=1), end_date=timezone.now().date())
+    inwindatum = fuzzy.FuzzyDate(
+        start_date=datetime.date(year=1950, month=1, day=1),
+        end_date=timezone.now().date(),
+    )
     vervaldatum = fuzzy.FuzzyDate(start_date=timezone.now().date())
     bron = factory.Iterator(Bron.objects.all())
     wijze_inwinning = factory.Iterator(WijzenInwinning.objects.all())
@@ -64,7 +74,10 @@ class MetingFactory(DjangoModelFactory):
         model = Meting
 
     hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
-    inwindatum = fuzzy.FuzzyDate(start_date=datetime.date(year=1950, month=1, day=1), end_date=timezone.now().date())
+    inwindatum = fuzzy.FuzzyDate(
+        start_date=datetime.date(year=1950, month=1, day=1),
+        end_date=timezone.now().date(),
+    )
     wijze_inwinning = factory.Iterator(WijzenInwinning.objects.all())
     sigmaz = fuzzy.FuzzyDecimal(low=0, high=0.01, precision=4)
     bron = factory.Iterator(Bron.objects.all())
@@ -98,7 +111,10 @@ class MetingControleFactory(DjangoModelFactory):
         model = MetingControle
 
     hoogtepunt = factory.Iterator(Hoogtepunt.objects.all())
-    inwindatum = fuzzy.FuzzyDate(start_date=datetime.date(year=1950, month=1, day=1), end_date=timezone.now().date())
+    inwindatum = fuzzy.FuzzyDate(
+        start_date=datetime.date(year=1950, month=1, day=1),
+        end_date=timezone.now().date(),
+    )
     wijze_inwinning = factory.Iterator(WijzenInwinning.objects.all())
     sigmaz = fuzzy.FuzzyDecimal(low=0, high=0.01, precision=4)
     bron = factory.Iterator(Bron.objects.all())

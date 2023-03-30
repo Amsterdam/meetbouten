@@ -1,6 +1,11 @@
 import pytest
+
 from admin_chart.admin import AdminChartMixin
-from metingen.factories import HoogtepuntFactory, MetingControleFactory, MetingHerzFactory
+from metingen.factories import (
+    HoogtepuntFactory,
+    MetingControleFactory,
+    MetingHerzFactory,
+)
 
 
 @pytest.mark.django_db
@@ -34,7 +39,9 @@ class TestAdminChartMixin:
 
         assert len(datasets["datasets"]) == 1
         assert datasets["datasets"][0]["label"] == str(hp)
-        assert datasets["datasets"][0]["data"] == [{"x": meting.inwindatum, "y": meting.hoogte} for meting in queryset]
+        assert datasets["datasets"][0]["data"] == [
+            {"x": meting.inwindatum, "y": meting.hoogte} for meting in queryset
+        ]
 
     def test_get_list_chart_data_multiple(self):
         hp_1 = HoogtepuntFactory()
@@ -49,5 +56,6 @@ class TestAdminChartMixin:
         assert datasets["datasets"][1]["label"] == str(hp_2)
         init_val_1 = queryset_1[0].hoogte
         assert datasets["datasets"][0]["data"] == [
-            {"x": meting.inwindatum, "y": meting.hoogte - init_val_1} for meting in queryset_1
+            {"x": meting.inwindatum, "y": meting.hoogte - init_val_1}
+            for meting in queryset_1
         ]

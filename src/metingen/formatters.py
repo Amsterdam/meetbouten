@@ -6,11 +6,11 @@ Project specifiek gedefinieerde import_export formats voor het
 
 
 import re
+from io import StringIO
 from typing import NamedTuple
 
-from tablib import Dataset
 from import_export.formats.base_formats import TablibFormat
-from io import StringIO
+from tablib import Dataset
 
 
 class Meting(NamedTuple):
@@ -64,7 +64,13 @@ class BaseformatsClass:
 
         if format == "cor":
             hoogtepunt, x, y, z, *_, sigmaz = values
-            return Meting(hoogtepunt, x=None, y=None, hoogte=float(clean_z(z)), sigmaz=float(sigmaz))
+            return Meting(
+                hoogtepunt,
+                x=None,
+                y=None,
+                hoogte=float(clean_z(z)),
+                sigmaz=float(sigmaz),
+            )
 
         elif format == "tco":
             hoogtepunt, x, y, z, *_ = values
@@ -109,7 +115,6 @@ class TCOFormatClass(TablibFormat, BaseformatsClass):
         Create .tco with pre-defined-format from arg dataset
         """
         with StringIO() as tmp:
-
             # write header
             _header = dataset["header"][0]
             for h in _header:
@@ -119,7 +124,15 @@ class TCOFormatClass(TablibFormat, BaseformatsClass):
             # write data with specified spacing
             for meting in dataset:
                 _row = ""
-                for var in [0, 1, 2, 3, 5, 6, 7]:  # column "inwindatum" not in exportfile
+                for var in [
+                    0,
+                    1,
+                    2,
+                    3,
+                    5,
+                    6,
+                    7,
+                ]:  # column "inwindatum" not in exportfile
                     mvar = str(meting[var])
 
                     # add blanks to string

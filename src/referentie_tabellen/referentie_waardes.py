@@ -1,6 +1,5 @@
 from collections import namedtuple
 
-
 WijzeInwinning = namedtuple("WijzeInwinning", ["id", "omschrijving"])
 wijzen_inwinning = [
     WijzeInwinning(1, "Waterpassing"),
@@ -47,7 +46,11 @@ bronnen = [
 
 Merk = namedtuple("Merk", ["id", "omschrijving_verkort", "omschrijving"])
 merken = [
-    Merk("18", "Koperen bout met opschrift XXX", "Ronde koperen bout met Amsterdamse kruizen ( 3 Andreas kruizen)"),
+    Merk(
+        "18",
+        "Koperen bout met opschrift XXX",
+        "Ronde koperen bout met Amsterdamse kruizen ( 3 Andreas kruizen)",
+    ),
     Merk("0", "Ronde bout met opschrift NAP", "Ronde bout met opschrift NAP"),
     Merk(
         "1",
@@ -63,16 +66,36 @@ merken = [
         "Pijpbout",
         "Pijpbout met of zonder daarvoor geplaatste bronzen beschermingsplaat, hoogtepunt is midden gat",
     ),
-    Merk("7", "Bijzondere merktekens", "Bijzondere merktekens bijvoorbeeld zeskantige bout, stalen pen etc."),
-    Merk("+", "Grote kruisbout", "Grote kruisbout, vierkant bronzen kop met groeven, hoogtepunt is midden groef"),
+    Merk(
+        "7",
+        "Bijzondere merktekens",
+        "Bijzondere merktekens bijvoorbeeld zeskantige bout, stalen pen etc.",
+    ),
+    Merk(
+        "+",
+        "Grote kruisbout",
+        "Grote kruisbout, vierkant bronzen kop met groeven, hoogtepunt is midden groef",
+    ),
     Merk("13", "Kopbout", "Kopbout"),
-    Merk("14", "Inbusbout", "Inbusbout (cilinderschroef met binnenzeskant) in slaganker M6"),
+    Merk(
+        "14",
+        "Inbusbout",
+        "Inbusbout (cilinderschroef met binnenzeskant) in slaganker M6",
+    ),
     Merk("16", "Koperen bout", "Koperen bout"),
     Merk("-", "Peilsteen", "Peilsteen"),
     Merk("20", "Aankoppelpunt waterleiding", "Aankoppelpunt waterleiding"),
     Merk("99", "Onbekend", "Onbekend"),
-    Merk("10", "Verticaal koperen boutje", "Verticaal koperen boutje, meestal in kunstwerk"),
-    Merk("11", "Bovenkant stift in bout", "Bovenkant stift in vastleggingsbout, afhankelijk van hor. of vert. "),
+    Merk(
+        "10",
+        "Verticaal koperen boutje",
+        "Verticaal koperen boutje, meestal in kunstwerk",
+    ),
+    Merk(
+        "11",
+        "Bovenkant stift in bout",
+        "Bovenkant stift in vastleggingsbout, afhankelijk van hor. of vert. ",
+    ),
     Merk("12", "Sondeerstaaf", "Sondeerstaaf"),
     Merk("15", "Koperen hakkelbout", "Koperen hakkelbout"),
     Merk("17", "RVS-bout", "Veelal gebruikt door 'de waal'"),

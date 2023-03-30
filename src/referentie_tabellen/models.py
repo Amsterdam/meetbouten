@@ -51,7 +51,7 @@ class Merk(models.Model):
         verbose_name_plural = "Merken"
 
     id = models.CharField(max_length=2, primary_key=True)
-    omschrijving_verkort = models.CharField(max_length=30, db_column='omschr_verkort')
+    omschrijving_verkort = models.CharField(max_length=30, db_column="omschr_verkort")
     omschrijving = models.CharField(max_length=256)
 
     def __str__(self):
