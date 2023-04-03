@@ -14,6 +14,7 @@ class BouwblokActionsMixin:
         filename = f"report-{datetime.today().strftime('%Y-%m-%d')}.xlsx"
         field_names = [
             "Bouwblok nummer",
+            "Meting nummer",
             "Hoogtepunt nummer",
             "Inwindatum",
             "Hoogte",
@@ -53,6 +54,7 @@ class BouwblokActionsMixin:
                     data.append(
                         [
                             bouwblok.nummer,
+                            meting.id,
                             hoogtepunt.nummer,
                             meting.inwindatum,
                             round(meting.hoogte, 4),
