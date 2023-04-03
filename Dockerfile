@@ -21,9 +21,7 @@ COPY deploy /deploy
 
 WORKDIR /src
 COPY src .
-RUN mkdir media -p  \
-    && chmod 777 media \
-    && mkdir media/pg_dump -p \
+RUN mkdir media/pg_dump -p \
     && chmod 777 media/pg_dump
 
 ARG SECRET_KEY=not-used
