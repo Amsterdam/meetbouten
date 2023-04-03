@@ -11,13 +11,13 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     file_name = "meetbouten.dump"
+    file_path = f"/src/media/pg_dump/{file_name}"
 
     def handle(self, *args, **options):
         database = settings.DATABASES["default"]
-        success = self.start_dump(database)
-        if success:
-            self.upload_to_blob()
-            self.remove_dump()
+        self.start_dump(database)
+        self.upload_to_blob()
+        self.remove_dump()
 
     def start_dump(self, database: dict):
         command = (
@@ -25,21 +25,15 @@ class Command(BaseCommand):
             f'--dbname={database["NAME"]} '
             f'--username={database["USER"]} '
             f"--no-password "
-            f"--file={self.file_name}"
+            f"--file={self.file_path}"
         )
-        try:
-            proc = Popen(command, shell=True, env={"PGPASSWORD": database["PASSWORD"]})
-            proc.wait()
-            logger.info("dumping of the db was succesfull")
-            return True
-        except Exception as e:
-            logger.critical("Unable to pg_dump the database")
-            logger.exception(e)
-            return False
+        proc = Popen(command, shell=True, env={"PGPASSWORD": database["PASSWORD"]})
+        proc.wait()
+        logger.info("dumping of the db was succesfull")
 
-    def upload_to_blob(self) -> str:
+    def upload_to_blob(self):
         storage = get_storage_class()()
-        with open(self.file_name, "rb") as f:
+        with open(self.file_path, "rb") as f:
             storage.save(name=f"pg_dump/{self.file_name}", content=f)
         logger.info("PG dump uploaded to storage")
 
@@ -47,4 +41,4 @@ class Command(BaseCommand):
         """
         Removes the files locally when processing is done
         """
-        os.remove(self.file_name)
+        os.remove(self.file_path)
