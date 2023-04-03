@@ -10,6 +10,7 @@ x-app: &base-app
     - ./src:/src
     - ./tests:/tests
     - ./deploy:/deploy
+    - /src/media
   environment: &base-app-env
     SECRET_KEY: "insecure"
     DEBUG: "true"
@@ -56,6 +57,7 @@ services:
     build:
       context: .
       target: tests
+    image: ghcr.io/amsterdam/meetbouten:latest
     environment:
       <<: *base-app-env
       DJANGO_SETTINGS_MODULE: "main.settings"
