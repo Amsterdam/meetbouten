@@ -49,12 +49,12 @@ bash:                               ## Run the container and start bash
 	$(run) dev bash
 
 shell:                              ## Run shell_plus and print sql
-	$(manage) shell_plus --print-sql
+	$(manage) shell
 
 dev: migrate				        ## Run the development app (and run extra migrations first)
 	$(run) --service-ports dev
 
-test: lint                              ## Execute tests
+test:                               ## Execute tests
 	$(run) test pytest /tests -m 'not migration' $(ARGS)
 
 superuser:                          ## Create a new superuser
@@ -96,7 +96,6 @@ lintfix:                            ## Execute lint fixes
 	$(run) test black /src/$(APP) /tests/$(APP)
 	$(run) test autoflake /src --recursive --in-place --remove-unused-variables --remove-all-unused-imports --quiet
 	$(run) test isort /src/$(APP) /tests/$(APP)
-
 
 lint:                               ## Execute lint checks
 	$(run) test autoflake /src --check --recursive --quiet
