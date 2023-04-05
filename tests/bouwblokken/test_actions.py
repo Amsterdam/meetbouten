@@ -67,6 +67,7 @@ class TestBouwblokActionsMixin:
         assert data == [
             [
                 bouwblok.nummer,
+                meting.id,
                 hoogtepunt.nummer,
                 meting.inwindatum,
                 float(meting.hoogte),
@@ -81,14 +82,17 @@ class TestBouwblokActionsMixin:
         KringpuntFactory(bouwblok=bouwblok, hoogtepunt=hoogtepunt)
         dates = ["1900-01-01", "1900-01-02", "1900-01-03"]
         hoogtes = [2.0, 1.9, 1.5]
+        metingen = []
         for date, hoogte in zip(dates, hoogtes):
-            MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            meting = MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            metingen.append(meting)
 
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())
         assert data == [
             [
                 bouwblok.nummer,
+                metingen[0].id,
                 hoogtepunt.nummer,
                 datetime.date(year=1900, month=1, day=1),
                 2,
@@ -97,6 +101,7 @@ class TestBouwblokActionsMixin:
             ],
             [
                 bouwblok.nummer,
+                metingen[1].id,
                 hoogtepunt.nummer,
                 datetime.date(year=1900, month=1, day=2),
                 1.9,
@@ -105,6 +110,7 @@ class TestBouwblokActionsMixin:
             ],
             [
                 bouwblok.nummer,
+                metingen[2].id,
                 hoogtepunt.nummer,
                 datetime.date(year=1900, month=1, day=3),
                 1.5,
@@ -118,6 +124,7 @@ class TestBouwblokActionsMixin:
         bouwblok_nrs = ["A", "B", "C"]
         dates = ["1900-01-01", "1900-01-02", "1900-01-03"]
         hoogtes = [2.0, 1.9, 1.5]
+        metingen = []
         for hoo_nr, bou_nr, date, hoogte in zip(
             hoogtepunt_nrs, bouwblok_nrs, dates, hoogtes
         ):
@@ -126,14 +133,15 @@ class TestBouwblokActionsMixin:
                 nummer=bou_nr, controlepunt=hoogtepunt, aansluitpunt=hoogtepunt
             )
             KringpuntFactory(hoogtepunt=hoogtepunt, bouwblok=bouwblok)
-            MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            meting = MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            metingen.append(meting)
 
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())
         assert data == [
-            ["A", "0000", datetime.date(year=1900, month=1, day=1), 2, 0.0, 0.0],
-            ["B", "0001", datetime.date(year=1900, month=1, day=2), 1.9, 0.0, 0.0],
-            ["C", "0002", datetime.date(year=1900, month=1, day=3), 1.5, 0.0, 0.0],
+            ["A", metingen[0].id, "0000", datetime.date(year=1900, month=1, day=1), 2, 0.0, 0.0],
+            ["B", metingen[1].id, "0001", datetime.date(year=1900, month=1, day=2), 1.9, 0.0, 0.0],
+            ["C", metingen[2].id, "0002", datetime.date(year=1900, month=1, day=3), 1.5, 0.0, 0.0],
         ]
 
     def test_collect_data_complex_case(self):
@@ -145,14 +153,14 @@ class TestBouwblokActionsMixin:
         for hp in hoogtepunten:
             KringpuntFactory(hoogtepunt=hp, bouwblok=bouwblok)
 
-        MetingHerzFactory(inwindatum="1900-01-03", hoogte=2, hoogtepunt=hoogtepunten[2])
-        MetingHerzFactory(inwindatum="1900-01-02", hoogte=3, hoogtepunt=hoogtepunten[2])
-        MetingHerzFactory(
+        meting1 = MetingHerzFactory(inwindatum="1900-01-03", hoogte=2, hoogtepunt=hoogtepunten[2])
+        meting2 = MetingHerzFactory(inwindatum="1900-01-02", hoogte=3, hoogtepunt=hoogtepunten[2])
+        meting3 = MetingHerzFactory(
             inwindatum="1900-01-01", hoogte=3.1, hoogtepunt=hoogtepunten[2]
         )
-        MetingHerzFactory(inwindatum="1900-01-15", hoogte=5, hoogtepunt=hoogtepunten[0])
-        MetingHerzFactory(inwindatum="1900-01-15", hoogte=3, hoogtepunt=hoogtepunten[1])
-        MetingHerzFactory(
+        meting4 = MetingHerzFactory(inwindatum="1900-01-15", hoogte=5, hoogtepunt=hoogtepunten[0])
+        meting5 = MetingHerzFactory(inwindatum="1900-01-15", hoogte=3, hoogtepunt=hoogtepunten[1])
+        meting6 = MetingHerzFactory(
             inwindatum="1900-01-16", hoogte=2.5, hoogtepunt=hoogtepunten[1]
         )
 
@@ -161,6 +169,7 @@ class TestBouwblokActionsMixin:
         assert data == [
             [
                 bouwblok.nummer,
+                meting4.id,
                 hoogtepunten[0].nummer,
                 datetime.date(year=1900, month=1, day=15),
                 5.0,
@@ -169,6 +178,7 @@ class TestBouwblokActionsMixin:
             ],
             [
                 bouwblok.nummer,
+                meting5.id,
                 hoogtepunten[1].nummer,
                 datetime.date(year=1900, month=1, day=15),
                 3.0,
@@ -177,6 +187,7 @@ class TestBouwblokActionsMixin:
             ],
             [
                 bouwblok.nummer,
+                meting6.id,
                 hoogtepunten[1].nummer,
                 datetime.date(year=1900, month=1, day=16),
                 2.5,
@@ -185,6 +196,7 @@ class TestBouwblokActionsMixin:
             ],
             [
                 bouwblok.nummer,
+                meting3.id,
                 hoogtepunten[2].nummer,
                 datetime.date(year=1900, month=1, day=1),
                 3.1,
@@ -193,6 +205,7 @@ class TestBouwblokActionsMixin:
             ],
             [
                 bouwblok.nummer,
+                meting2.id,
                 hoogtepunten[2].nummer,
                 datetime.date(year=1900, month=1, day=2),
                 3.0,
@@ -201,6 +214,7 @@ class TestBouwblokActionsMixin:
             ],
             [
                 bouwblok.nummer,
+                meting1.id,
                 hoogtepunten[2].nummer,
                 datetime.date(year=1900, month=1, day=3),
                 2.0,
