@@ -84,12 +84,16 @@ class GrondslagpuntAdmin(admin.ModelAdmin):
     )
     list_filter = ("inwindatum", "vervaldatum")
     search_fields = ("nummer", "type_nummer", "omschrijving")
-    # readonly_fields = ('picture_tag',)
+
+    def has_add_permission(self, request):
+        # Remove add button
+        return False
 
 
 @admin.register(MetingHerzien)
 class MetingHerzienAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         "hoogtepunt",
         "inwindatum",
         "wijze_inwinning",
@@ -98,6 +102,9 @@ class MetingHerzienAdmin(admin.ModelAdmin):
         "hoogte",
         "metingtype",
     )
+    search_fields = ("hoogtepunt__nummer",)
+    ordering = ("-inwindatum",)
+    list_filter = ("inwindatum", "wijze_inwinning", "metingtype")
 
 
 @admin.register(MetingControle)
@@ -118,6 +125,10 @@ class MetingControleAdmin(
     resource_class = MetingControleResource
     import_form_class = CustomImportForm
     confirm_form_class = CustomConfirmImportForm
+
+    def has_add_permission(self, request):
+        # Remove add button
+        return False
 
     def get_import_formats(self):
         return [CORFormatClass]
@@ -148,6 +159,9 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
         "hoogtepunt",
         "meting",
     )
+    search_fields = ("hoogtepunt__nummer","meting__id")
+    list_filter = ("meting__inwindatum",)
+    ordering = ("-meting__inwindatum",)
 
 
 @admin.register(MetingVerrijking)
@@ -170,3 +184,7 @@ class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
 
     def get_export_formats(self):
         return [TCOFormatClass]
+
+    def has_add_permission(self, request):
+        # Remove add button
+        return False
