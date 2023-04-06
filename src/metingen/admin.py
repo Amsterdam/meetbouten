@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.contrib import admin
 from import_export.admin import ImportExportMixin, ImportMixin
 from import_export.tmp_storages import CacheStorage
@@ -14,6 +15,7 @@ from .resource import MetingControleResource, MetingVerrijkingResource
 
 @admin.register(Hoogtepunt)
 class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
+    admin_priority = 1
     tmp_storage_class = CacheStorage
     form = HoogtepuntForm
     modifiable = False  # Make the leaflet map read-only
@@ -70,47 +72,38 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     )
 
 
-@admin.register(Grondslagpunt)
-class GrondslagpuntAdmin(admin.ModelAdmin):
+@admin.register(MetingVerrijking)
+class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
+    admin_priority = 2
     list_display = (
-        "id",
+        "hoogtepunt",
+        "x",
+        "y",
+        "hoogte",
         "inwindatum",
-        "vervaldatum",
-        "sigmax",
-        "sigmay",
-        "sigmaz",
-        "omschrijving",
-        # "picture_tag",
+        "c1",
+        "c2",
+        "c3",
     )
-    list_filter = ("inwindatum", "vervaldatum")
-    search_fields = ("nummer", "type_nummer", "omschrijving")
+    ordering = ("hoogtepunt",)
+    resource_class = MetingVerrijkingResource
+
+    def get_import_formats(self):
+        return [TCOFormatClass]
+
+    def get_export_formats(self):
+        return [TCOFormatClass]
 
     def has_add_permission(self, request):
         # Remove add button
         return False
 
 
-@admin.register(MetingHerzien)
-class MetingHerzienAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "hoogtepunt",
-        "inwindatum",
-        "wijze_inwinning",
-        "sigmaz",
-        "bron",
-        "hoogte",
-        "metingtype",
-    )
-    search_fields = ("hoogtepunt__nummer",)
-    ordering = ("-inwindatum",)
-    list_filter = ("inwindatum", "wijze_inwinning", "metingtype")
-
-
 @admin.register(MetingControle)
 class MetingControleAdmin(
     AdminChartMixin, ImportMixin, ControleActionsMixin, admin.ModelAdmin
 ):
+    admin_priority = 3
     list_display = (
         "hoogtepunt",
         "inwindatum",
@@ -153,8 +146,27 @@ class MetingControleAdmin(
         return {}
 
 
+@admin.register(MetingHerzien)
+class MetingHerzienAdmin(admin.ModelAdmin):
+    admin_priority = 4
+    list_display = (
+        "id",
+        "hoogtepunt",
+        "inwindatum",
+        "wijze_inwinning",
+        "sigmaz",
+        "bron",
+        "hoogte",
+        "metingtype",
+    )
+    search_fields = ("hoogtepunt__nummer",)
+    ordering = ("-inwindatum",)
+    list_filter = ("inwindatum", "wijze_inwinning", "metingtype")
+
+
 @admin.register(MetRefPuntenHerz)
 class MetingReferentiepuntAdmin(admin.ModelAdmin):
+    admin_priority = 5
     list_display = (
         "hoogtepunt",
         "meting",
@@ -164,27 +176,20 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
     ordering = ("-meting__inwindatum",)
 
 
-@admin.register(MetingVerrijking)
-class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
-    list_display = (
-        "hoogtepunt",
-        "x",
-        "y",
-        "hoogte",
-        "inwindatum",
-        "c1",
-        "c2",
-        "c3",
-    )
-    ordering = ("hoogtepunt",)
-    resource_class = MetingVerrijkingResource
+def get_app_list(self, request):
+    app_dict = self._build_app_dict(request)
+    from django.contrib.admin.sites import site
+    for app_name in app_dict.keys():
+        app = app_dict[app_name]
+        model_priority = {
+            model['object_name']: getattr(
+                site._registry[apps.get_model(app_name, model['object_name'])],
+                'admin_priority',
+                20
+            )
+            for model in app['models']
+        }
+        app['models'].sort(key=lambda x: model_priority[x['object_name']])
+        yield app
 
-    def get_import_formats(self):
-        return [TCOFormatClass]
-
-    def get_export_formats(self):
-        return [TCOFormatClass]
-
-    def has_add_permission(self, request):
-        # Remove add button
-        return False
+admin.AdminSite.get_app_list = get_app_list
