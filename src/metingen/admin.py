@@ -186,7 +186,7 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
         "hoogtepunt",
         "meting",
     )
-    search_fields = ("hoogtepunt__nummer","meting__id")
+    search_fields = ("hoogtepunt__nummer", "meting__id")
     list_filter = ("meting__inwindatum",)
     ordering = ("-meting__inwindatum",)
 
@@ -194,17 +194,19 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
 def get_app_list(self, request):
     app_dict = self._build_app_dict(request)
     from django.contrib.admin.sites import site
+
     for app_name in app_dict.keys():
         app = app_dict[app_name]
         model_priority = {
-            model['object_name']: getattr(
-                site._registry[apps.get_model(app_name, model['object_name'])],
-                'admin_priority',
-                20
+            model["object_name"]: getattr(
+                site._registry[apps.get_model(app_name, model["object_name"])],
+                "admin_priority",
+                20,
             )
-            for model in app['models']
+            for model in app["models"]
         }
-        app['models'].sort(key=lambda x: model_priority[x['object_name']])
+        app["models"].sort(key=lambda x: model_priority[x["object_name"]])
         yield app
+
 
 admin.AdminSite.get_app_list = get_app_list

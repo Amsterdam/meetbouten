@@ -37,7 +37,10 @@ class TestBouwblokActionsMixin:
         response = admin.get_report(None, Bouwblok.objects.all())
 
         assert response.status_code == 200
-        assert response.headers["Content-Type"] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        assert (
+            response.headers["Content-Type"]
+            == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
         assert response.content.startswith(b"PK\x03")
 
     def test_collect_data_empty(self):
@@ -82,7 +85,9 @@ class TestBouwblokActionsMixin:
         hoogtes = [2.0, 1.9, 1.5]
         metingen = []
         for date, hoogte in zip(dates, hoogtes):
-            meting = MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            meting = MetingHerzFactory(
+                inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt
+            )
             metingen.append(meting)
 
         admin = BouwblokAdmin(Bouwblok, None)
@@ -123,11 +128,17 @@ class TestBouwblokActionsMixin:
         dates = ["1900-01-01", "1900-01-02", "1900-01-03"]
         hoogtes = [2.0, 1.9, 1.5]
         metingen = []
-        for hoo_nr, bou_nr, date, hoogte in zip(hoogtepunt_nrs, bouwblok_nrs, dates, hoogtes):
+        for hoo_nr, bou_nr, date, hoogte in zip(
+            hoogtepunt_nrs, bouwblok_nrs, dates, hoogtes
+        ):
             hoogtepunt = HoogtepuntFactory(nummer=hoo_nr)
-            bouwblok = BouwblokFactory(nummer=bou_nr, controlepunt=hoogtepunt, aansluitpunt=hoogtepunt)
+            bouwblok = BouwblokFactory(
+                nummer=bou_nr, controlepunt=hoogtepunt, aansluitpunt=hoogtepunt
+            )
             KringpuntFactory(hoogtepunt=hoogtepunt, bouwblok=bouwblok)
-            meting = MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            meting = MetingHerzFactory(
+                inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt
+            )
             metingen.append(meting)
 
         admin = BouwblokAdmin(Bouwblok, None)
@@ -171,12 +182,24 @@ class TestBouwblokActionsMixin:
         for hp in hoogtepunten:
             KringpuntFactory(hoogtepunt=hp, bouwblok=bouwblok)
 
-        meting1 = MetingHerzFactory(inwindatum="1900-01-03", hoogte=2, hoogtepunt=hoogtepunten[2])
-        meting2 = MetingHerzFactory(inwindatum="1900-01-02", hoogte=3, hoogtepunt=hoogtepunten[2])
-        meting3 = MetingHerzFactory(inwindatum="1900-01-01", hoogte=3.1, hoogtepunt=hoogtepunten[2])
-        meting4 = MetingHerzFactory(inwindatum="1900-01-15", hoogte=5, hoogtepunt=hoogtepunten[0])
-        meting5 = MetingHerzFactory(inwindatum="1900-01-15", hoogte=3, hoogtepunt=hoogtepunten[1])
-        meting6 = MetingHerzFactory(inwindatum="1900-01-16", hoogte=2.5, hoogtepunt=hoogtepunten[1])
+        meting1 = MetingHerzFactory(
+            inwindatum="1900-01-03", hoogte=2, hoogtepunt=hoogtepunten[2]
+        )
+        meting2 = MetingHerzFactory(
+            inwindatum="1900-01-02", hoogte=3, hoogtepunt=hoogtepunten[2]
+        )
+        meting3 = MetingHerzFactory(
+            inwindatum="1900-01-01", hoogte=3.1, hoogtepunt=hoogtepunten[2]
+        )
+        meting4 = MetingHerzFactory(
+            inwindatum="1900-01-15", hoogte=5, hoogtepunt=hoogtepunten[0]
+        )
+        meting5 = MetingHerzFactory(
+            inwindatum="1900-01-15", hoogte=3, hoogtepunt=hoogtepunten[1]
+        )
+        meting6 = MetingHerzFactory(
+            inwindatum="1900-01-16", hoogte=2.5, hoogtepunt=hoogtepunten[1]
+        )
 
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())

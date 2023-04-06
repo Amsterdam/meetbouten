@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('metingen', '0008_merge_0007_auto_20230321_1154_0007_metingverrijking'),
+        ("metingen", "0008_merge_0007_auto_20230321_1154_0007_metingverrijking"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='metingverrijking',
-            name='file_name',
-            field=models.CharField(default='file.tco', max_length=60),
+            model_name="metingverrijking",
+            name="file_name",
+            field=models.CharField(default="file.tco", max_length=60),
             preserve_default=False,
         ),
     ]
