@@ -235,6 +235,7 @@ class MetingVerrijking(models.Model):
     c2 = models.DecimalField(max_digits=6, decimal_places=4, default=1.0000)
     c3 = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000)
     header = models.CharField(max_length=60)
+    file_name = models.CharField(max_length=60)
 
     def __str__(self):
         return f"{self.hoogtepunt}"

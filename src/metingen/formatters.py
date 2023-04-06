@@ -124,15 +124,7 @@ class TCOFormatClass(TablibFormat, BaseformatsClass):
             # write data with specified spacing
             for meting in dataset:
                 _row = ""
-                for var in [
-                    0,
-                    1,
-                    2,
-                    3,
-                    5,
-                    6,
-                    7,
-                ]:  # column "inwindatum" not in exportfile
+                for var in range(8):  # column "inwindatum" not in exportfile
                     mvar = str(meting[var])
 
                     # add blanks to string

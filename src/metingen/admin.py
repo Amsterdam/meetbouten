@@ -98,6 +98,21 @@ class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
         # Remove add button
         return False
 
+    def get_export_filename(self, request, queryset, file_format):
+        file_name = MetingVerrijking.objects.first().file_name
+        MetingVerrijking.objects.all().delete()
+        return file_name
+
+    def get_import_data_kwargs(self, request, *args, **kwargs):
+        """
+        Prepare kwargs for import_data.
+        """
+        form = kwargs.get("form")
+        if form:
+            kwargs.pop("form")
+            return form.cleaned_data
+        return {}
+
 
 @admin.register(MetingControle)
 class MetingControleAdmin(

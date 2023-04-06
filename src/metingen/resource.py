@@ -78,6 +78,7 @@ class MetingVerrijkingResource(ModelResource):
 
         row["x"] = _hoogtepunt.geom.x
         row["y"] = _hoogtepunt.geom.y
+        row["file_name"] = kwargs["import_file"].name
 
         if MetingHerzien.objects.filter(hoogtepunt=_hoogtepunt.id).exists():
             _last_meting = MetingHerzien.objects.filter(hoogtepunt=_hoogtepunt.id).latest(
