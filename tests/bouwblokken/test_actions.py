@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 
 import pytest
 
@@ -70,7 +71,7 @@ class TestBouwblokActionsMixin:
                 meting.id,
                 hoogtepunt.nummer,
                 meting.inwindatum,
-                float(meting.hoogte),
+                meting.hoogte,
                 0.0,
                 0.0,
             ]
@@ -84,7 +85,9 @@ class TestBouwblokActionsMixin:
         hoogtes = [2.0, 1.9, 1.5]
         metingen = []
         for date, hoogte in zip(dates, hoogtes):
-            meting = MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            meting = MetingHerzFactory(
+                inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt
+            )
             metingen.append(meting)
 
         admin = BouwblokAdmin(Bouwblok, None)
@@ -95,27 +98,27 @@ class TestBouwblokActionsMixin:
                 metingen[0].id,
                 hoogtepunt.nummer,
                 datetime.date(year=1900, month=1, day=1),
-                2,
-                0.0,
-                0.0,
+                Decimal("2.0000"),
+                Decimal("0.0000"),
+                Decimal("0.0000"),
             ],
             [
                 bouwblok.nummer,
                 metingen[1].id,
                 hoogtepunt.nummer,
                 datetime.date(year=1900, month=1, day=2),
-                1.9,
-                -0.1,
-                -0.1,
+                Decimal("1.9000"),
+                Decimal("-0.1000"),
+                Decimal("-0.1000"),
             ],
             [
                 bouwblok.nummer,
                 metingen[2].id,
                 hoogtepunt.nummer,
                 datetime.date(year=1900, month=1, day=3),
-                1.5,
-                -0.4,
-                -0.5,
+                Decimal("1.5000"),
+                Decimal("-0.4000"),
+                Decimal("-0.5000"),
             ],
         ]
 
@@ -133,15 +136,41 @@ class TestBouwblokActionsMixin:
                 nummer=bou_nr, controlepunt=hoogtepunt, aansluitpunt=hoogtepunt
             )
             KringpuntFactory(hoogtepunt=hoogtepunt, bouwblok=bouwblok)
-            meting = MetingHerzFactory(inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt)
+            meting = MetingHerzFactory(
+                inwindatum=date, hoogte=hoogte, hoogtepunt=hoogtepunt
+            )
             metingen.append(meting)
 
         admin = BouwblokAdmin(Bouwblok, None)
         data = admin.collect_data(Bouwblok.objects.all())
         assert data == [
-            ["A", metingen[0].id, "0000", datetime.date(year=1900, month=1, day=1), 2, 0.0, 0.0],
-            ["B", metingen[1].id, "0001", datetime.date(year=1900, month=1, day=2), 1.9, 0.0, 0.0],
-            ["C", metingen[2].id, "0002", datetime.date(year=1900, month=1, day=3), 1.5, 0.0, 0.0],
+            [
+                "A",
+                metingen[0].id,
+                "0000",
+                datetime.date(year=1900, month=1, day=1),
+                Decimal("2.0000"),
+                Decimal("0.0000"),
+                Decimal("0.0000"),
+            ],
+            [
+                "B",
+                metingen[1].id,
+                "0001",
+                datetime.date(year=1900, month=1, day=2),
+                Decimal("1.9000"),
+                Decimal("0.0000"),
+                Decimal("0.0000"),
+            ],
+            [
+                "C",
+                metingen[2].id,
+                "0002",
+                datetime.date(year=1900, month=1, day=3),
+                Decimal("1.5000"),
+                Decimal("0.0000"),
+                Decimal("0.0000"),
+            ],
         ]
 
     def test_collect_data_complex_case(self):
@@ -153,13 +182,21 @@ class TestBouwblokActionsMixin:
         for hp in hoogtepunten:
             KringpuntFactory(hoogtepunt=hp, bouwblok=bouwblok)
 
-        meting1 = MetingHerzFactory(inwindatum="1900-01-03", hoogte=2, hoogtepunt=hoogtepunten[2])
-        meting2 = MetingHerzFactory(inwindatum="1900-01-02", hoogte=3, hoogtepunt=hoogtepunten[2])
+        meting1 = MetingHerzFactory(
+            inwindatum="1900-01-03", hoogte=2, hoogtepunt=hoogtepunten[2]
+        )
+        meting2 = MetingHerzFactory(
+            inwindatum="1900-01-02", hoogte=3, hoogtepunt=hoogtepunten[2]
+        )
         meting3 = MetingHerzFactory(
             inwindatum="1900-01-01", hoogte=3.1, hoogtepunt=hoogtepunten[2]
         )
-        meting4 = MetingHerzFactory(inwindatum="1900-01-15", hoogte=5, hoogtepunt=hoogtepunten[0])
-        meting5 = MetingHerzFactory(inwindatum="1900-01-15", hoogte=3, hoogtepunt=hoogtepunten[1])
+        meting4 = MetingHerzFactory(
+            inwindatum="1900-01-15", hoogte=5, hoogtepunt=hoogtepunten[0]
+        )
+        meting5 = MetingHerzFactory(
+            inwindatum="1900-01-15", hoogte=3, hoogtepunt=hoogtepunten[1]
+        )
         meting6 = MetingHerzFactory(
             inwindatum="1900-01-16", hoogte=2.5, hoogtepunt=hoogtepunten[1]
         )
@@ -172,54 +209,54 @@ class TestBouwblokActionsMixin:
                 meting4.id,
                 hoogtepunten[0].nummer,
                 datetime.date(year=1900, month=1, day=15),
-                5.0,
-                0.0,
-                0.0,
+                Decimal("5.0000"),
+                Decimal("0.0000"),
+                Decimal("0.0000"),
             ],
             [
                 bouwblok.nummer,
                 meting5.id,
                 hoogtepunten[1].nummer,
                 datetime.date(year=1900, month=1, day=15),
-                3.0,
-                0.0,
-                0.0,
+                Decimal("3.0000"),
+                Decimal("0.0000"),
+                Decimal("0.0000"),
             ],
             [
                 bouwblok.nummer,
                 meting6.id,
                 hoogtepunten[1].nummer,
                 datetime.date(year=1900, month=1, day=16),
-                2.5,
-                -0.5,
-                -0.5,
+                Decimal("2.5000"),
+                Decimal("-0.5000"),
+                Decimal("-0.5000"),
             ],
             [
                 bouwblok.nummer,
                 meting3.id,
                 hoogtepunten[2].nummer,
                 datetime.date(year=1900, month=1, day=1),
-                3.1,
-                0.0,
-                0.0,
+                Decimal("3.1000"),
+                Decimal("0.0000"),
+                Decimal("0.0000"),
             ],
             [
                 bouwblok.nummer,
                 meting2.id,
                 hoogtepunten[2].nummer,
                 datetime.date(year=1900, month=1, day=2),
-                3.0,
-                -0.1,
-                -0.1,
+                Decimal("3.0000"),
+                Decimal("-0.1000"),
+                Decimal("-0.1000"),
             ],
             [
                 bouwblok.nummer,
                 meting1.id,
                 hoogtepunten[2].nummer,
                 datetime.date(year=1900, month=1, day=3),
-                2.0,
-                -1,
-                -1.1,
+                Decimal("2.0000"),
+                Decimal("-1.0000"),
+                Decimal("-1.1000"),
             ],
         ]
 

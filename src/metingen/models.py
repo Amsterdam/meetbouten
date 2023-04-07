@@ -125,7 +125,7 @@ class Meting(models.Model):
     )
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
-    hoogte = models.FloatField()
+    hoogte = models.DecimalField(max_digits=6, decimal_places=4)
     metingtype = models.ForeignKey(
         Metingtype, on_delete=models.CASCADE, db_column="mty_id"
     )
@@ -155,7 +155,7 @@ class MetingHerzien(models.Model):
     )
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
     bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
-    hoogte = models.FloatField()
+    hoogte = models.DecimalField(max_digits=6, decimal_places=4)
     metingtype = models.ForeignKey(
         Metingtype, on_delete=models.CASCADE, db_column="mty_id"
     )
@@ -201,7 +201,7 @@ class MetingControle(models.Model):
     )
     inwindatum = models.DateField()
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
-    hoogte = models.FloatField()
+    hoogte = models.DecimalField(max_digits=6, decimal_places=4)
     wijze_inwinning = models.ForeignKey(
         WijzenInwinning,
         on_delete=models.CASCADE,
@@ -229,12 +229,13 @@ class MetingVerrijking(models.Model):
     )
     x = models.DecimalField(max_digits=10, decimal_places=4)
     y = models.DecimalField(max_digits=10, decimal_places=4)
-    hoogte = models.FloatField(null=True, blank=True)
+    hoogte = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True)
     inwindatum = models.DateField(null=True, blank=True)
     c1 = models.DecimalField(max_digits=6, decimal_places=4, default=1.0000)
     c2 = models.DecimalField(max_digits=6, decimal_places=4, default=1.0000)
     c3 = models.DecimalField(max_digits=6, decimal_places=4, default=0.0000)
     header = models.CharField(max_length=60)
+    file_name = models.CharField(max_length=60)
 
     def __str__(self):
         return f"{self.hoogtepunt}"

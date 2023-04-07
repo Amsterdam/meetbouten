@@ -4,7 +4,7 @@ from import_export.fields import Field
 from import_export.resources import Error, ModelResource
 from import_export.widgets import ForeignKeyWidget
 
-from .models import Hoogtepunt, Meting, MetingControle, MetingVerrijking
+from .models import Hoogtepunt, MetingControle, MetingHerzien, MetingVerrijking
 
 
 class SimpleError(Error):
@@ -78,11 +78,12 @@ class MetingVerrijkingResource(ModelResource):
 
         row["x"] = _hoogtepunt.geom.x
         row["y"] = _hoogtepunt.geom.y
+        row["file_name"] = kwargs["import_file"].name
 
-        if Meting.objects.filter(hoogtepunt=_hoogtepunt.id).exists():
-            _last_meting = Meting.objects.filter(hoogtepunt=_hoogtepunt.id).latest(
-                "inwindatum"
-            )
+        if MetingHerzien.objects.filter(hoogtepunt=_hoogtepunt.id).exists():
+            _last_meting = MetingHerzien.objects.filter(
+                hoogtepunt=_hoogtepunt.id
+            ).latest("inwindatum")
 
             row["hoogte"] = _last_meting.hoogte
             row["inwindatum"] = _last_meting.inwindatum
