@@ -6,9 +6,9 @@
 #
 asgiref==3.6.0
     # via django
-azure-core==1.26.3
+azure-core==1.26.4
     # via azure-storage-blob
-azure-storage-blob==12.15.0
+azure-storage-blob==12.16.0
     # via
     #   -r requirements.in
     #   django-storages
@@ -26,7 +26,7 @@ coreschema==0.0.4
     # via
     #   coreapi
     #   drf-yasg
-cryptography==40.0.1
+cryptography==40.0.2
     # via azure-storage-blob
 defusedxml==0.7.1
     # via
@@ -48,13 +48,13 @@ django==3.2.18
     #   drf-yasg
 django-datetime-utc==1.0.4
     # via -r requirements.in
-django-debug-toolbar==3.8.1
+django-debug-toolbar==4.0.0
     # via -r requirements.in
 django-extensions==3.2.1
     # via -r requirements.in
 django-filter==23.1
     # via -r requirements.in
-django-import-export==3.1.0
+django-import-export==3.2.0
     # via -r requirements.in
 django-leaflet==0.28.3
     # via -r requirements.in
@@ -102,11 +102,11 @@ odfpy==1.4.1
     # via tablib
 openpyxl==3.1.2
     # via tablib
-packaging==23.0
+packaging==23.1
     # via drf-yasg
-pillow==9.4.0
+pillow==9.5.0
     # via -r requirements.in
-psycopg2-binary==2.9.5
+psycopg2-binary==2.9.6
     # via -r requirements.in
 pycparser==2.21
     # via cffi
@@ -127,9 +127,7 @@ requests==2.28.2
     #   coreapi
 ruamel-yaml==0.17.21
     # via drf-yasg
-sentry-sdk==1.18.0
-    # via -r requirements.in
-setuptools==67.6.1
+sentry-sdk==1.19.1
     # via -r requirements.in
 six==1.16.0
     # via
@@ -161,3 +159,7 @@ xlrd==2.0.1
     # via tablib
 xlwt==1.3.0
     # via tablib
+
+# The following packages are considered to be unsafe in a requirements file:
+setuptools==67.6.1
+    # via -r requirements.in
