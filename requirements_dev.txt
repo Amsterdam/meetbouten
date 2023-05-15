@@ -32,7 +32,7 @@ brotli==1.0.9
     # via geventhttpclient
 build==0.10.0
     # via pip-tools
-certifi==2022.12.7
+certifi==2023.5.7
     # via
     #   -r ./requirements.txt
     #   geventhttpclient
@@ -79,7 +79,7 @@ diff-match-patch==20230430
     # via
     #   -r ./requirements.txt
     #   django-import-export
-django==4.1.8
+django==4.1.9
     # via
     #   -r ./requirements.txt
     #   django-datetime-utc
@@ -142,7 +142,7 @@ factory-boy==3.2.1
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==18.6.1
+faker==18.7.0
     # via factory-boy
 flask==2.3.2
     # via
@@ -172,7 +172,7 @@ inflection==0.5.1
     #   pytest-factoryboy
 iniconfig==2.0.0
     # via pytest
-ipython==8.13.1
+ipython==8.13.2
     # via -r requirements_dev.in
 isodate==0.6.1
     # via
@@ -239,7 +239,7 @@ pillow==9.5.0
     # via -r ./requirements.txt
 pip-tools==6.13.0
     # via -r requirements_dev.in
-platformdirs==3.5.0
+platformdirs==3.5.1
     # via black
 pluggy==1.0.0
     # via pytest
@@ -292,7 +292,7 @@ pyyaml==6.0
     #   tablib
 pyzmq==25.0.2
     # via locust
-requests==2.29.0
+requests==2.30.0
     # via
     #   -r ./requirements.txt
     #   azure-core
@@ -300,11 +300,15 @@ requests==2.29.0
     #   locust
 roundrobin==0.0.4
     # via locust
-ruamel-yaml==0.17.22
+ruamel-yaml==0.17.26
     # via
     #   -r ./requirements.txt
     #   drf-yasg
-sentry-sdk==1.21.1
+ruamel-yaml-clib==0.2.7
+    # via
+    #   -r ./requirements.txt
+    #   ruamel-yaml
+sentry-sdk==1.22.2
     # via -r ./requirements.txt
 six==1.16.0
     # via
@@ -355,7 +359,7 @@ urllib3==1.26.15
     #   sentry-sdk
 wcwidth==0.2.6
     # via prompt-toolkit
-werkzeug==2.3.3
+werkzeug==2.3.4
     # via
     #   flask
     #   locust
