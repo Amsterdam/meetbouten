@@ -8,4 +8,5 @@ jobs:
   linting-and-tests:
     uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/CI.yml@v1
     with:
+      repo_name: amsterdam
       project_name: meetbouten
