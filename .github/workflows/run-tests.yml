@@ -4,7 +4,6 @@ on:
   pull_request:
     branches: main
 
-
 jobs:
   linting-and-tests:
     uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/linting-and-tests.yml@v1
