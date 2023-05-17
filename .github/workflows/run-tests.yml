@@ -1,4 +1,4 @@
-name: Checks
+name: CI Checks
 
 on:
   pull_request:
@@ -6,7 +6,6 @@ on:
 
 jobs:
   linting-and-tests:
-    uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/linting-and-tests.yml@v1
+    uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/CI.yml@v1
     with:
-      repo_name: amsterdam
       project_name: meetbouten
