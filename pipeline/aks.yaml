@@ -1,0 +1,38 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  tags:
+    include:
+      - "*.*.*"
+
+variables:
+  # Debugging
+  System.Debug: true
+
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: opdrachten/templates
+      ref: main
+
+extends:
+  template: pipelines/aks/template.yaml@templates
+  parameters:
+    name: opdr-backend
+    dev:
+      serviceConnection: ARM-CCC-OPDR-ont-01
+      deploy:
+        pool: Opdrachten
+        namespace: ns-ccc-opdr-ont-01-meetbouten
+        kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-ont-01-meetbouten"
+#    test:
+#      serviceConnection: ARM-CCC-OPDR-test-01
+#      deploy:
+#        variables:
+#          ENV: dev
+#        pool: Opdrachten
+#        namespace: ns-ccc-opdr-ont-01-meetbouten
+#        kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-dev-01-meetbouten"

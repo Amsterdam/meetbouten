@@ -79,19 +79,6 @@ trivy: 								## Detect image vulnerabilities
 	$(dc) build --no-cache app
 	trivy image --ignore-unfixed docker-registry.data.amsterdam.nl/datapunt/meetbouten
 
-deploy_kubectl: build
-	$(dc) push dev
-	kubectl apply -f manifests
-
-undeploy_kubectl:
-	kubectl delete -f manifests
-
-# Function called "fn", which references the Django commands $1
-fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
-init_kubectl:
-	$(call fn, migrate)
-	$(call fn, createsuperuser --noinput)
-
 lintfix:                            ## Execute lint fixes
 	$(run) test black /src/$(APP) /tests/$(APP)
 	$(run) test autoflake /src --recursive --in-place --remove-unused-variables --remove-all-unused-imports --quiet
@@ -100,3 +87,21 @@ lintfix:                            ## Execute lint fixes
 lint:                               ## Execute lint checks
 	$(run) test autoflake /src --check --recursive --quiet
 	$(run) test isort --diff --check /src/$(APP) /tests/$(APP)
+
+deploy: manifests
+	helm upgrade --install --atomic meetbouten $(HELM_ARGS) $(ARGS)
+
+manifests:
+	helm template meetbouten $(HELM_ARGS) $(ARGS)
+
+update-chart:
+	rm -rf manifests/chart
+	git clone --branch 1.4.3 --depth 1 git@github.com:Amsterdam/helm-application.git manifests/chart
+	rm -rf manifests/chart/.git
+
+# Initiate migrations and superuser on kubernetes pod
+# Function called "fn", which references the Django commands $1
+fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
+init_kubectl:
+	$(call fn, migrate)
+	$(call fn, createsuperuser --noinput)
