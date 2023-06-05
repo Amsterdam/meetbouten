@@ -36,7 +36,7 @@ services:
     build:
       context: .
       target: app
-    image: docker-registry.data.amsterdam.nl/datapunt/meetbouten:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/meetbouten}:${VERSION:-latest}
     command: /deploy/docker-run.sh
       
   dev:
@@ -49,7 +49,7 @@ services:
       DJANGO_SUPERUSER_PASSWORD: "0000"
       DJANGO_SUPERUSER_USERNAME: "admin"
       DJANGO_SUPERUSER_EMAIL: "admin@amsterdam.nl"
-    image: 127.0.0.1:5001/meetbouten:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/meetbouten-dev}:${VERSION:-latest}
     command: python manage.py runserver 0.0.0.0:8000
 
   test:
@@ -57,7 +57,7 @@ services:
     build:
       context: .
       target: tests
-    image: ghcr.io/amsterdam/meetbouten:latest
+    image: ghcr.io/amsterdam/meetbouten:${VERSION:-latest}
     environment:
       <<: *base-app-env
       DJANGO_SETTINGS_MODULE: "main.settings"
