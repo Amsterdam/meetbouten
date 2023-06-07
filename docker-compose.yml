@@ -49,7 +49,7 @@ services:
       DJANGO_SUPERUSER_PASSWORD: "0000"
       DJANGO_SUPERUSER_USERNAME: "admin"
       DJANGO_SUPERUSER_EMAIL: "admin@amsterdam.nl"
-    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/meetbouten-dev}:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/meetbouten}-dev:${VERSION:-latest}
     command: python manage.py runserver 0.0.0.0:8000
 
   test:
@@ -57,7 +57,7 @@ services:
     build:
       context: .
       target: tests
-    image: ghcr.io/amsterdam/meetbouten:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/meetbouten}-test:${VERSION:-latest}
     environment:
       <<: *base-app-env
       DJANGO_SETTINGS_MODULE: "main.settings"
