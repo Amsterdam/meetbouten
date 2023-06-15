@@ -26,6 +26,8 @@ deployments:
         ports:
           - port: 8080
             name: http
+        securityContext:
+          runAsUser: 1001
     volumes:
       - name: tmp
         spec:
