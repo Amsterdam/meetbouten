@@ -2,13 +2,19 @@
 # https://git.datapunt.amsterdam.nl/Datapunt/python-best-practices/blob/master/dependency_management/
 #
 # VERSION = 2020.01.29
-.PHONY: app
+.PHONY: app manifests
 
 dc = docker compose
 run = $(dc) run --rm
 manage = $(run) dev python manage.py
 
-PYTHON = python3
+ENVIRONMENT ?= local
+VERSION = latest
+HELM_ARGS = manifests/chart \
+	-f manifests/values.yaml \
+	-f manifests/env/${ENVIRONMENT}.yaml \
+	--set image.tag=${VERSION} \
+	--set image.registry=${REGISTRY}
 
 help:                               ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'

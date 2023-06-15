@@ -3,7 +3,16 @@ image:
   repository: opdrachten/meetbouten
   tag: latest
 
-host: meetbouten.azure.amsterdam.nl
+labels:
+  app: meetbouten
+
+network:
+  allow-ingress:
+    selector: app == 'meetbouten'
+    ingress:
+      - action: Allow
+    egress:
+      - action: Allow
 
 deployments:
   app:
@@ -14,8 +23,6 @@ deployments:
             mountPath: /tmp
         secrets:
           - app
-    labels:
-      app: app
     volumes:
       - name: tmp
         spec:
@@ -41,7 +48,7 @@ services:
         port: 80
         targetPort: 8080
     selector:
-      app: app
+      app: meetbouten
 
 ingress:
   app:

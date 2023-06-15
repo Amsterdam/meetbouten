@@ -1,3 +1,5 @@
+tenantId: 72fca1b1-2c2e-4376-a445-294d80196804
+
 # Default keyvault for getting secrets
 keyVaultName: meetbouten-o-jxi7uny3pxf
 
@@ -18,9 +20,8 @@ env:
 # Specify the keyvault that has the certificate
 secrets:
   certificate:
-    enabled: false
     keyVaultName: shared-o-yhqbd6yktpphi
 
-jobs:
-  certificate-init:
-    enabled: false
+ingress:
+  app:
+    className: nginx-internal
