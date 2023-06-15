@@ -8,7 +8,6 @@ RUN apt-get update \
  && apt-get dist-upgrade -y \
  && apt-get install --no-install-recommends -y \
         gdal-bin \
-        postgresql-client \
  && pip install --upgrade pip \
  && pip install uwsgi \
  && useradd --user-group --system datapunt
