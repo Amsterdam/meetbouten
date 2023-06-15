@@ -27,7 +27,7 @@ extends:
       namespace: ns-ccc-opdr-ont-01-meetbouten
       kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-ont-01-meetbouten"
       preSteps:
-        - script: helm uninstall meetbouten -n ns-ccc-opdr-ont-01-meetbouten
+        - script: helm uninstall meetbouten -n ns-ccc-opdr-ont-01-meetbouten || true
           displayName: Remove previous installation
         - script: kubectl get secrets
           displayName: kubectl get secrets
