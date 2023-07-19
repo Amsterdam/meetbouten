@@ -45,7 +45,7 @@ urls:                               ## Show available URLs
 build:                              ## Build docker image
 	$(dc) build
 
-push: build                         ## Push docker image to registry
+push:                               ## Push docker image to registry
 	$(dc) push
 
 app:                                ## Run app
@@ -83,7 +83,7 @@ test_cor_load: migrate
 
 trivy: 								## Detect image vulnerabilities
 	$(dc) build --no-cache app
-	trivy image --ignore-unfixed docker-registry.data.amsterdam.nl/datapunt/meetbouten
+	trivy image --ignore-unfixed localhost:5000/opdrachten/meetbouten:latest
 
 lintfix:                            ## Execute lint fixes
 	$(run) test black /src/$(APP) /tests/$(APP)
