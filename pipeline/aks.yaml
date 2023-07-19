@@ -32,10 +32,6 @@ extends:
         - script: kubectl get secrets
           displayName: kubectl get secrets
     test:
-      serviceConnection: ARM-CCC-OPDR-test-01
-      deploy:
-        variables:
-          ENV: dev
-        pool: Opdrachten
-        namespace: ns-ccc-opdr-ont-01-meetbouten
-        kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-tst-01-meetbouten"
+      pool: Opdrachten
+      namespace: ns-ccc-opdr-tst-01-meetbouten
+      kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-tst-01-meetbouten"
