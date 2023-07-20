@@ -12,19 +12,19 @@ asgiref==3.7.2
     #   django
 asttokens==2.2.1
     # via stack-data
-autoflake==2.1.1
+autoflake==2.2.0
     # via -r requirements_dev.in
-azure-core==1.27.1
+azure-core==1.28.0
     # via
     #   -r ./requirements.txt
     #   azure-storage-blob
-azure-storage-blob==12.16.0
+azure-storage-blob==12.17.0
     # via
     #   -r ./requirements.txt
     #   django-storages
 backcall==0.2.0
     # via ipython
-black==23.3.0
+black==23.7.0
     # via -r requirements_dev.in
 blinker==1.6.2
     # via flask
@@ -42,20 +42,20 @@ cffi==1.15.1
     # via
     #   -r ./requirements.txt
     #   cryptography
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
     # via
     #   -r ./requirements.txt
     #   requests
-click==8.1.3
+click==8.1.6
     # via
     #   black
     #   flask
     #   pip-tools
-configargparse==1.5.3
+configargparse==1.5.5
     # via locust
 coverage[toml]==7.2.7
     # via pytest-cov
-cryptography==41.0.1
+cryptography==41.0.2
     # via
     #   -r ./requirements.txt
     #   azure-storage-blob
@@ -70,7 +70,7 @@ diff-match-patch==20230430
     # via
     #   -r ./requirements.txt
     #   django-import-export
-django==4.1.9
+django==4.1.10
     # via
     #   -r ./requirements.txt
     #   django-datetime-utc
@@ -121,7 +121,7 @@ drf-extensions==0.7.1
     # via
     #   -r ./requirements.txt
     #   drf-amsterdam
-drf-yasg==1.21.6
+drf-yasg==1.21.7
     # via -r ./requirements.txt
 et-xmlfile==1.1.0
     # via
@@ -129,11 +129,11 @@ et-xmlfile==1.1.0
     #   openpyxl
 executing==1.2.0
     # via stack-data
-factory-boy==3.2.1
+factory-boy==3.3.0
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==18.10.1
+faker==19.1.0
     # via factory-boy
 flask==2.3.2
     # via
@@ -142,9 +142,9 @@ flask==2.3.2
     #   locust
 flask-basicauth==0.2.0
     # via locust
-flask-cors==3.0.10
+flask-cors==4.0.0
     # via locust
-gevent==22.10.2
+gevent==23.7.0
     # via
     #   geventhttpclient
     #   locust
@@ -218,15 +218,15 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pillow==9.5.0
+pillow==10.0.0
     # via -r ./requirements.txt
-pip-tools==6.13.0
+pip-tools==7.1.0
     # via -r requirements_dev.in
-platformdirs==3.6.0
+platformdirs==3.9.1
     # via black
-pluggy==1.0.0
+pluggy==1.2.0
     # via pytest
-prompt-toolkit==3.0.38
+prompt-toolkit==3.0.39
     # via ipython
 psutil==5.9.5
     # via locust
@@ -246,7 +246,7 @@ pygments==2.15.1
     # via ipython
 pyproject-hooks==1.0.0
     # via build
-pytest==7.3.2
+pytest==7.4.0
     # via
     #   -r requirements_dev.in
     #   pytest-cov
@@ -269,7 +269,7 @@ pytz==2023.3
     #   -r ./requirements.txt
     #   djangorestframework
     #   drf-yasg
-pyyaml==6.0
+pyyaml==6.0.1
     # via
     #   -r ./requirements.txt
     #   drf-yasg
@@ -283,7 +283,7 @@ requests==2.31.0
     #   locust
 roundrobin==0.0.4
     # via locust
-sentry-sdk==1.25.1
+sentry-sdk==1.28.1
     # via -r ./requirements.txt
 six==1.16.0
     # via
@@ -291,7 +291,6 @@ six==1.16.0
     #   asttokens
     #   azure-core
     #   djangorestframework-csv
-    #   flask-cors
     #   geventhttpclient
     #   isodate
     #   python-dateutil
@@ -306,13 +305,13 @@ tablib[html,ods,xls,xlsx,yaml]==3.5.0
     # via
     #   -r ./requirements.txt
     #   django-import-export
-time-machine==2.10.0
+time-machine==2.11.0
     # via -r requirements_dev.in
 traitlets==5.9.0
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.6.3
+typing-extensions==4.7.1
     # via
     #   -r ./requirements.txt
     #   azure-core
@@ -327,7 +326,7 @@ uritemplate==4.1.1
     # via
     #   -r ./requirements.txt
     #   drf-yasg
-urllib3==2.0.3
+urllib3==2.0.4
     # via
     #   -r ./requirements.txt
     #   requests
@@ -348,18 +347,17 @@ xlwt==1.3.0
     # via
     #   -r ./requirements.txt
     #   tablib
-zope-event==4.6
+zope-event==5.0
     # via gevent
 zope-interface==6.0
     # via gevent
 
 # The following packages are considered to be unsafe in a requirements file:
-pip==23.1.2
+pip==23.2
     # via pip-tools
-setuptools==67.8.0
+setuptools==68.0.0
     # via
     #   -r ./requirements.txt
-    #   gevent
     #   pip-tools
     #   zope-event
     #   zope-interface
