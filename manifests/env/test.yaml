@@ -6,13 +6,6 @@ keyVaultName:   # App specific
 # Identity AppID (clientId) used to authenticate with the keyvault
 workloadIdentity: b3bbd37c-6af0-4557-93cc-a11020108da7  # Environment specific
 
-# Service account to use
-serviceAccount: app
-
-serviceAccounts:
-  app:
-    enableWorkloadIdentity: true
-
 # We must select the nodepool to run the pods on
 nodepool: cccopdrtst01  # Environment specific
 
