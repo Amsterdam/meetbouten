@@ -1,7 +1,7 @@
 tenantId: 72fca1b1-2c2e-4376-a445-294d80196804  # Global
 
 # Default keyvault for getting secrets
-keyVaultName:   # App specific
+keyVaultName: meetbouten-t-z4knmue3mms  # App specific
 
 # Identity AppID (clientId) used to authenticate with the keyvault
 keyVaultIdentity: 42fbed0f-0af4-440d-8e5a-35a2c46aa314  # Environment specific
@@ -14,7 +14,7 @@ host: meetbouten.opdr-t.azure.amsterdam.nl  # App specific
 
 # Some default environment variables to inject in all containers
 env:
-  AZURE_KEY_VAULT: "https://xxxxx.vault.azure.net/"  # App specific
+  AZURE_KEY_VAULT: "https://meetbouten-t-z4knmue3mms.vault.azure.net/"  # App specific
   AZURE_MANAGED_IDENTITY_CLIENTID: 42fbed0f-0af4-440d-8e5a-35a2c46aa314  # Environment specific
 
 # Specify the keyvault that has the certificate
