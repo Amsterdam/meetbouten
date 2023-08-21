@@ -3,8 +3,6 @@ name: Opdrachten Team Dependabot
 on:
   pull_request:
     branches: main
-  cron:
-    - cron: '0 0 * * *'
 
 jobs:
   update-dependencies:
