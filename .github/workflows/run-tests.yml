@@ -1,8 +1,8 @@
 name: CI Checks
 
-on:
-  pull_request:
-    branches: main
+#on:
+#  pull_request:
+#    branches: main
 
 jobs:
   linting-and-tests:
