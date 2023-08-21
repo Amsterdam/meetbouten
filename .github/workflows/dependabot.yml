@@ -61,6 +61,6 @@ jobs:
 
     - uses: someimportantcompany/github-actions-slack-message@v1
       with:
-        channel: opdrachten-backend  # ${{ env.SLACK_CHANNEL }}
-        bot-token: xoxb-6265386162-3073554450099-P9fvqMx1e3GMCyjEsBvRyhmC  # ${{ secrets.SLACK_BOT_TOKEN }}
+        channel: opdrachten-backend
+        bot-token: xoxb-6265386162-3073554450099-P9fvqMx1e3GMCyjEsBvRyhmC
         text: Firing a bot-token message from Github Actions
