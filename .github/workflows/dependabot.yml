@@ -25,8 +25,8 @@ jobs:
 #    - name: Set up Docker Buildx for Docker build caching
 #      uses: docker/setup-buildx-action@v2
 #
-#    - name: Update dependencies
-#      run: make requirements
+    - name: Update dependencies
+      run: make requirements
 #
 #    - name: Build and push
 #      uses: docker/build-push-action@v4
