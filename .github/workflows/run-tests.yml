@@ -1,6 +1,7 @@
 name: CI Checks
 
-#on:
+# TODO: uncomment
+# on:
 #  pull_request:
 #    branches: main
 
