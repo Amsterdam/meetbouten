@@ -15,11 +15,7 @@ jobs:
       "timetell": 21127
       "acceptance_pipeline": "https://ci.secure.amsterdam.nl/job/Opdrachten/job/Quotumtool/job/Quotumtool/job/main/"
       "production_pipeline": "https://ci.secure.amsterdam.nl/job/Opdrachten/job/Quotumtool/job/Quotumtool/view/tags/"
-#      "acceptance_urls": [
-#        "https://acc.api.secure.amsterdam.nl/vergunningen/quota/kameromzettingen/dashboard/",
-#        "https://acc.api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
-#      ]
-#      "production_urls": [
-#        "https://api.secure.amsterdam.nl/vergunningen/quota/kameromzettingen/dashboard/",
-#        "https://api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
-#      ]
+      "acceptance_urls": "https://acc.api.secure.amsterdam.nl/vergunningen/quota/kameromzettingen/dashboard/ \n
+      https://acc.api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
+      "production_urls": "https://api.secure.amsterdam.nl/vergunningen/quota/kameromzettingen/dashboard/ \n
+      https://api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
