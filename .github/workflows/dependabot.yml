@@ -1,15 +1,12 @@
 name: Opdrachten Team Dependabot
 
 on:
-  pull_request:
-    branches: main
   schedule: # Run the script at 6:00am on the 1st and 15th of every month
     - cron: '0 6 1,15 * *'
 
 jobs:
   dependabot:
     name: Templates
-    uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/dependabot.yml@v1
+    uses: amsterdam/opdrachten-team-github-workflows/workflows/dependabot@v1
     with:
       slack_channel: 'opdrachten-dependabot'
-
