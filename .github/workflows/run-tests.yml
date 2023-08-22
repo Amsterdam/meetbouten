@@ -7,7 +7,7 @@ on:
 jobs:
   linting-and-tests:
     name: Templates
-    uses: amsterdam/opdrachten-team-github-workflows/workflows/CI@v1
+    uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/CI@v1
     with:
       repo_name: amsterdam
       project_name: meetbouten
