@@ -1,7 +1,7 @@
 name: Opdrachten Team Dependabot
 
 on:
-  schedule: # Run the script at 6:00am on the 1st and 15th of every month
+  schedule: # Run the script on the 1st and 15th of every month
     - cron: '0 6 1,15 * *'
 
 jobs:
