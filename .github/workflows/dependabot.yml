@@ -10,4 +10,6 @@ jobs:
   dependabot:
     name: Templates
     uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/dependabot.yml@v1
+    with:
+      slack_channel: 'opdrachten-dependabot'
 
