@@ -7,6 +7,7 @@ from contextlib import suppress
 from distutils.version import StrictVersion
 from subprocess import check_output
 from typing import Iterable, NamedTuple, List
+from pathlib import Path
 
 
 def git_diff(cwd) -> Iterable[str]:
@@ -105,5 +106,6 @@ def post_package_updates_to_slack(project_package_changes: List):
 
 
 if __name__ == '__main__':
-    diff = parse_diff(git_diff('/Users/jjbeekman/PycharmProjects/meetbouten'))
+    path = Path(__file__).parent.parent
+    diff = parse_diff(git_diff(path))
     post_package_updates_to_slack(diff)
