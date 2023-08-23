@@ -6,10 +6,12 @@ on:
   schedule: # Run the script on the 1st and 15th of every month
     - cron: '0 6 1,15 * *'
 
+
 jobs:
   dependabot:
     name: Templates
     uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/dependabot.yml@v1
+    secrets: inherit
     with:
       slack_channel: 'opdrachten-dependabot'
       "timetell": 21127
@@ -19,3 +21,4 @@ jobs:
       https://acc.api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
       "production_urls": "https://api.secure.amsterdam.nl/vergunningen/quota/kameromzettingen/dashboard/ \n
       https://api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
+
