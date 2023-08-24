@@ -80,7 +80,7 @@ def post_package_updates_to_slack(project_package_changes: List):
     Create threads on slack which show the major dependency upgrades
     and the projects that are affected.
     """
-    messages = ""
+    messages = []
 
     for package_change in project_package_changes:
 
@@ -100,9 +100,9 @@ def post_package_updates_to_slack(project_package_changes: List):
                 message = f'{package_change.from_version} ➪ {package_change.to_version}'
 
             if show_message:
-                messages += f"{package_change.package} | {message}\n"
+                messages.append(f"{package_change.package} | {message}")
 
-    print(messages)
+    return ';'.join(messages)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@ on:
     branches: main
   schedule: # Run the script on the 1st and 15th of every month
     - cron: '0 6 1,15 * *'
+  workflow_dispatch:
 
 
 jobs:
