@@ -102,7 +102,7 @@ def post_package_updates_to_slack(project_package_changes: List):
             if show_message:
                 messages.append(f"{package_change.package} | {message}")
 
-    return ';'.join(messages)
+    print(';'.join(messages))
 
 
 if __name__ == '__main__':
