@@ -14,7 +14,7 @@ jobs:
     uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/dependabot.yml@v1
     secrets: inherit
     with:
-      check_diff: 'false'
+      check_diff: false
       slack_channel: 'opdrachten-dependabot'
       timetell_code: 21127
       acceptance_pipeline: "https://ci.secure.amsterdam.nl/job/Opdrachten/job/Quotumtool/job/Quotumtool/job/main/"
