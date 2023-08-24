@@ -94,15 +94,15 @@ def post_package_updates_to_slack(project_package_changes: List):
 
             if package_change.from_version < package_change.to_version:
                 icon_emoji = ':arrow_up:'
-                message = f'{package_change.from_version} -> {package_change.to_version}'
+                message = f'{package_change.from_version} ➩ {package_change.to_version}'
             else:
                 icon_emoji = ':arrow_down:'
-                message = f'{package_change.from_version} -> {package_change.to_version}'
+                message = f'{package_change.from_version} ➩ {package_change.to_version}'
 
             if show_message:
-                messages.append(f"{package_change.package} ; {message}")
+                messages.append(f"{package_change.package} | {message}")
 
-    print('EOF'.join(messages))
+    print('\n'.join(messages))
 
 
 if __name__ == '__main__':
