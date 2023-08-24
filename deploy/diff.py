@@ -100,7 +100,7 @@ def post_package_updates_to_slack(project_package_changes: List):
                 message = f'{package_change.from_version} -> {package_change.to_version}'
 
             if show_message:
-                messages.append(f"{package_change.package} | {message}")
+                messages.append(f"{package_change.package} ; {message}")
 
     print(';'.join(messages))
 
