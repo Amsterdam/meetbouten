@@ -36,9 +36,6 @@ migrate:                            ## Migrate
 urls:                               ## Show available URLs
 	$(manage) show_urls
 
-pull: build                         ## Push docker image to registry
-	$(dc) push
-
 build:                              ## Build docker image
 	$(dc) build
 
