@@ -159,30 +159,6 @@ if DEBUG:
     ]
 
 
-REST_FRAMEWORK = dict(
-    PAGE_SIZE=20,
-    MAX_PAGINATE_BY=100,
-    UNAUTHENTICATED_USER={},
-    UNAUTHENTICATED_TOKEN={},
-    DEFAULT_AUTHENTICATION_CLASSES=(
-        "contrib.rest_framework.authentication.SimpleTokenAuthentication",
-    ),
-    DEFAULT_PAGINATION_CLASS="datapunt_api.pagination.HALPagination",
-    DEFAULT_RENDERER_CLASSES=(
-        "rest_framework.renderers.JSONRenderer",
-        "datapunt_api.renderers.PaginatedCSVRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-        "rest_framework_xml.renderers.XMLRenderer",  # must be lowest!
-    ),
-    DEFAULT_FILTER_BACKENDS=(
-        # 'rest_framework.filters.SearchFilter',
-        # 'rest_framework.filters.OrderingFilter',
-        "django_filters.rest_framework.DjangoFilterBackend",
-    ),
-    DEFAULT_VERSIONING_CLASS="rest_framework.versioning.NamespaceVersioning",
-    COERCE_DECIMAL_TO_STRING=True,
-)
-
 # AZURE
 AZURE_CONNECTION_STRING = os.getenv(
     "AZURE_BLOB_CONNECTION_STRING"

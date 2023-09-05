@@ -7,11 +7,6 @@ django-filter
 django-extensions
 django-debug-toolbar
 django-import-export
-djangorestframework
-djangorestframework-gis
-djangorestframework-xml
-drf_amsterdam
-drf-yasg
 psycopg2-binary
 pytz
 requests
