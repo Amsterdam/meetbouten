@@ -35,21 +35,27 @@ IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "import_export",
-    "referentie_tabellen",
-    "metingen",
-    "bouwblokken",
-    "admin_chart",
     "django.contrib.gis",
-    "leaflet",
 ]
+THIRD_PARTY_APPS = [
+    "import_export",
+    "leaflet",
+    "mozilla_django_oidc",
+]
+LOCAL_APPS = [
+    "admin_chart",
+    "bouwblokken",
+    "metingen",
+    "referentie_tabellen",
+]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")
 MEDIA_URL = "/media/"
@@ -62,7 +68,29 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'mozilla_django_oidc.middleware.SessionRefresh'
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'iot.auth.OIDCAuthenticationBackend',
+]
+
+## OpenId Connect settings ##
+LOGIN_URL = 'oidc_authentication_init'
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL_FAILURE = '/static/403.html'
+
+OIDC_BASE_URL = os.getenv('OIDC_BASE_URL')
+OIDC_RP_CLIENT_ID = os.getenv('OIDC_RP_CLIENT_ID')
+OIDC_RP_CLIENT_SECRET = os.getenv('OIDC_RP_CLIENT_SECRET')
+OIDC_OP_AUTHORIZATION_ENDPOINT = f'{OIDC_BASE_URL}/oauth2/v2.0/authorize'
+OIDC_OP_TOKEN_ENDPOINT = f'{OIDC_BASE_URL}/oauth2/v2.0/token'
+OIDC_OP_USER_ENDPOINT = 'https://graph.microsoft.com/oidc/userinfo'
+OIDC_OP_JWKS_ENDPOINT = f'{OIDC_BASE_URL}/discovery/v2.0/keys'
+OIDC_OP_LOGOUT_ENDPOINT = f'{OIDC_BASE_URL}/oauth2/v2.0/logout'
+OIDC_RP_SIGN_ALGO = 'RS256'
+
 
 ROOT_URLCONF = "main.urls"
 
@@ -188,3 +216,4 @@ LEAFLET_CONFIG = {
     "SPATIAL_EXTENT": (3.2, 50.75, 7.22, 53.7),
     "RESET_VIEW": False,
 }
+

@@ -62,8 +62,6 @@ cryptography==41.0.3
     #   josepy
     #   mozilla-django-oidc
     #   pyopenssl
-datapunt-keycloak-oidc==0.5.1
-    # via -r ./requirements.txt
 decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
@@ -173,10 +171,8 @@ matplotlib-inline==0.1.6
     # via ipython
 model-bakery==1.15.0
     # via -r requirements_dev.in
-mozilla-django-oidc==1.2.4
-    # via
-    #   -r ./requirements.txt
-    #   datapunt-keycloak-oidc
+mozilla-django-oidc==3.0.0
+    # via -r ./requirements.txt
 msgpack==1.0.5
     # via locust
 mypy-extensions==1.0.0
@@ -277,7 +273,6 @@ six==1.16.0
     #   azure-core
     #   geventhttpclient
     #   isodate
-    #   mozilla-django-oidc
     #   python-dateutil
 sqlparse==0.4.4
     # via
