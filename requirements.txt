@@ -6,13 +6,13 @@
 #
 asgiref==3.7.2
     # via django
-azure-core==1.28.0
+azure-core==1.29.3
     # via azure-storage-blob
 azure-storage-blob==12.17.0
     # via
     #   -r requirements.in
     #   django-storages
-certifi==2023.5.7
+certifi==2023.7.22
     # via
     #   requests
     #   sentry-sdk
@@ -20,15 +20,21 @@ cffi==1.15.1
     # via cryptography
 charset-normalizer==3.2.0
     # via requests
-cryptography==41.0.2
-    # via azure-storage-blob
+cryptography==41.0.3
+    # via
+    #   azure-storage-blob
+    #   josepy
+    #   mozilla-django-oidc
+    #   pyopenssl
+datapunt-keycloak-oidc==0.5.1
+    # via -r requirements.in
 defusedxml==0.7.1
     # via
     #   djangorestframework-xml
     #   odfpy
 diff-match-patch==20230430
     # via django-import-export
-django==4.1.10
+django==4.1.11
     # via
     #   -r requirements.in
     #   django-datetime-utc
@@ -40,9 +46,10 @@ django==4.1.10
     #   django-storages
     #   djangorestframework
     #   drf-yasg
+    #   mozilla-django-oidc
 django-datetime-utc==1.0.4
     # via -r requirements.in
-django-debug-toolbar==4.1.0
+django-debug-toolbar==4.2.0
     # via -r requirements.in
 django-extensions==3.2.3
     # via -r requirements.in
@@ -52,7 +59,7 @@ django-import-export==3.2.0
     # via -r requirements.in
 django-leaflet==0.29.0
     # via -r requirements.in
-django-storages[azure]==1.13.2
+django-storages[azure]==1.14
     # via -r requirements.in
 djangorestframework==3.14.0
     # via
@@ -84,8 +91,12 @@ inflection==0.5.1
     # via drf-yasg
 isodate==0.6.1
     # via azure-storage-blob
+josepy==1.13.0
+    # via mozilla-django-oidc
 markuppy==1.14
     # via tablib
+mozilla-django-oidc==1.2.4
+    # via datapunt-keycloak-oidc
 odfpy==1.4.1
     # via tablib
 openpyxl==3.1.2
@@ -94,13 +105,15 @@ packaging==23.1
     # via drf-yasg
 pillow==10.0.0
     # via -r requirements.in
-psycopg2-binary==2.9.6
+psycopg2-binary==2.9.7
     # via -r requirements.in
 pycparser==2.21
     # via cffi
+pyopenssl==23.2.0
+    # via josepy
 python-dateutil==2.8.2
     # via django-datetime-utc
-pytz==2023.3
+pytz==2023.3.post1
     # via
     #   -r requirements.in
     #   djangorestframework
@@ -113,13 +126,15 @@ requests==2.31.0
     # via
     #   -r requirements.in
     #   azure-core
-sentry-sdk==1.28.1
+    #   mozilla-django-oidc
+sentry-sdk==1.30.0
     # via -r requirements.in
 six==1.16.0
     # via
     #   azure-core
     #   djangorestframework-csv
     #   isodate
+    #   mozilla-django-oidc
     #   python-dateutil
 sqlparse==0.4.4
     # via
@@ -145,5 +160,7 @@ xlwt==1.3.0
     # via tablib
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==68.0.0
-    # via -r requirements.in
+setuptools==68.1.2
+    # via
+    #   -r requirements.in
+    #   josepy

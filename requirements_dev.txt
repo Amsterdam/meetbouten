@@ -10,11 +10,11 @@ asgiref==3.7.2
     # via
     #   -r ./requirements.txt
     #   django
-asttokens==2.2.1
+asttokens==2.4.0
     # via stack-data
-autoflake==2.2.0
+autoflake==2.2.1
     # via -r requirements_dev.in
-azure-core==1.28.0
+azure-core==1.29.3
     # via
     #   -r ./requirements.txt
     #   azure-storage-blob
@@ -30,9 +30,9 @@ blinker==1.6.2
     # via flask
 brotli==1.0.9
     # via geventhttpclient
-build==0.10.0
+build==1.0.0
     # via pip-tools
-certifi==2023.5.7
+certifi==2023.7.22
     # via
     #   -r ./requirements.txt
     #   geventhttpclient
@@ -46,19 +46,24 @@ charset-normalizer==3.2.0
     # via
     #   -r ./requirements.txt
     #   requests
-click==8.1.6
+click==8.1.7
     # via
     #   black
     #   flask
     #   pip-tools
-configargparse==1.5.5
+configargparse==1.7
     # via locust
-coverage[toml]==7.2.7
+coverage[toml]==7.3.0
     # via pytest-cov
-cryptography==41.0.2
+cryptography==41.0.3
     # via
     #   -r ./requirements.txt
     #   azure-storage-blob
+    #   josepy
+    #   mozilla-django-oidc
+    #   pyopenssl
+datapunt-keycloak-oidc==0.5.1
+    # via -r ./requirements.txt
 decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
@@ -70,7 +75,7 @@ diff-match-patch==20230430
     # via
     #   -r ./requirements.txt
     #   django-import-export
-django==4.1.10
+django==4.1.11
     # via
     #   -r ./requirements.txt
     #   django-datetime-utc
@@ -83,9 +88,10 @@ django==4.1.10
     #   djangorestframework
     #   drf-yasg
     #   model-bakery
+    #   mozilla-django-oidc
 django-datetime-utc==1.0.4
     # via -r ./requirements.txt
-django-debug-toolbar==4.1.0
+django-debug-toolbar==4.2.0
     # via -r ./requirements.txt
 django-extensions==3.2.3
     # via -r ./requirements.txt
@@ -95,7 +101,7 @@ django-import-export==3.2.0
     # via -r ./requirements.txt
 django-leaflet==0.29.0
     # via -r ./requirements.txt
-django-storages[azure]==1.13.2
+django-storages[azure]==1.14
     # via -r ./requirements.txt
 djangorestframework==3.14.0
     # via
@@ -133,9 +139,9 @@ factory-boy==3.3.0
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==19.1.0
+faker==19.3.1
     # via factory-boy
-flask==2.3.2
+flask==2.3.3
     # via
     #   flask-basicauth
     #   flask-cors
@@ -144,11 +150,11 @@ flask-basicauth==0.2.0
     # via locust
 flask-cors==4.0.0
     # via locust
-gevent==23.7.0
+gevent==23.9.0.post1
     # via
     #   geventhttpclient
     #   locust
-geventhttpclient==2.0.9
+geventhttpclient==2.0.10
     # via locust
 greenlet==2.0.2
     # via gevent
@@ -163,7 +169,7 @@ inflection==0.5.1
     #   pytest-factoryboy
 iniconfig==2.0.0
     # via pytest
-ipython==8.14.0
+ipython==8.15.0
     # via -r requirements_dev.in
 isodate==0.6.1
     # via
@@ -173,11 +179,15 @@ isort==5.12.0
     # via -r requirements_dev.in
 itsdangerous==2.1.2
     # via flask
-jedi==0.18.2
+jedi==0.19.0
     # via ipython
 jinja2==3.1.2
     # via flask
-locust==2.15.1
+josepy==1.13.0
+    # via
+    #   -r ./requirements.txt
+    #   mozilla-django-oidc
+locust==2.16.1
     # via -r requirements_dev.in
 markuppy==1.14
     # via
@@ -189,8 +199,12 @@ markupsafe==2.1.3
     #   werkzeug
 matplotlib-inline==0.1.6
     # via ipython
-model-bakery==1.12.0
+model-bakery==1.15.0
     # via -r requirements_dev.in
+mozilla-django-oidc==1.2.4
+    # via
+    #   -r ./requirements.txt
+    #   datapunt-keycloak-oidc
 msgpack==1.0.5
     # via locust
 mypy-extensions==1.0.0
@@ -212,7 +226,7 @@ packaging==23.1
     #   pytest
 parso==0.8.3
     # via jedi
-pathspec==0.11.1
+pathspec==0.11.2
     # via black
 pexpect==4.8.0
     # via ipython
@@ -220,17 +234,17 @@ pickleshare==0.7.5
     # via ipython
 pillow==10.0.0
     # via -r ./requirements.txt
-pip-tools==7.1.0
+pip-tools==7.3.0
     # via -r requirements_dev.in
-platformdirs==3.9.1
+platformdirs==3.10.0
     # via black
-pluggy==1.2.0
+pluggy==1.3.0
     # via pytest
 prompt-toolkit==3.0.39
     # via ipython
 psutil==5.9.5
     # via locust
-psycopg2-binary==2.9.6
+psycopg2-binary==2.9.7
     # via -r ./requirements.txt
 ptyprocess==0.7.0
     # via pexpect
@@ -240,13 +254,17 @@ pycparser==2.21
     # via
     #   -r ./requirements.txt
     #   cffi
-pyflakes==3.0.1
+pyflakes==3.1.0
     # via autoflake
-pygments==2.15.1
+pygments==2.16.1
     # via ipython
+pyopenssl==23.2.0
+    # via
+    #   -r ./requirements.txt
+    #   josepy
 pyproject-hooks==1.0.0
     # via build
-pytest==7.4.0
+pytest==7.4.1
     # via
     #   -r requirements_dev.in
     #   pytest-cov
@@ -264,7 +282,7 @@ python-dateutil==2.8.2
     #   django-datetime-utc
     #   faker
     #   time-machine
-pytz==2023.3
+pytz==2023.3.post1
     # via
     #   -r ./requirements.txt
     #   djangorestframework
@@ -274,16 +292,17 @@ pyyaml==6.0.1
     #   -r ./requirements.txt
     #   drf-yasg
     #   tablib
-pyzmq==25.1.0
+pyzmq==25.1.1
     # via locust
 requests==2.31.0
     # via
     #   -r ./requirements.txt
     #   azure-core
     #   locust
+    #   mozilla-django-oidc
 roundrobin==0.0.4
     # via locust
-sentry-sdk==1.28.1
+sentry-sdk==1.30.0
     # via -r ./requirements.txt
 six==1.16.0
     # via
@@ -293,6 +312,7 @@ six==1.16.0
     #   djangorestframework-csv
     #   geventhttpclient
     #   isodate
+    #   mozilla-django-oidc
     #   python-dateutil
 sqlparse==0.4.4
     # via
@@ -305,7 +325,7 @@ tablib[html,ods,xls,xlsx,yaml]==3.5.0
     # via
     #   -r ./requirements.txt
     #   django-import-export
-time-machine==2.11.0
+time-machine==2.12.0
     # via -r requirements_dev.in
 traitlets==5.9.0
     # via
@@ -333,11 +353,11 @@ urllib3==2.0.4
     #   sentry-sdk
 wcwidth==0.2.6
     # via prompt-toolkit
-werkzeug==2.3.6
+werkzeug==2.3.7
     # via
     #   flask
     #   locust
-wheel==0.40.0
+wheel==0.41.2
     # via pip-tools
 xlrd==2.0.1
     # via
@@ -353,11 +373,12 @@ zope-interface==6.0
     # via gevent
 
 # The following packages are considered to be unsafe in a requirements file:
-pip==23.2
+pip==23.2.1
     # via pip-tools
-setuptools==68.0.0
+setuptools==68.1.2
     # via
     #   -r ./requirements.txt
+    #   josepy
     #   pip-tools
     #   zope-event
     #   zope-interface

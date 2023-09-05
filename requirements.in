@@ -22,3 +22,6 @@ pillow
 setuptools
 django-storages[azure]
 azure-storage-blob
+
+# Datapunt packages
+datapunt-keycloak-oidc

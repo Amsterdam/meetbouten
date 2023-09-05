@@ -20,5 +20,6 @@ from django.urls import path
 
 urlpatterns = [
     path("", admin.site.urls),
-    # path('status/', include('health.urls')),
+    path('oidc/', include('keycloak_oidc.urls')),
+    path('login/', auth.oidc_login),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
