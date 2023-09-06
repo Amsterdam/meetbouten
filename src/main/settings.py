@@ -47,7 +47,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "import_export",
     "leaflet",
-    "mozilla_django_oidc",
+    "mozilla_django_oidc",  # load after django.contrib.auth!
 ]
 LOCAL_APPS = [
     "admin_chart",
@@ -72,7 +72,7 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'iot.auth.OIDCAuthenticationBackend',
+    'main.auth.OIDCAuthenticationBackend',
 ]
 
 ## OpenId Connect settings ##

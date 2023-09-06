@@ -20,7 +20,7 @@ from django.urls import path, include
 from . import auth
 
 urlpatterns = [
-    path("", admin.site.urls),
-    path('oidc/', include('mozilla_django_oidc.urls')),
     path('login/', auth.oidc_login),
+    path('oidc/', include('mozilla_django_oidc.urls')),
+    path("", admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
