@@ -14,26 +14,49 @@ network:
     egress:
       - action: Allow
 
-deployments:
-  app:
+secrets:
+  certificate:
+    type: keyvault
+    tls: meetbouten
+
+  vault:
+    type: keyvault
+    secrets:
+      - secret-key
+      - oidc-base-url
+      - oidc-rp-client-id
+      - oidc-rp-client-secret
+      - applicationinsights-connection-string
+
+jobs:
+  migrate:
+    annotations:
+      helm.sh/hook: post-install,post-upgrade
+      helm.sh/hook-weight: "-5"
+    volumes:
+      - name: tmp
+        spec:
+          emptyDir: {}
+    resources:
+      requests:
+        cpu: 100m
+        memory: "256Mi"
+      limits:
+        cpu: 2
+        memory: "512Mi"
     containers:
       - name: main
         volumes:
           - name: tmp
             mountPath: /tmp
         secrets:
-          - app
-        ports:
-          - port: 8000
-            name: http
-        securityContext:
-          runAsUser: 1001
-    volumes:
-      - name: tmp
-        spec:
-          emptyDir: {}
+          - database
+          - vault
+        command:
+          - python
+          - manage.py
+          - migrate
 
-jobs:
   certificate-init:
     secrets:
       - certificate
@@ -46,6 +69,37 @@ jobs:
         args:
           - "1"
 
+deployments:
+  app:
+    selectorLabels:
+      component: app
+    autoscale:
+      cpu: 70
+    resources:
+      requests:
+        cpu: 100m
+        memory: "128Mi"
+      limits:
+        cpu: 200m
+        memory: "256Mi"
+    volumes:
+      - name: tmp
+        spec:
+          emptyDir: {}
+    containers:
+      - name: main
+        secrets:
+          - database
+          - vault
+        volumes:
+          - name: tmp
+            mountPath: /tmp
+        ports:
+          - port: 8000
+            name: http
+        securityContext:
+          runAsUser: 1001
+
 services:
   app:
     ports:
@@ -53,7 +107,7 @@ services:
         port: 80
         targetPort: 8000
     selector:
-      app: meetbouten
+      component: app
 
 ingress:
   app:
@@ -63,13 +117,3 @@ ingress:
       port: 80
     className: nginx
     tls: certificate
-
-secrets:
-  certificate:
-    type: keyvault
-    tls: meetbouten
-  app:
-    type: opaque
-    secrets:
-      cow: moo
-      secret-key: secret-value

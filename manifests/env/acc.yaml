@@ -22,6 +22,13 @@ secrets:
   certificate:
     keyVaultName: shared-a-uibe5ahqv3cwo  # Environment specific
 
+  database:
+    type: opaque
+    secrets:
+      database-host: meetbouten-a-6o37eyewduk.postgres.database.azure.com  # Environment specific
+      database-name: main
+      database-user: meetbouten-app-a  # Environment specific
+
 ingress:
   app:
     className: nginx-internal  # App specific
