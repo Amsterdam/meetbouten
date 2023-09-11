@@ -85,6 +85,22 @@ trivy: 								## Detect image vulnerabilities
 	$(dc) build --no-cache app
 	trivy image --ignore-unfixed localhost:5000/opdrachten/meetbouten:latest
 
+deploy_kubectl: build
+	$(dc) push dev
+	kubectl apply -f manifests
+
+undeploy_kubectl:
+	kubectl delete -f manifests
+
+diff:
+	@python3 ./deploy/diff.py
+
+# Function called "fn", which references the Django commands $1
+fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
+init_kubectl:
+	$(call fn, migrate)
+	$(call fn, createsuperuser --noinput)
+
 lintfix:                            ## Execute lint fixes
 	$(run) test black /src/$(APP) /tests/$(APP)
 	$(run) test autoflake /src --recursive --in-place --remove-unused-variables --remove-all-unused-imports --quiet
