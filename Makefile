@@ -111,7 +111,7 @@ lint:                               ## Execute lint checks
 	$(run) test isort --diff --check /src/$(APP) /tests/$(APP)
 
 deploy: manifests
-	helm upgrade --install --atomic meetbouten $(HELM_ARGS) $(ARGS)
+	helm upgrade --install meetbouten $(HELM_ARGS) $(ARGS)
 
 manifests:
 	helm template meetbouten $(HELM_ARGS) $(ARGS)
