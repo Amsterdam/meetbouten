@@ -212,3 +212,58 @@ LEAFLET_CONFIG = {
     "SPATIAL_EXTENT": (3.2, 50.75, 7.22, 53.7),
     "RESET_VIEW": False,
 }
+
+# Django Logging settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    # 'root': {
+    #     'level': 'DEBUG',
+    #     'handlers': ['console'],
+    # },
+    # 'formatters': {
+    #     'console': {'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'},
+    # },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+    },
+    # 'loggers': {
+    #     'iot': {
+    #         'level': 'INFO',
+    #         'propagate': True,
+    #     },
+    #     'opencensus': {
+    #         'level': 'INFO',
+    #         'propagate': True,
+    #     },
+    #     'django': {
+    #         'level': os.getenv(
+    #             'DJANGO_LOG_LEVEL', 'ERROR' if 'pytest' in sys.argv[0] else 'INFO'
+    #         ).upper(),
+    #         'propagate': True,
+    #     },
+    # },
+}
+
+APPLICATIONINSIGHTS_CONNECTION_STRING = os.getenv(
+    'APPLICATIONINSIGHTS_CONNECTION_STRING'
+)
+
+if APPLICATIONINSIGHTS_CONNECTION_STRING:
+    OPENCENSUS = {
+        'TRACE': {
+            'SAMPLER': 'opencensus.trace.samplers.ProbabilitySampler(rate=1)',
+            'EXPORTER': f"opencensus.ext.azure.trace_exporter.AzureExporter(connection_string='{APPLICATIONINSIGHTS_CONNECTION_STRING}')",
+        }
+    }
+    LOGGING['handlers']['azure'] = {
+        'level': "DEBUG",
+        'class': "opencensus.ext.azure.log_exporter.AzureLogHandler",
+        'connection_string': APPLICATIONINSIGHTS_CONNECTION_STRING,
+    }
+    LOGGING['loggers']['django']['handlers'] = ['azure', 'console']
+    LOGGING['loggers']['iot']['handlers'] = ['azure', 'console']
