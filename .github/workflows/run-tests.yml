@@ -7,4 +7,4 @@ on:
 jobs:
   linting-and-tests:
     name: Templates
-    uses: amsterdam/opdrachten-team-github-workflows/.github/workflows/CI.yml@v1
+    uses: amsterdam/github-workflows/.github/workflows/CI.yml@v1
