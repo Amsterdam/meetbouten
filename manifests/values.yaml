@@ -21,6 +21,8 @@ secrets:
 
   vault:
     type: keyvault
+    annotations:
+      helm.sh/hook-weight: "-5"
     secrets:
       - secret-key
       - oidc-base-url
