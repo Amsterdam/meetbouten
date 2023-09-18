@@ -32,8 +32,6 @@ secrets:
 
 jobs:
   migrate:
-    ttlSecondsAfterFinished: 1800
-    backoffLimit: 1
     annotations:
       helm.sh/hook: post-install,post-upgrade
       helm.sh/hook-weight: "-5"
