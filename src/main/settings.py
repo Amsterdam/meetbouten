@@ -13,6 +13,10 @@ import os
 import sys
 from pathlib import Path
 
+from .azure_settings import Azure
+
+azure = Azure()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -96,15 +100,27 @@ WSGI_APPLICATION = "main.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DATABASE_HOST = os.getenv("DATABASE_HOST", "database")
+DATABASE_NAME = os.getenv("DATABASE_NAME", "dev")
+DATABASE_USER = os.getenv("DATABASE_USER", "dev")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD", "dev")
+DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
+DATABASE_OPTIONS = {'sslmode': 'allow', 'connect_timeout': 5}
+
+if 'azure.com' in DATABASE_HOST:
+    DATABASE_PASSWORD = azure.auth.db_password
+    DATABASE_OPTIONS['sslmode'] = 'require'
+
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": os.getenv("DATABASE_NAME", "meetbouten"),
-        "USER": os.getenv("DATABASE_USER", "meetbouten"),
-        "PASSWORD": os.getenv("DATABASE_PASSWORD", "insecure"),
-        "HOST": os.getenv("DATABASE_HOST", "database"),
-        "CONN_MAX_AGE": 20,
-        "PORT": os.getenv("DATABASE_PORT", "5432"),
+        "NAME": DATABASE_NAME,
+        "USER": DATABASE_USER,
+        "PASSWORD": DATABASE_PASSWORD,
+        "HOST": DATABASE_HOST,
+        "CONN_MAX_AGE": 60 * 5,
+        "PORT": DATABASE_PORT,
+        'OPTIONS': {'sslmode': 'allow', 'connect_timeout': 5},
     },
 }
 
