@@ -25,8 +25,8 @@ RUN mkdir media/pg_dump -p \
     && chmod 777 media/pg_dump
 
 ARG SECRET_KEY=not-used
-ARG AUTHORIZATION_TOKEN=not-used
-ARG GET_AUTHORIZATION_TOKEN=not-used
+ARG OIDC_RP_CLIENT_ID=not-used
+ARG OIDC_RP_CLIENT_SECRET=not-used
 RUN python manage.py collectstatic --no-input
 
 USER datapunt
