@@ -120,7 +120,7 @@ DATABASES = {
         "HOST": DATABASE_HOST,
         "CONN_MAX_AGE": 60 * 5,
         "PORT": DATABASE_PORT,
-        'OPTIONS': {'sslmode': 'allow', 'connect_timeout': 5},
+        'OPTIONS': DATABASE_OPTIONS,
     },
 }
 
