@@ -19,6 +19,7 @@ django-import-export>=3.0.1
 django-leaflet
 djangorestframework-xml
 django-storages[azure]
+mozilla-django-oidc
 
 # Azure
 azure-cli

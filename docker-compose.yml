@@ -16,6 +16,9 @@ x-app: &base-app
     DEBUG: "true"
     AZURE_BLOB_CONNECTION_STRING: ""
     AZURE_CONTAINER: ""
+    OIDC_BASE_URL: "https://login.microsoftonline.com/72fca1b1-2c2e-4376-a445-294d80196804"
+    OIDC_RP_CLIENT_ID:
+    OIDC_RP_CLIENT_SECRET:
   entrypoint: /deploy/wait-for-it.sh database:5432 --
 
 services:
@@ -61,3 +64,5 @@ services:
     environment:
       <<: *base-app-env
       DJANGO_SETTINGS_MODULE: "main.settings"
+      OIDC_RP_CLIENT_ID: tests
+      OIDC_RP_CLIENT_SECRET: tests
