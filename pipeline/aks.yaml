@@ -30,9 +30,6 @@ extends:
       pool: Opdrachten
       namespace: ns-ccc-opdr-ont-01-meetbouten
       kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-ont-01-meetbouten"
-      preSteps:
-        - script: helm uninstall meetbouten || true
-          displayName: Remove previous installation
     test:
       pool: Opdrachten
       namespace: ns-ccc-opdr-tst-01-meetbouten

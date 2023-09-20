@@ -24,6 +24,8 @@ omit = [
     "/src/main/settings.py",
     "/src/main/urls.py",
     "/src/manage.py",
+    "/src/main/asgi.py",
+    "/src/main/auth.py",
     "*/apps.py",
     "*/models.py",
     "/src/metingen/management/commands/load_csv_data.py",
