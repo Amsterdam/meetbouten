@@ -12,15 +12,17 @@ nodepool: cccopdrtst01  # Environment specific
 # Default host for the ingress resources
 host: meetbouten.opdr-t.azure.amsterdam.nl  # App specific
 
-# Some default environment variables to inject in all containers
-env:
-  AZURE_KEY_VAULT: "https://meetbouten-t-z4knmue3mms.vault.azure.net/"  # App specific
-  AZURE_MANAGED_IDENTITY_CLIENTID: 42fbed0f-0af4-440d-8e5a-35a2c46aa314  # Environment specific
-
 # Specify the keyvault that has the certificate
 secrets:
   certificate:
     keyVaultName: shared-t-ddxsibl3lrdai  # Environment specific
+
+  database:
+    type: opaque
+    secrets:
+      database-host: meetbouten-t-z4knmue3mms.postgres.database.azure.com  # Environment specific
+      database-name: main
+      database-user: meetbouten-app-t  # Environment specific
 
 ingress:
   app:

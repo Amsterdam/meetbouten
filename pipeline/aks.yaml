@@ -21,17 +21,27 @@ resources:
 extends:
   template: pipelines/aks/template.yaml@templates
   parameters:
-    name: opdr-backend
+    name: meetbouten
+    build:
+      analyzeImages:
+      - opdrachten/meetbouten-dev
+      - opdrachten/meetbouten-test
     dev:
       pool: Opdrachten
       namespace: ns-ccc-opdr-ont-01-meetbouten
       kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-ont-01-meetbouten"
       preSteps:
-        - script: helm uninstall meetbouten -n ns-ccc-opdr-ont-01-meetbouten || true
+        - script: helm uninstall meetbouten || true
           displayName: Remove previous installation
-        - script: kubectl get secrets
-          displayName: kubectl get secrets
     test:
       pool: Opdrachten
       namespace: ns-ccc-opdr-tst-01-meetbouten
       kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-tst-01-meetbouten"
+    acc:
+      pool: Opdrachten
+      namespace: ns-ccc-opdr-acc-01-meetbouten
+      kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-acc-01-meetbouten"
+    #prod:
+    #  pool: Opdrachten
+    #  namespace: ns-ccc-opdr-prd-01-meetbouten
+    #  kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-prd-01-meetbouten"
