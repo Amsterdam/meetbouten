@@ -9,4 +9,4 @@ jobs:
     name: Templates
     uses: amsterdam/github-workflows/.github/workflows/CI.yml@v1
     with:
-      check_lint: true
+      check_linting: true
