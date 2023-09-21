@@ -20,7 +20,7 @@ cffi==1.15.1
     # via cryptography
 charset-normalizer==3.2.0
     # via requests
-cryptography==41.0.3
+cryptography==41.0.4
     # via azure-storage-blob
 defusedxml==0.7.1
     # via
@@ -46,7 +46,7 @@ django-debug-toolbar==4.2.0
     # via -r requirements.in
 django-extensions==3.2.3
     # via -r requirements.in
-django-filter==23.2
+django-filter==23.3
     # via -r requirements.in
 django-import-export==3.3.1
     # via -r requirements.in
@@ -92,7 +92,7 @@ openpyxl==3.1.2
     # via tablib
 packaging==23.1
     # via drf-yasg
-pillow==9.5.0
+pillow==10.0.1
     # via -r requirements.in
 psycopg2-binary==2.9.7
     # via -r requirements.in
@@ -127,7 +127,7 @@ sqlparse==0.4.4
     #   django-debug-toolbar
 tablib[html,ods,xls,xlsx,yaml]==3.5.0
     # via django-import-export
-typing-extensions==4.7.1
+typing-extensions==4.8.0
     # via
     #   asgiref
     #   azure-core
@@ -136,7 +136,7 @@ unicodecsv==0.14.1
     # via djangorestframework-csv
 uritemplate==4.1.1
     # via drf-yasg
-urllib3==2.0.4
+urllib3==2.0.5
     # via
     #   requests
     #   sentry-sdk
