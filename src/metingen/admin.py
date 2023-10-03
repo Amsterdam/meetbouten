@@ -1,4 +1,3 @@
-from django.apps import apps
 from django.contrib import admin
 from import_export.admin import ImportExportMixin, ImportMixin
 from import_export.tmp_storages import CacheStorage
@@ -195,22 +194,20 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
     ordering = ("-meting__inwindatum",)
 
 
-def get_app_list(self, request):
-    app_dict = self._build_app_dict(request)
-    from django.contrib.admin.sites import site
+def get_app_list(self, request, app_label=None):
+    """
+    Return a sorted list of all the installed apps that have been
+    registered in this site.
+    """
+    app_dict = self._build_app_dict(request, app_label)
 
-    for app_name in app_dict.keys():
-        app = app_dict[app_name]
-        model_priority = {
-            model["object_name"]: getattr(
-                site._registry[apps.get_model(app_name, model["object_name"])],
-                "admin_priority",
-                20,
-            )
-            for model in app["models"]
-        }
-        app["models"].sort(key=lambda x: model_priority[x["object_name"]])
-        yield app
+    # Sort the apps alphabetically.
+    app_list = sorted(app_dict.values(), key=lambda x: x["name"].lower())
+
+    for app in app_list:
+        app["models"].sort(key=lambda x: getattr(x, "admin_priority", 20))
+
+    return app_list
 
 
 admin.AdminSite.get_app_list = get_app_list
