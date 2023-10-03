@@ -85,6 +85,7 @@ class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
         "c2",
         "c3",
     )
+    raw_id_fields = ("hoogtepunt",)
     ordering = ("hoogtepunt",)
     resource_class = MetingVerrijkingResource
 
@@ -128,6 +129,7 @@ class MetingControleAdmin(
         "wijze_inwinning",
         "metingtype",
     )
+    raw_id_fields = ("hoogtepunt",)
     actions = ["make_graph", "save_measurements"]
     tmp_storage_class = CacheStorage
     resource_class = MetingControleResource
@@ -174,6 +176,7 @@ class MetingHerzienAdmin(admin.ModelAdmin):
         "hoogte",
         "metingtype",
     )
+    raw_id_fields = ("hoogtepunt",)
     search_fields = ("hoogtepunt__nummer",)
     ordering = ("-inwindatum",)
     list_filter = ("inwindatum", "wijze_inwinning", "metingtype")
@@ -186,6 +189,7 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
         "hoogtepunt",
         "meting",
     )
+    raw_id_fields = ("hoogtepunt", "meting")
     search_fields = ("hoogtepunt__nummer", "meting__id")
     list_filter = ("meting__inwindatum",)
     ordering = ("-meting__inwindatum",)
