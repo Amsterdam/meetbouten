@@ -23,7 +23,7 @@ extends:
   parameters:
     name: meetbouten
     build:
-      analyzeImages:
+      producedImages:
       - opdrachten/meetbouten-dev
       - opdrachten/meetbouten-test
     dev:
