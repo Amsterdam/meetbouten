@@ -18,6 +18,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
+admin.site.site_header = "Meetbouten Admin"
+admin.site.index_title = " "
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path('status/', include('health.urls')),
