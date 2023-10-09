@@ -10,7 +10,7 @@ workloadIdentity: ee8c6413-1230-4cc2-9a39-8c8cd7b0d671  # Environment specific
 nodepool: cccopdrprd01  # Environment specific
 
 # Default host for the ingress resources
-host: meetbouten.amsterdam.nl  # App specific
+host: meetbouten.opdr.azure.amsterdam.nl  # App specific
 
 # Specify the keyvault that has the certificate
 secrets:
@@ -26,4 +26,4 @@ secrets:
 
 ingress:
   app:
-    className: nginx-external  # App specific
+    className: nginx-internal  # App specific
