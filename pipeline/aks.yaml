@@ -38,7 +38,7 @@ extends:
       pool: Opdrachten
       namespace: ns-ccc-opdr-acc-01-meetbouten
       kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-acc-01-meetbouten"
-    #prod:
-    #  pool: Opdrachten
-    #  namespace: ns-ccc-opdr-prd-01-meetbouten
-    #  kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-prd-01-meetbouten"
+    prod:
+      pool: Opdrachten
+      namespace: ns-ccc-opdr-prd-01-meetbouten
+      kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-prd-01-meetbouten"
