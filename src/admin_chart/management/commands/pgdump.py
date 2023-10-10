@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 from subprocess import Popen
 
 from django.conf import settings
@@ -10,8 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    file_name = "meetbouten.dump"
-    file_path = f"/src/media/pg_dump/{file_name}"
+    file_name = f"meetbouten-db-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.sql"
+    file_path = f"/tmp/pg_dump/{file_name}"
 
     def handle(self, *args, **options):
         database = settings.DATABASES["default"]
@@ -33,8 +34,9 @@ class Command(BaseCommand):
 
     def upload_to_blob(self):
         storage = get_storage_class()()
+        az_container_name = 'public'
         with open(self.file_path, "rb") as f:
-            storage.save(name=f"pg_dump/{self.file_name}", content=f)
+            storage.save(name=f"{az_container_name}/{self.file_name}", content=f)
         logger.info("PG dump uploaded to storage")
 
     def remove_dump(self):
