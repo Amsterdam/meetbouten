@@ -74,6 +74,35 @@ jobs:
         args:
           - "1"
 
+cronJobs:
+  # Make daily backups of the database for team GoB, so the data can be exposed to the public
+  pg-dump:
+    schedule: "0 0 * * *"
+    volumes:
+      - name: media
+        spec:
+          emptyDir: {}
+    resources:
+      requests:
+        cpu: 100m
+        memory: "128Mi"
+      limits:
+        cpu: 200m
+        memory: "256Mi"
+    containers:
+      - name: main
+        volumes:
+          - name: media
+            mountPath: /src/media
+        secrets:
+          - database
+          - vault
+        command:
+          - python
+          - manage.py
+          - pgdump
+
+
 deployments:
   app:
     selectorLabels:
@@ -91,6 +120,9 @@ deployments:
       - name: tmp
         spec:
           emptyDir: {}
+      - name: media  # TODO REMOVE
+        spec:
+          emptyDir: {}
     containers:
       - name: main
         secrets:
@@ -99,6 +131,8 @@ deployments:
         volumes:
           - name: tmp
             mountPath: /tmp
+          - name: media  # TODO REMOVE
+            mountPath: /src/media
         ports:
           - port: 8000
             name: http

@@ -40,6 +40,8 @@ USER root
 WORKDIR /app_install
 ADD requirements_dev.txt requirements_dev.txt
 RUN pip install -r requirements_dev.txt
+RUN mkdir /src/media/public -p \
+    && chmod 777 /src/media/public
 
 WORKDIR /src
 USER datapunt

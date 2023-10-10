@@ -11,36 +11,43 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    file_name = f"meetbouten-db-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.sql"
-    file_path = f"/tmp/pg_dump/{file_name}"
+    FILENAME_PREFIX = "meetbouten-db"
+    DIRECTORY = "/src/media/pg_dump"
+    AZ_CONTAINER_NAME = 'public'
 
     def handle(self, *args, **options):
         database = settings.DATABASES["default"]
-        self.start_dump(database)
-        self.upload_to_blob()
-        self.remove_dump()
+        filename = self._get_filename()
+        filepath = f"{self.DIRECTORY}/{filename}.sql"
+        blob_filepath = f"{self.AZ_CONTAINER_NAME}/{filename}.sql"
+        self.start_dump(database, filepath)
+        self.upload_to_blob(filepath, blob_filepath)
+        self.remove_dump(filepath)
 
-    def start_dump(self, database: dict):
+    def start_dump(self, database: dict, filepath: str):
         command = (
             f'pg_dump --host={database["HOST"]} '
             f'--dbname={database["NAME"]} '
             f'--username={database["USER"]} '
             f"--no-password "
-            f"--file={self.file_path}"
+            f"--file={filepath}"
         )
         proc = Popen(command, shell=True, env={"PGPASSWORD": str(database["PASSWORD"])})
         proc.wait()
         logger.info("dumping of the db was succesfull")
 
-    def upload_to_blob(self):
+    def upload_to_blob(self, filepath: str, blob_filepath: str):
         storage = get_storage_class()()
-        az_container_name = 'public'
-        with open(self.file_path, "rb") as f:
-            storage.save(name=f"{az_container_name}/{self.file_name}", content=f)
+        with open(filepath, "rb") as f:
+            storage.save(name=blob_filepath, content=f)
         logger.info("PG dump uploaded to storage")
 
-    def remove_dump(self):
+    def remove_dump(self, filepath: str):
         """
         Removes the files locally when processing is done
         """
-        os.remove(self.file_path)
+        os.remove(filepath)
+
+    def _get_filename(self):
+        file_name = f"{self.FILENAME_PREFIX}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
+        return file_name
