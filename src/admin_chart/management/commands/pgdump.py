@@ -27,7 +27,7 @@ class Command(BaseCommand):
             f"--no-password "
             f"--file={self.file_path}"
         )
-        proc = Popen(command, shell=True, env={"PGPASSWORD": database["PASSWORD"]})
+        proc = Popen(command, shell=True, env={"PGPASSWORD": str(database["PASSWORD"])})
         proc.wait()
         logger.info("dumping of the db was succesfull")
 
