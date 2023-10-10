@@ -1,14 +1,14 @@
-FROM python:3.10-buster as app
+FROM python:3.11-bookworm as app
 MAINTAINER datapunt@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1 \
     PIP_NO_CACHE_DIR=off
 
-RUN apt-get update \
+RUN  apt-get update \
  && apt-get dist-upgrade -y \
  && apt-get install --no-install-recommends -y \
         gdal-bin \
-        postgresql-client \
+        postgresql-client-15 \
  && pip install --upgrade pip \
  && pip install uwsgi \
  && useradd --user-group --system datapunt
