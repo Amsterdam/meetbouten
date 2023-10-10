@@ -23,6 +23,7 @@ secrets:
       database-host: meetbouten-o-jxi7uny3pxf.postgres.database.azure.com  # Environment specific
       database-name: main
       database-user: meetbouten-app-o  # Environment specific
+      azure-container: public
 
 ingress:
   app:
