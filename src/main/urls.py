@@ -23,4 +23,4 @@ urlpatterns = [
     path('login/', auth.oidc_login),
     path('oidc/', include('mozilla_django_oidc.urls')),
     path("", admin.site.urls),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

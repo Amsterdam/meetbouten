@@ -12,14 +12,16 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     FILENAME_PREFIX = "meetbouten-db"
-    DIRECTORY = "/src/media/pg_dump"
+    DIRECTORY = "/tmp/pg_dump"
+    AZ_CONTAINER_FOLDER_NAME = 'pg_dump'
 
     def handle(self, *args, **options):
         database = settings.DATABASES["default"]
         filename = self._get_filename()
-        filepath = f"{self.DIRECTORY}/{filename}"
+        filepath = f"{self.DIRECTORY}/{filename}.sql"
+        blob_filepath = f"{self.AZ_CONTAINER_FOLDER_NAME}/{filename}.sql"
         self.start_dump(database, filepath)
-        self.upload_to_blob(filepath, filename)
+        self.upload_to_blob(filepath, blob_filepath)
         self.remove_dump(filepath)
 
     def start_dump(self, database: dict, filepath: str):
@@ -47,5 +49,5 @@ class Command(BaseCommand):
         os.remove(filepath)
 
     def _get_filename(self):
-        file_name = f"{self.FILENAME_PREFIX}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}.sql"
+        file_name = f"{self.FILENAME_PREFIX}-{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
         return file_name

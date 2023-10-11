@@ -206,7 +206,6 @@ if DEBUG:
         "debug_toolbar.panels.profiling.ProfilingPanel",
     ]
 
-
 # AZURE
 AZURE_CONNECTION_STRING = os.getenv(
     "AZURE_CONNECTION_STRING"
@@ -214,7 +213,6 @@ AZURE_CONNECTION_STRING = os.getenv(
 AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
 if AZURE_CONNECTION_STRING:
     DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
-    STATICFILES_STORAGE = "storages.backends.azure_storage.AzureStorage"
 
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 

@@ -79,7 +79,7 @@ cronJobs:
   pg-dump:
     schedule: "0 0 * * *"
     volumes:
-      - name: media
+      - name: tmp
         spec:
           emptyDir: {}
     resources:
@@ -92,8 +92,8 @@ cronJobs:
     containers:
       - name: main
         volumes:
-          - name: media
-            mountPath: /src/media
+          - name: tmp
+            mountPath: /tmp
         secrets:
           - database
           - vault
@@ -120,9 +120,6 @@ deployments:
       - name: tmp
         spec:
           emptyDir: {}
-      - name: media  # TODO REMOVE
-        spec:
-          emptyDir: {}
     containers:
       - name: main
         secrets:
@@ -131,8 +128,6 @@ deployments:
         volumes:
           - name: tmp
             mountPath: /tmp
-          - name: media  # TODO REMOVE
-            mountPath: /src/media
         ports:
           - port: 8000
             name: http
