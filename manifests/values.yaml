@@ -31,7 +31,7 @@ secrets:
       - oidc-rp-client-id
       - oidc-rp-client-secret
       - applicationinsights-connection-string
-      - azure-blob-connection-string
+      - azure-connection-string
 
 jobs:
   migrate:
