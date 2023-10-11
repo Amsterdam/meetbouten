@@ -208,11 +208,11 @@ if DEBUG:
 
 
 # AZURE
-AZURE_BLOB_CONNECTION_STRING = os.getenv(
-    "AZURE_BLOB_CONNECTION_STRING"
+AZURE_CONNECTION_STRING = os.getenv(
+    "AZURE_CONNECTION_STRING"
 )  # Note: Key and variable name differ
 AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
-if AZURE_BLOB_CONNECTION_STRING:
+if AZURE_CONNECTION_STRING:
     DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
     STATICFILES_STORAGE = "storages.backends.azure_storage.AzureStorage"
 

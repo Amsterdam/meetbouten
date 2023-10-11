@@ -25,7 +25,7 @@ class TestPgdumpCommand:
     def test_pg_dump_upload(self):
         f = open(FILEPATH, "w")
         f.close()
-        blob_filepath = f"{Command.AZ_CONTAINER_NAME}/{Command.FILENAME_PREFIX}.sql"
+        blob_filepath = f"{Command.FILENAME_PREFIX}.sql"
         Command().upload_to_blob(FILEPATH, blob_filepath)
         assert os.path.isfile(f"/src/media/{blob_filepath}")
         os.remove(f"/src/media/{blob_filepath}")
