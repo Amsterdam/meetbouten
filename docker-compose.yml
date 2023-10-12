@@ -14,16 +14,15 @@ x-app: &base-app
   environment: &base-app-env
     SECRET_KEY: "insecure"
     DEBUG: "true"
-    AZURE_BLOB_CONNECTION_STRING: ""
-    AZURE_CONTAINER: ""
-    OIDC_BASE_URL: "https://login.microsoftonline.com/72fca1b1-2c2e-4376-a445-294d80196804"
+    OIDC_BASE_URL: "https://login.microsoftonline.com/d5fb6e62-00af-43de-8441-7919e753910a"
     OIDC_RP_CLIENT_ID:
     OIDC_RP_CLIENT_SECRET:
+    APPLICATIONINSIGHTS_CONNECTION_STRING:
   entrypoint: /deploy/wait-for-it.sh database:5432 --
 
 services:
   database:
-    image: amsterdam/postgres11
+    image: postgis/postgis:15-3.4
     ports:
       - 5432
     environment:
