@@ -21,8 +21,6 @@ COPY deploy /deploy
 
 WORKDIR /src
 COPY src .
-RUN mkdir /tmp/pg_dump -p \
-    && chmod 777 /tmp/pg_dump
 
 ARG SECRET_KEY=not-used
 ARG OIDC_RP_CLIENT_ID=not-used

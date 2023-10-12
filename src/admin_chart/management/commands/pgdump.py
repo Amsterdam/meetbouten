@@ -25,6 +25,7 @@ class Command(BaseCommand):
         self.remove_dump(filepath)
 
     def start_dump(self, database: dict, filepath: str):
+        os.makedirs("/tmp/pg_dump", exist_ok=True)
         command = (
             f'pg_dump --host={database["HOST"]} '
             f'--dbname={database["NAME"]} '
