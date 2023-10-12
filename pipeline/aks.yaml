@@ -39,13 +39,13 @@ extends:
       namespace: ns-ccc-opdr-ont-01-meetbouten
       kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-ont-01-meetbouten"
       preSteps:
-        - script: helm uninstall meetbouten -n ns-ccc-opdr-ont-01-meetbouten
+        - script: helm uninstall meetbouten -n ns-ccc-opdr-ont-01-meetbouten || true
     test:
       pool: Opdrachten
       namespace: ns-ccc-opdr-tst-01-meetbouten
       kubernetesServiceConnection: "SCN-K8S-ns-ccc-opdr-tst-01-meetbouten"
       preSteps:
-        - script: helm uninstall meetbouten -n ns-ccc-opdr-tst-01-meetbouten
+        - script: helm uninstall meetbouten -n ns-ccc-opdr-tst-01-meetbouten || true
     acc:
       pool: Opdrachten
       namespace: ns-ccc-opdr-acc-01-meetbouten
