@@ -1,8 +1,8 @@
 name: Opdrachten Team Dependabot
 
 on:
-  schedule: # Run the script every day at 6am UTC
-    - cron: "0 6 * * *"
+  schedule: # Run the script on the 1st and 15th of every month
+    - cron: '0 6 1,15 * *'
   workflow_dispatch:
 
 
