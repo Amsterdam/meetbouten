@@ -259,24 +259,24 @@ LOGGING = {
     },
     'loggers': {
         'metingen': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'handlers': ['console'],
-            'propagate': True,
+            'propagate': False,
         },
         'bouwblokken': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'handlers': ['console'],
-            'propagate': True,
+            'propagate': False,
         },
         'referentie_tabellen': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'handlers': ['console'],
-            'propagate': True,
+            'propagate': False,
         },
         'admin_chart': {
-            'level': 'WARNING',
+            'level': 'INFO',
             'handlers': ['console'],
-            'propagate': True,
+            'propagate': False,
         },
         'django': {
             'handlers': ['console'],
