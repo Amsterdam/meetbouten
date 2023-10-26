@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
+
 from . import auth
 
 urlpatterns = [
-    path('login/', auth.oidc_login),
-    path('oidc/', include('mozilla_django_oidc.urls')),
+    path("login/", auth.oidc_login),
+    path("oidc/", include("mozilla_django_oidc.urls")),
     path("", admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

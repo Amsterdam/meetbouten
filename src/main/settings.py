@@ -76,29 +76,29 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'mozilla_django_oidc.middleware.SessionRefresh'
+    "mozilla_django_oidc.middleware.SessionRefresh",
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'main.auth.OIDCAuthenticationBackend',
+    "main.auth.OIDCAuthenticationBackend",
 ]
 
 ## OpenId Connect settings ##
-LOGIN_URL = 'oidc_authentication_init'
+LOGIN_URL = "oidc_authentication_init"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
-LOGIN_REDIRECT_URL_FAILURE = '/static/403.html'
+LOGIN_REDIRECT_URL_FAILURE = "/static/403.html"
 
-OIDC_BASE_URL = os.getenv('OIDC_BASE_URL')
-OIDC_RP_CLIENT_ID = os.getenv('OIDC_RP_CLIENT_ID')
-OIDC_RP_CLIENT_SECRET = os.getenv('OIDC_RP_CLIENT_SECRET')
-OIDC_OP_AUTHORIZATION_ENDPOINT = f'{OIDC_BASE_URL}/oauth2/v2.0/authorize'
-OIDC_OP_TOKEN_ENDPOINT = f'{OIDC_BASE_URL}/oauth2/v2.0/token'
-OIDC_OP_USER_ENDPOINT = 'https://graph.microsoft.com/oidc/userinfo'
-OIDC_OP_JWKS_ENDPOINT = f'{OIDC_BASE_URL}/discovery/v2.0/keys'
-OIDC_OP_LOGOUT_ENDPOINT = f'{OIDC_BASE_URL}/oauth2/v2.0/logout'
-OIDC_RP_SIGN_ALGO = 'RS256'
-OIDC_AUTH_REQUEST_EXTRA_PARAMS = {'prompt': 'select_account'}
+OIDC_BASE_URL = os.getenv("OIDC_BASE_URL")
+OIDC_RP_CLIENT_ID = os.getenv("OIDC_RP_CLIENT_ID")
+OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET")
+OIDC_OP_AUTHORIZATION_ENDPOINT = f"{OIDC_BASE_URL}/oauth2/v2.0/authorize"
+OIDC_OP_TOKEN_ENDPOINT = f"{OIDC_BASE_URL}/oauth2/v2.0/token"
+OIDC_OP_USER_ENDPOINT = "https://graph.microsoft.com/oidc/userinfo"
+OIDC_OP_JWKS_ENDPOINT = f"{OIDC_BASE_URL}/discovery/v2.0/keys"
+OIDC_OP_LOGOUT_ENDPOINT = f"{OIDC_BASE_URL}/oauth2/v2.0/logout"
+OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_AUTH_REQUEST_EXTRA_PARAMS = {"prompt": "select_account"}
 
 ROOT_URLCONF = "main.urls"
 
@@ -133,11 +133,11 @@ DATABASE_NAME = os.getenv("DATABASE_NAME", "meetbouten")
 DATABASE_USER = os.getenv("DATABASE_USER", "meetbouten")
 DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD", "insecure")
 DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
-DATABASE_OPTIONS = {'sslmode': 'allow', 'connect_timeout': 5}
+DATABASE_OPTIONS = {"sslmode": "allow", "connect_timeout": 5}
 
-if 'azure.com' in DATABASE_HOST:
+if "azure.com" in DATABASE_HOST:
     DATABASE_PASSWORD = azure.auth.db_password
-    DATABASE_OPTIONS['sslmode'] = 'require'
+    DATABASE_OPTIONS["sslmode"] = "require"
 
 DATABASES = {
     "default": {
@@ -148,7 +148,7 @@ DATABASES = {
         "HOST": DATABASE_HOST,
         "CONN_MAX_AGE": 60 * 5,
         "PORT": DATABASE_PORT,
-        'OPTIONS': DATABASE_OPTIONS,
+        "OPTIONS": DATABASE_OPTIONS,
     },
 }
 
@@ -237,143 +237,143 @@ LEAFLET_CONFIG = {
 
 # Django Logging settings
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'root': {
-        'level': 'INFO',
-        'handlers': ['console', 'sentry'],
+    "version": 1,
+    "disable_existing_loggers": False,
+    "root": {
+        "level": "INFO",
+        "handlers": ["console", "sentry"],
     },
-    'formatters': {
-        'console': {'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'},
+    "formatters": {
+        "console": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"},
     },
-    'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'console',
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "console",
         },
-        'sentry': {
-            'level': 'WARNING',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        "sentry": {
+            "level": "WARNING",
+            "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
         },
     },
-    'loggers': {
-        'metingen': {
-            'level': 'INFO',
-            'handlers': ['console'],
-            'propagate': False,
+    "loggers": {
+        "metingen": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'bouwblokken': {
-            'level': 'INFO',
-            'handlers': ['console'],
-            'propagate': False,
+        "bouwblokken": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'referentie_tabellen': {
-            'level': 'INFO',
-            'handlers': ['console'],
-            'propagate': False,
+        "referentie_tabellen": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'admin_chart': {
-            'level': 'INFO',
-            'handlers': ['console'],
-            'propagate': False,
+        "admin_chart": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv(
-                'DJANGO_LOG_LEVEL', 'ERROR' if 'pytest' in sys.argv[0] else 'INFO'
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv(
+                "DJANGO_LOG_LEVEL", "ERROR" if "pytest" in sys.argv[0] else "INFO"
             ).upper(),
-            'propagate': False,
+            "propagate": False,
         },
-        'raven': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
+        "raven": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'sentry.errors': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-            'propagate': False,
+        "sentry.errors": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
         },
         # Debug all batch jobs
-        'doc': {
-            'level': 'INFO',
-            'handlers': ['console'],
-            'propagate': False,
+        "doc": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'index': {
-            'level': 'INFO',
-            'handlers': ['console'],
-            'propagate': False,
+        "index": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'search': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
+        "search": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'elasticsearch': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
+        "elasticsearch": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'urllib3': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
+        "urllib3": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'factory.containers': {
-            'level': 'INFO',
-            'handlers': ['console'],
-            'propagate': False,
+        "factory.containers": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
         },
-        'factory.generate': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
+        "factory.generate": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
         },
-        'requests.packages.urllib3.connectionpool': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
+        "requests.packages.urllib3.connectionpool": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
         },
         # Log all unhandled exceptions
-        'django.request': {
-            'level': 'ERROR',
-            'handlers': ['console'],
-            'propagate': False,
+        "django.request": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
         },
     },
 }
 
 APPLICATIONINSIGHTS_CONNECTION_STRING = os.getenv(
-    'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    "APPLICATIONINSIGHTS_CONNECTION_STRING"
 )
 
 if APPLICATIONINSIGHTS_CONNECTION_STRING:
     OPENCENSUS = {
-        'TRACE': {
-            'SAMPLER': 'opencensus.trace.samplers.ProbabilitySampler(rate=1)',
-            'EXPORTER': f"opencensus.ext.azure.trace_exporter.AzureExporter(connection_string='{APPLICATIONINSIGHTS_CONNECTION_STRING}')",
+        "TRACE": {
+            "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
+            "EXPORTER": f"opencensus.ext.azure.trace_exporter.AzureExporter(connection_string='{APPLICATIONINSIGHTS_CONNECTION_STRING}')",
         }
     }
-    LOGGING['handlers']['azure'] = {
-        'level': "DEBUG",
-        'class': "opencensus.ext.azure.log_exporter.AzureLogHandler",
-        'connection_string': APPLICATIONINSIGHTS_CONNECTION_STRING,
+    LOGGING["handlers"]["azure"] = {
+        "level": "DEBUG",
+        "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
+        "connection_string": APPLICATIONINSIGHTS_CONNECTION_STRING,
     }
-    LOGGING['loggers']['django']['handlers'] = ['azure', 'console']
-    LOGGING['loggers']['metingen']['handlers'] = ['azure', 'console']
-    LOGGING['loggers']['bouwblokken']['handlers'] = ['azure', 'console']
-    LOGGING['loggers']['referentie_tabellen']['handlers'] = ['azure', 'console']
-    LOGGING['loggers']['admin_chart']['handlers'] = ['azure', 'console']
+    LOGGING["loggers"]["django"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["metingen"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["bouwblokken"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["referentie_tabellen"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["admin_chart"]["handlers"] = ["azure", "console"]
 
 # Sentry logging
-sentry_dsn = os.getenv('SENTRY_DSN')
+sentry_dsn = os.getenv("SENTRY_DSN")
 if sentry_dsn:
     sentry_sdk.init(
         dsn=sentry_dsn,
-        environment=os.getenv('ENVIRONMENT', 'dev'),
-        release=os.getenv('VERSION', 'dev'),
+        environment=os.getenv("ENVIRONMENT", "dev"),
+        release=os.getenv("VERSION", "dev"),
         integrations=[
             DjangoIntegration(),
         ],

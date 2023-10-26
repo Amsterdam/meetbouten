@@ -1,15 +1,12 @@
 import csv
 import logging
 import os
-from datetime import datetime
-from subprocess import Popen
+import shutil
+
 import django.apps
-import psycopg2
 from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.core.management.base import BaseCommand
-
-from django.db import connection
 from django.utils import timezone
 
 logger = logging.getLogger(__name__)
@@ -26,7 +23,6 @@ class Command(BaseCommand):
         self.remove_dump(tmp_dir)
         logger.info("Completed DB dump")
 
-
     def start_dump(self, tmp_dir: str):
         os.makedirs(tmp_dir, exist_ok=True)
         # give everybody read/write access to the directory
@@ -35,12 +31,14 @@ class Command(BaseCommand):
             # get models from app name
             for model in django.apps.apps.get_app_config(app).get_models():
                 qs = model.objects.all()
-                filepath = os.path.join(tmp_dir, f"{model.__name__}.csv")  # filename is model name
+                filepath = os.path.join(
+                    tmp_dir, f"{model.__name__}.csv"
+                )  # filename is model name
                 self._dump_model_to_csv(filepath, qs)
 
     def _dump_model_to_csv(self, filepath, qs):
         fieldnames = [field.name for field in qs.model._meta.fields]
-        with open(filepath, 'w') as csvfile:
+        with open(filepath, "w") as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(fieldnames)  # write queryset header
             for obj in qs:
@@ -59,6 +57,6 @@ class Command(BaseCommand):
         """
         Removes the files locally when processing is done
         """
-        for file in os.listdir(tmp_dir):
-            filepath = os.path.join(tmp_dir, file)
-            os.remove(filepath)
+        tmp_folders = os.listdir(tmp_dir)
+        for folder in tmp_folders:
+            shutil.rmtree(tmp_dir, folder)

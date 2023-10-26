@@ -5,7 +5,7 @@ from django.urls import reverse
 
 
 def oidc_login(request, **kwargs):
-    oidc_authentication_init = reverse('oidc_authentication_init')
+    oidc_authentication_init = reverse("oidc_authentication_init")
     redirect = f'{oidc_authentication_init}?next={request.GET.get("next", "")}'
     return HttpResponseRedirect(redirect)
 
@@ -16,8 +16,8 @@ class OIDCAuthenticationBackend(mozilla_django_oidc.auth.OIDCAuthenticationBacke
         return self.update_user(user, claims)
 
     def update_user(self, user, claims):
-        user.first_name = claims.get('given_name', '')
-        user.last_name = claims.get('family_name', '')
+        user.first_name = claims.get("given_name", "")
+        user.last_name = claims.get("family_name", "")
         user.save()
         self.update_groups(user, claims)
         return user
