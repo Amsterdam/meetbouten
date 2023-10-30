@@ -20,8 +20,10 @@ from django.urls import include, path
 
 from . import auth
 
-urlpatterns = [
-    path("login/", auth.oidc_login),
-    path("oidc/", include("mozilla_django_oidc.urls")),
-    path("", admin.site.urls),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += [
+        path("login/", auth.oidc_login),
+        path("oidc/", include("mozilla_django_oidc.urls")),
+        path("", admin.site.urls),
+    ]
