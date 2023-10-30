@@ -20,6 +20,8 @@ class TestPgdumpCommand:
         assert os.path.isdir(tmp_dir)
         assert mock_dump.called
 
+        shutil.rmtree(os.path.join(Command.TMP_DIRECTORY, "1980-01-01"))
+
     @pytest.mark.django_db
     def test_dump_model_csv(self):
         qs = Type.objects.all()
@@ -40,7 +42,7 @@ class TestPgdumpCommand:
         assert os.path.isfile(os.path.join(tmp_dir, file_name))
 
         Command().upload_to_blob(tmp_dir, folder_name)
-        stored_file = os.path.join(settings.MEDIA_ROOT, folder_name, file_name)
+        stored_file = os.path.join(settings.MEDIA_ROOT, 'pgdump', folder_name, file_name)
         assert os.path.isfile(stored_file)
         os.remove(stored_file)
 
@@ -58,7 +60,7 @@ class TestPgdumpCommand:
         call_command("pgdump")
         assert not os.listdir(Command.TMP_DIRECTORY)
 
-        folder = os.listdir(settings.MEDIA_ROOT)[0]
-        assert len(os.listdir(os.path.join(settings.MEDIA_ROOT, folder))) > 1
+        folder = os.listdir(os.path.join(settings.MEDIA_ROOT, 'pgdump'))[0]
+        assert len(os.listdir(os.path.join(settings.MEDIA_ROOT, 'pgdump', folder))) > 1
 
         cleanup(settings.MEDIA_ROOT)  # post cleanup

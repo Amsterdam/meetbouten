@@ -50,7 +50,7 @@ class Command(BaseCommand):
         for file in os.listdir(tmp_dir):
             filepath = os.path.join(tmp_dir, file)
             with open(filepath, "rb") as f:
-                storage.save(name=os.path.join(folder_name, file), content=f)
+                storage.save(name=os.path.join('pgdump', folder_name, file), content=f)
             logger.info(f"Successfully uploaded {filepath} to blob")
 
     def remove_dump(self, tmp_dir: str):

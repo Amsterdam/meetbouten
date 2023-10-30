@@ -21,6 +21,11 @@ secrets:
     type: keyvault
     tls: meetbouten
 
+  app:
+    type: opaque
+    secrets:
+      azure-container: django
+
   vault:
     type: keyvault
     annotations:
