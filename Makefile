@@ -127,3 +127,6 @@ fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
 init_kubectl:
 	$(call fn, migrate)
 	$(call fn, createsuperuser --noinput)
+
+pgdump: migrate
+	$(manage) pgdump
