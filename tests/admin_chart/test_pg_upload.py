@@ -22,9 +22,9 @@ class TestPgdumpCommand:
 
     @pytest.mark.django_db
     def test_dump_model_csv(self):
-        qs = Type.objects.all()
-        filepath = os.path.join("/tmp", "test.csv")
-        Command()._dump_model_to_csv(filepath, qs)
+        os.makedirs(Command.TMP_DIRECTORY, exist_ok=True)
+        filepath = Command()._dump_model_to_csv(Type)
+
         assert os.path.isfile(filepath)
         # check if file contains header and 10 rows
         with open(filepath, "r") as f:

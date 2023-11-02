@@ -7,6 +7,7 @@ import django.apps
 from django.conf import settings
 from django.core.files.storage import get_storage_class
 from django.core.management.base import BaseCommand
+from django.db import connection
 
 logger = logging.getLogger(__name__)
 
@@ -24,22 +25,23 @@ class Command(BaseCommand):
         os.makedirs(self.TMP_DIRECTORY, exist_ok=True)
         app_names = settings.LOCAL_APPS
         for app in app_names:
-            # get models from app name
             for model in django.apps.apps.get_app_config(app).get_models():
-                qs = model.objects.all()
-                filepath = os.path.join(
-                    self.TMP_DIRECTORY, f"{model.__name__}.csv"
-                )  # filename is model name
-                self._dump_model_to_csv(filepath, qs)
+                self._dump_model_to_csv(model)
 
-    def _dump_model_to_csv(self, filepath, qs):
-        fieldnames = [field.name for field in qs.model._meta.fields]
-        with open(filepath, "w") as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(fieldnames)  # write queryset header
-            for obj in qs:
-                writer.writerow([getattr(obj, name) for name in fieldnames])
+    def _dump_model_to_csv(self, model):
+        table_name = model._meta.db_table
+        filepath = os.path.join(
+            self.TMP_DIRECTORY, f"{table_name}.csv"
+        )  # filename is model name
+        with open(filepath, "w") as f:
+            # Write header
+            writer = csv.writer(f)
+            writer.writerow([field.name for field in model._meta.fields])
+            with connection.cursor() as cursor:
+                cursor.copy_to(file=f, table=table_name, sep=',')
+
         logger.info(f"Successfully dumped {filepath}")
+        return filepath
 
     def upload_to_blob(self):
         storage = OverwriteStorage()

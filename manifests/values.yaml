@@ -93,8 +93,8 @@ cronJobs:
         cpu: 100m
         memory: "256Mi"
       limits:
-        cpu: 500m
-        memory: "2Gi"
+        cpu: 200m
+        memory: "500Mi"
     containers:
       - name: main
         volumes:
