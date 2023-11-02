@@ -91,10 +91,10 @@ cronJobs:
     resources:
       requests:
         cpu: 100m
-        memory: "128Mi"
-      limits:
-        cpu: 200m
         memory: "256Mi"
+      limits:
+        cpu: 500m
+        memory: "2Gi"
     containers:
       - name: main
         volumes:
