@@ -14,13 +14,11 @@ from referentie_tabellen.referentie_waardes import types
 class TestPgdumpCommand:
     @patch("admin_chart.management.commands.pgdump.Command._dump_model_to_csv")
     def test_start_dump(self, mock_dump):
-        tmp_dir = os.path.join(Command.TMP_DIRECTORY, "1980-01-01", "test.csv")
-        Command().start_dump(tmp_dir)
-
-        assert os.path.isdir(tmp_dir)
+        Command().start_dump()
+        assert os.path.isdir(Command.TMP_DIRECTORY)
         assert mock_dump.called
 
-        shutil.rmtree(os.path.join(Command.TMP_DIRECTORY, "1980-01-01"))
+        shutil.rmtree(Command.TMP_DIRECTORY)
 
     @pytest.mark.django_db
     def test_dump_model_csv(self):
@@ -34,15 +32,13 @@ class TestPgdumpCommand:
         os.remove(filepath)
 
     def test_upload_to_blob(self):
-        folder_name = "01-01-1980"
+        os.makedirs(Command.TMP_DIRECTORY, exist_ok=True)
         file_name = "test.csv"
-        tmp_dir = os.path.join("/tmp", folder_name)
-        os.makedirs(tmp_dir)
-        open(os.path.join(tmp_dir, file_name), "w").close()
-        assert os.path.isfile(os.path.join(tmp_dir, file_name))
+        open(os.path.join(Command.TMP_DIRECTORY, file_name), "w").close()
+        assert os.path.isfile(os.path.join(Command.TMP_DIRECTORY, file_name))
 
-        Command().upload_to_blob(tmp_dir, folder_name)
-        stored_file = os.path.join(settings.MEDIA_ROOT, 'pgdump', folder_name, file_name)
+        Command().upload_to_blob()
+        stored_file = os.path.join(settings.MEDIA_ROOT, 'pgdump', file_name)
         assert os.path.isfile(stored_file)
         os.remove(stored_file)
 
@@ -51,16 +47,8 @@ class TestPgdumpCommand:
         """
         Check the whole happy flow
         """
-
-        def cleanup(path):
-            tmp_folders = os.listdir(path)
-            for folder in tmp_folders:
-                shutil.rmtree(os.path.join(path, folder))
-
         call_command("pgdump")
-        assert not os.listdir(Command.TMP_DIRECTORY)
 
-        folder = os.listdir(os.path.join(settings.MEDIA_ROOT, 'pgdump'))[0]
-        assert len(os.listdir(os.path.join(settings.MEDIA_ROOT, 'pgdump', folder))) > 1
-
-        cleanup(settings.MEDIA_ROOT)  # post cleanup
+        assert not os.path.isdir(Command.TMP_DIRECTORY)
+        assert len(os.listdir(os.path.join(settings.MEDIA_ROOT, 'pgdump'))) > 1
+        shutil.rmtree(os.path.join(settings.MEDIA_ROOT, 'pgdump'))  # post cleanup
