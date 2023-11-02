@@ -214,6 +214,8 @@ AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
 if AZURE_CONNECTION_STRING:
     DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
+
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 
 # Leaflet settings
