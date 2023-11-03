@@ -153,6 +153,8 @@ services:
 
 ingress:
   app:
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: 50m
     paths:
     - path: /
       service: app
