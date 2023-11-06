@@ -74,7 +74,9 @@ class Hoogtepunt(models.Model):
             else:
                 media_url = settings.MEDIA_URL
             return mark_safe(
-                f'<img src="{media_url}{self.picture}" width="50" height="50" />'
+                f'<a href="{media_url}{self.picture}" target="_blank">'
+                f'<img src="{media_url}{self.picture}" width="50" height="50"/>'
+                f'</a>'
             )
 
     picture_tag.short_description = "Picture"
