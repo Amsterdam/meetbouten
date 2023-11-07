@@ -12,6 +12,13 @@ secrets:
   certificate:
     enabled: false
 
+  database:
+    type: opaque
+    secrets:
+      database-host: database
+      database-name: postgres
+      database-user: postgres
+
 network:
   allow-ingress:
     enabled: false

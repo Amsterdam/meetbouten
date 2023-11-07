@@ -30,10 +30,10 @@ extends:
     name: meetbouten
     ${{ if ne(parameters.versionOverride, ' ') }}:
       version: ${{ parameters.versionOverride }}
-      build:
-        producedImages:
-        - opdrachten/meetbouten-dev
-        - opdrachten/meetbouten-test
+    build:
+      producedImages:
+      - opdrachten/meetbouten-dev
+      - opdrachten/meetbouten-test
     dev:
       pool: Opdrachten
       namespace: ns-ccc-opdr-ont-01-meetbouten
