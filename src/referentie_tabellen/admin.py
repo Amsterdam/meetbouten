@@ -3,49 +3,42 @@ from django.contrib import admin
 from .models import *
 
 
-@admin.register(WijzenInwinning)
-class StatusAdmin(admin.ModelAdmin):
-    list_display = ("omschrijving",)
+class ReferentieTabelAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
 
     def has_change_permission(self, request, obj=None):
         return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(WijzenInwinning)
+class StatusAdmin(ReferentieTabelAdmin):
+    list_display = ("omschrijving",)
 
 
 @admin.register(Type)
-class StatusAdmin(admin.ModelAdmin):
+class StatusAdmin(ReferentieTabelAdmin):
     list_display = ("omschrijving", "soort")
-
-    def has_change_permission(self, request, obj=None):
-        return False
 
 
 @admin.register(Status)
-class StatusAdmin(admin.ModelAdmin):
+class StatusAdmin(ReferentieTabelAdmin):
     list_display = ("omschrijving",)
-
-    def has_change_permission(self, request, obj=None):
-        return False
 
 
 @admin.register(Metingtype)
-class StatusAdmin(admin.ModelAdmin):
+class StatusAdmin(ReferentieTabelAdmin):
     list_display = ("omschrijving",)
-
-    def has_change_permission(self, request, obj=None):
-        return False
 
 
 @admin.register(Merk)
-class MerkAdmin(admin.ModelAdmin):
+class MerkAdmin(ReferentieTabelAdmin):
     list_display = ("omschrijving", "omschrijving_verkort")
-
-    def has_change_permission(self, request, obj=None):
-        return False
 
 
 @admin.register(Bron)
-class BronAdmin(admin.ModelAdmin):
+class BronAdmin(ReferentieTabelAdmin):
     list_display = ("omschrijving", "doel")
-
-    def has_change_permission(self, request, obj=None):
-        return False

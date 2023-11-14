@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count
 from import_export.admin import ImportExportMixin, ImportMixin
 from import_export.tmp_storages import CacheStorage
 from leaflet.admin import LeafletGeoAdminMixin
@@ -12,6 +13,31 @@ from .models import *
 from .resource import MetingControleResource, MetingVerrijkingResource
 
 
+class BouwblokListFilter(admin.SimpleListFilter):
+    title = "Als Kringpunt in Bouwblokken"
+    parameter_name = "bouwblokken"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("0", "Geen bouwblokken"),
+            ("1", "Een enkel bouwblok"),
+            ("more", "Meerdere bouwblokken"),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == "0":
+            return queryset.filter(kringpunt__isnull=True)
+        if self.value() == "1":
+            return queryset.annotate(kringpunt_count=Count("kringpunt")).filter(
+                kringpunt_count=1
+            )
+        if self.value() == "more":
+            return queryset.annotate(kringpunt_count=Count("kringpunt")).filter(
+                kringpunt_count__gt=1
+            )
+
+
+
 @admin.register(Hoogtepunt)
 class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     admin_priority = 1
@@ -19,20 +45,18 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     form = HoogtepuntForm
     modifiable = False  # Make the leaflet map read-only
     readonly_fields = ["nummer"]
+    search_fields = ("omschrijving", "nummer")
+    ordering = ("nummer",)
+    list_filter = ("vervaldatum", BouwblokListFilter, "status", "type")
     list_display = (
         "nummer",
         "type",
-        "agi_nummer",
-        "vervaldatum",
-        "omschrijving",
+        "get_bouwblokken",
         "merk",
-        "xmuur",
-        "ymuur",
-        "windr",
-        "sigmax",
-        "sigmay",
         "status",
-        "orde",
+        "get_hoogte",
+        "omschrijving",
+        "vervaldatum",
         "picture_tag",
     )
     fieldsets = (
@@ -69,6 +93,14 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
             },
         ),
     )
+
+    @admin.display(description='Kringpunt in bouwblokken')
+    def get_bouwblokken(self, obj):
+        return ", ".join([k.bouwblok.nummer for k in obj.kringpunt_set.all()])
+
+    @admin.display(description='Laatst gemeten hoogte')
+    def get_hoogte(self, obj):
+        return obj.metingherzien_set.latest().hoogte
 
 
 @admin.register(MetingVerrijking)
@@ -178,7 +210,7 @@ class MetingHerzienAdmin(admin.ModelAdmin):
     raw_id_fields = ("hoogtepunt",)
     search_fields = ("hoogtepunt__nummer",)
     ordering = ("-inwindatum",)
-    list_filter = ("inwindatum", "wijze_inwinning", "metingtype")
+    list_filter = ("inwindatum", "wijze_inwinning", "metingtype", "bron")
 
 
 @admin.register(MetRefPuntenHerz)
@@ -187,11 +219,19 @@ class MetingReferentiepuntAdmin(admin.ModelAdmin):
     list_display = (
         "hoogtepunt",
         "meting",
+        "get_bouwblok"
     )
     raw_id_fields = ("hoogtepunt", "meting")
     search_fields = ("hoogtepunt__nummer", "meting__id")
     list_filter = ("meting__inwindatum",)
     ordering = ("-meting__inwindatum",)
+
+    @admin.display(description='Meting op Bouwblok')
+    def get_bouwblok(self, obj):
+        kringpunten = obj.meting.hoogtepunt.kringpunt_set.all()
+        if kringpunten:
+            return ", ".join([k.bouwblok.nummer for k in kringpunten])
+        return None
 
 
 def get_app_list(self, request, app_label=None):

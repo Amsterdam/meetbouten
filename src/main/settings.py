@@ -340,7 +340,7 @@ LOGGING = {
         },
         # Log all unhandled exceptions
         "django.request": {
-            "level": "ERROR",
+            "level": "DEBUG" if DEBUG else "INFO",
             "handlers": ["console"],
             "propagate": False,
         },

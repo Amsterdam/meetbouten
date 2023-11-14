@@ -85,13 +85,6 @@ trivy: 								## Detect image vulnerabilities
 	$(dc) build --no-cache app
 	trivy image --ignore-unfixed localhost:5000/opdrachten/meetbouten:latest
 
-deploy_kubectl: build
-	$(dc) push dev
-	kubectl apply -f manifests
-
-undeploy_kubectl:
-	kubectl delete -f manifests
-
 diff:
 	@python3 ./deploy/diff.py
 
