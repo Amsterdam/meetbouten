@@ -6,7 +6,7 @@ from .models import *
 
 @admin.register(Bouwblok)
 class BouwblokAdmin(admin.ModelAdmin, BouwblokActionsMixin):
-    actions = ["get_report"]
+    actions = ["get_report_bouwblok", "get_report_history"]
     list_display = ("nummer", "aansluitpunt", "controlepunt", "opmerking")
     raw_id_fields = ("aansluitpunt", "controlepunt")
 

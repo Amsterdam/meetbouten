@@ -38,17 +38,17 @@ class ControleActionsMixin:
                 request, "Het metingtype wordt niet herkend", level=messages.ERROR
             )
 
-        response = self.generate_bouwblok_report(queryset, request)
+        response = self.generate_bouwblok_history_report(queryset, request)
         queryset.delete()
         return response
 
-    def generate_bouwblok_report(self, queryset, request):
+    def generate_bouwblok_history_report(self, queryset, request):
         hoogtepunten = set([m.hoogtepunt for m in queryset])
         bouwblok_nrs = Kringpunt.objects.filter(
             hoogtepunt__in=hoogtepunten
         ).values_list("bouwblok", flat=True)
         bouwblokken = Bouwblok.objects.filter(nummer__in=bouwblok_nrs)
-        response = BouwblokActionsMixin().get_report(request, bouwblokken)
+        response = BouwblokActionsMixin().get_report_history(request, bouwblokken)
         self.message_user(
             request,
             f"{len(queryset)} metingen opgeslagen voor {len(bouwblokken)} bouwblokken",

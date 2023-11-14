@@ -4,7 +4,7 @@ from decimal import Decimal
 import pytest
 
 from bouwblokken.admin import BouwblokAdmin
-from bouwblokken.factories import BouwblokFactory, KringpuntFactory
+from bouwblokken.factories import BouwblokFactory, KringpuntFactory, ReferentiepuntFactory
 from bouwblokken.models import Bouwblok, Kringpunt
 from metingen.factories import HoogtepuntFactory, MetingHerzFactory
 from metingen.models import Hoogtepunt, MetingHerzien
@@ -12,29 +12,42 @@ from metingen.models import Hoogtepunt, MetingHerzien
 
 @pytest.mark.django_db
 class TestBouwblokActionsMixin:
-    def test_get_report_empty(self):
-        self._assert_get_report()
+    @pytest.mark.parametrize("report", ["get_report_history", "get_report_bouwblok"])
+    def test_get_report_empty(self, report):
+        self._assert_get_report(report)
 
-    def test_get_report_no_metingen(self):
+    @pytest.mark.parametrize("report", ["get_report_history", "get_report_bouwblok"])
+    def test_get_report_no_metingen(self, report):
         HoogtepuntFactory()
         BouwblokFactory()
-        self._assert_get_report()
+        self._assert_get_report(report)
 
-    def test_get_report_with_meting(self):
+    @pytest.mark.parametrize("report", ["get_report_history", "get_report_bouwblok"])
+    def test_get_report_with_meting(self, report):
         MetingHerzFactory(hoogtepunt=HoogtepuntFactory())
         BouwblokFactory()
-        self._assert_get_report()
+        self._assert_get_report(report)
 
-    def test_get_report_with_metingen(self):
+    @pytest.mark.parametrize("report", ["get_report_history", "get_report_bouwblok"])
+    def test_get_report_with_multiple_metingen(self, report):
         hoogtepunten = HoogtepuntFactory.create_batch(2)
         BouwblokFactory()
         for hp in hoogtepunten:
             MetingHerzFactory.create_batch(3, hoogtepunt=hp)
-        self._assert_get_report()
+        self._assert_get_report(report)
 
-    def _assert_get_report(self):
+    def test_get_bouwblok_report(self):
+        HoogtepuntFactory()
+        bouwblok = BouwblokFactory()
+        ReferentiepuntFactory.create_batch(2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory())
+        ReferentiepuntFactory.create_batch(2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory())
+        KringpuntFactory.create_batch(2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory())
+
+        self._assert_get_report("get_report_bouwblok")
+
+    def _assert_get_report(self, action_name):
         admin = BouwblokAdmin(Bouwblok, None)
-        response = admin.get_report(None, Bouwblok.objects.all())
+        response = getattr(admin, action_name)(None, Bouwblok.objects.all())
 
         assert response.status_code == 200
         assert (
