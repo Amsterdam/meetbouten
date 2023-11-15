@@ -14,7 +14,7 @@ from .resource import MetingControleResource, MetingVerrijkingResource
 
 
 class BouwblokListFilter(admin.SimpleListFilter):
-    title = "Als Kringpunt in Bouwblokken"
+    title = "Aantal Bouwblokken"
     parameter_name = "bouwblokken"
 
     def lookups(self, request, model_admin):

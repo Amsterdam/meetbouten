@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from .actions import BouwblokActionsMixin
 from .models import *
 
@@ -7,18 +6,10 @@ from .models import *
 @admin.register(Bouwblok)
 class BouwblokAdmin(admin.ModelAdmin, BouwblokActionsMixin):
     actions = ["get_report_bouwblok", "get_report_history"]
-    list_display = ("nummer", "aansluitpunt", "controlepunt", "opmerking", "get_referentiepunten", "get_kringpunten")
+    list_display = ("nummer", "aansluitpunt", "controlepunt", "opmerking")
     raw_id_fields = ("aansluitpunt", "controlepunt")
     search_fields = ("nummer", "aansluitpunt__nummer", "controlepunt__nummer", "opmerking")
     ordering = ("nummer",)
-
-    @admin.display(description='Referentiepunten')
-    def get_referentiepunten(self, obj):
-        return ", ".join([p.hoogtepunt.nummer for p in obj.referentiepunt_set.all()])
-
-    @admin.display(description='Kringpunten')
-    def get_kringpunten(self, obj):
-        return ", ".join([p.hoogtepunt.nummer for p in obj.kringpunt_set.all()])
 
 @admin.register(Referentiepunt)
 class ReferentiepuntAdmin(admin.ModelAdmin):
