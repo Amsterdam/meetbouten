@@ -7,6 +7,7 @@ jobs:
 ingress:
   app:
     tls: null
+    className: nginx
 
 secrets:
   certificate:

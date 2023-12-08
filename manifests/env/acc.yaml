@@ -26,4 +26,6 @@ secrets:
 
 ingress:
   app:
-    className: nginx-internal  # App specific
+    enabled: true
+  app-motiv:
+    host: acc.meetbouten.amsterdam.nl
