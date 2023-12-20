@@ -8,14 +8,6 @@ dc = docker compose
 run = $(dc) run --rm
 manage = $(run) dev python manage.py
 
-ENVIRONMENT ?= local
-VERSION ?= latest
-HELM_ARGS = manifests/chart \
-	-f manifests/values.yaml \
-	-f manifests/env/${ENVIRONMENT}.yaml \
-	--set image.tag=${VERSION} \
-	--set image.registry=${REGISTRY}
-
 help:                               ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
@@ -102,17 +94,6 @@ lintfix:                            ## Execute lint fixes
 lint:                               ## Execute lint checks
 	$(run) test autoflake /src --check --recursive --quiet
 	$(run) test isort --diff --check /src/$(APP) /tests/$(APP)
-
-deploy: manifests
-	helm upgrade --install meetbouten $(HELM_ARGS) $(ARGS)
-
-manifests:
-	helm template meetbouten $(HELM_ARGS) $(ARGS)
-
-update-chart:
-	rm -rf manifests/chart
-	git clone --branch 1.8.0 --depth 1 git@github.com:Amsterdam/helm-application.git manifests/chart
-	rm -rf manifests/chart/.git
 
 # Initiate migrations and superuser on kubernetes pod
 # Function called "fn", which references the Django commands $1
