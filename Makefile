@@ -64,8 +64,8 @@ clean:                              ## Clean docker stuff
 env:                                ## Print current env
 	env | sort
 
-load_csv: migrate                     ## Load csv file into database
-	$(manage) load_csv_data
+load_dump:
+	PGPASSWORD=insecure psql "host=localhost dbname=meetbouten user=meetbouten" < local/meetbouten.dump
 
 test_data: migrate
 	$(manage) generate_test_data --num 100
@@ -102,5 +102,5 @@ init_kubectl:
 	$(call fn, migrate)
 	$(call fn, createsuperuser --noinput)
 
-pgdump: migrate
+pgdump:
 	$(manage) pgdump

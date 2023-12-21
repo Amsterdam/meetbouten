@@ -34,11 +34,9 @@ class Command(BaseCommand):
             self.TMP_DIRECTORY, f"{table_name}.csv"
         )  # filename is model name
         with open(filepath, "w") as f:
-            # Write header
-            writer = csv.writer(f)
-            writer.writerow([field.name for field in model._meta.fields])
+            sql = f"COPY (SELECT * FROM {model._meta.db_table}) TO STDOUT WITH CSV HEADER"
             with connection.cursor() as cursor:
-                cursor.copy_to(file=f, table=table_name, sep=',')
+                cursor.copy_expert(sql, f)
 
         logger.info(f"Successfully dumped {filepath}")
         return filepath
