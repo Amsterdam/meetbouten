@@ -3,3 +3,36 @@ profile = "black"
 
 [tool.autoflake]
 ignore_init_module_imports = true
+
+[tool.pytest.ini_options]
+markers = [
+    "migration: mark a test as a migration test"
+]
+addopts = "-s --cov --cov-config /pyproject.toml --disable-pytest-warnings"
+#; -ra       show extra test summary about (a)ll tests except those that passed
+#; -s        disable all capturing of stdout/stderr
+#; --ff      failed first
+#; --nf      new first
+#; --cov     show coverage
+#; --cov-config=pytest.ini       set coverage config to this file
+
+[tool.coverage.run]
+source = ["/src"]
+omit = [
+    "/tests",
+    "/src/main/wsgi.py",
+    "/src/main/settings.py",
+    "/src/main/urls.py",
+    "/src/manage.py",
+    "/src/main/asgi.py",
+    "/src/main/auth.py",
+    "*/apps.py",
+    "*/models.py",
+    "/src/metingen/management/commands/load_csv_data.py",
+]
+
+[tool.coverage.report]
+fail_under = 80
+skip_covered = true
+show_missing = true
+sort = "Cover"

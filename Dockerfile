@@ -1,14 +1,14 @@
-FROM python:3.10-buster as app
+FROM python:3.11-bookworm as app
 MAINTAINER datapunt@amsterdam.nl
 
 ENV PYTHONUNBUFFERED 1 \
     PIP_NO_CACHE_DIR=off
 
-RUN apt-get update \
+RUN  apt-get update \
  && apt-get dist-upgrade -y \
  && apt-get install --no-install-recommends -y \
         gdal-bin \
-        postgresql-client \
+        postgresql-client-15 \
  && pip install --upgrade pip \
  && pip install uwsgi \
  && useradd --user-group --system datapunt
@@ -21,12 +21,10 @@ COPY deploy /deploy
 
 WORKDIR /src
 COPY src .
-RUN mkdir media/pg_dump -p \
-    && chmod 777 media/pg_dump
 
 ARG SECRET_KEY=not-used
-ARG AUTHORIZATION_TOKEN=not-used
-ARG GET_AUTHORIZATION_TOKEN=not-used
+ARG OIDC_RP_CLIENT_ID=not-used
+ARG OIDC_RP_CLIENT_SECRET=not-used
 RUN python manage.py collectstatic --no-input
 
 USER datapunt
@@ -40,6 +38,8 @@ USER root
 WORKDIR /app_install
 ADD requirements_dev.txt requirements_dev.txt
 RUN pip install -r requirements_dev.txt
+RUN mkdir /src/media -p \
+    && chmod 777 /src/media
 
 WORKDIR /src
 USER datapunt

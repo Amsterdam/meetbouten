@@ -10,9 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
+from .azure_settings import Azure
+
+azure = Azure()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -35,21 +43,27 @@ IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "import_export",
-    "referentie_tabellen",
-    "metingen",
-    "bouwblokken",
-    "admin_chart",
     "django.contrib.gis",
-    "leaflet",
 ]
+THIRD_PARTY_APPS = [
+    "import_export",
+    "leaflet",
+    "mozilla_django_oidc",  # load after django.contrib.auth!
+]
+LOCAL_APPS = [
+    "admin_chart",
+    "bouwblokken",
+    "metingen",
+    "referentie_tabellen",
+]
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")
 MEDIA_URL = "/media/"
@@ -62,7 +76,29 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "mozilla_django_oidc.middleware.SessionRefresh",
 ]
+
+AUTHENTICATION_BACKENDS = [
+    "main.auth.OIDCAuthenticationBackend",
+]
+
+## OpenId Connect settings ##
+LOGIN_URL = "oidc_authentication_init"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL_FAILURE = "/static/403.html"
+
+OIDC_BASE_URL = os.getenv("OIDC_BASE_URL")
+OIDC_RP_CLIENT_ID = os.getenv("OIDC_RP_CLIENT_ID")
+OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET")
+OIDC_OP_AUTHORIZATION_ENDPOINT = f"{OIDC_BASE_URL}/oauth2/v2.0/authorize"
+OIDC_OP_TOKEN_ENDPOINT = f"{OIDC_BASE_URL}/oauth2/v2.0/token"
+OIDC_OP_USER_ENDPOINT = "https://graph.microsoft.com/oidc/userinfo"
+OIDC_OP_JWKS_ENDPOINT = f"{OIDC_BASE_URL}/discovery/v2.0/keys"
+OIDC_OP_LOGOUT_ENDPOINT = f"{OIDC_BASE_URL}/oauth2/v2.0/logout"
+OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_AUTH_REQUEST_EXTRA_PARAMS = {"prompt": "select_account"}
 
 ROOT_URLCONF = "main.urls"
 
@@ -92,15 +128,27 @@ WSGI_APPLICATION = "main.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DATABASE_HOST = os.getenv("DATABASE_HOST", "database")
+DATABASE_NAME = os.getenv("DATABASE_NAME", "meetbouten")
+DATABASE_USER = os.getenv("DATABASE_USER", "meetbouten")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD", "insecure")
+DATABASE_PORT = os.getenv("DATABASE_PORT", "5432")
+DATABASE_OPTIONS = {"sslmode": "allow", "connect_timeout": 5}
+
+if "azure.com" in DATABASE_HOST:
+    DATABASE_PASSWORD = azure.auth.db_password
+    DATABASE_OPTIONS["sslmode"] = "require"
+
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "NAME": os.getenv("DATABASE_NAME", "meetbouten"),
-        "USER": os.getenv("DATABASE_USER", "meetbouten"),
-        "PASSWORD": os.getenv("DATABASE_PASSWORD", "insecure"),
-        "HOST": os.getenv("DATABASE_HOST", "database"),
-        "CONN_MAX_AGE": 20,
-        "PORT": os.getenv("DATABASE_PORT", "5432"),
+        "NAME": DATABASE_NAME,
+        "USER": DATABASE_USER,
+        "PASSWORD": DATABASE_PASSWORD,
+        "HOST": DATABASE_HOST,
+        "CONN_MAX_AGE": 60 * 5,
+        "PORT": DATABASE_PORT,
+        "OPTIONS": DATABASE_OPTIONS,
     },
 }
 
@@ -158,39 +206,15 @@ if DEBUG:
         "debug_toolbar.panels.profiling.ProfilingPanel",
     ]
 
-
-REST_FRAMEWORK = dict(
-    PAGE_SIZE=20,
-    MAX_PAGINATE_BY=100,
-    UNAUTHENTICATED_USER={},
-    UNAUTHENTICATED_TOKEN={},
-    DEFAULT_AUTHENTICATION_CLASSES=(
-        "contrib.rest_framework.authentication.SimpleTokenAuthentication",
-    ),
-    DEFAULT_PAGINATION_CLASS="datapunt_api.pagination.HALPagination",
-    DEFAULT_RENDERER_CLASSES=(
-        "rest_framework.renderers.JSONRenderer",
-        "datapunt_api.renderers.PaginatedCSVRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-        "rest_framework_xml.renderers.XMLRenderer",  # must be lowest!
-    ),
-    DEFAULT_FILTER_BACKENDS=(
-        # 'rest_framework.filters.SearchFilter',
-        # 'rest_framework.filters.OrderingFilter',
-        "django_filters.rest_framework.DjangoFilterBackend",
-    ),
-    DEFAULT_VERSIONING_CLASS="rest_framework.versioning.NamespaceVersioning",
-    COERCE_DECIMAL_TO_STRING=True,
-)
-
 # AZURE
 AZURE_CONNECTION_STRING = os.getenv(
-    "AZURE_BLOB_CONNECTION_STRING"
+    "AZURE_CONNECTION_STRING"
 )  # Note: Key and variable name differ
 AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
 if AZURE_CONNECTION_STRING:
     DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
-    STATICFILES_STORAGE = "storages.backends.azure_storage.AzureStorage"
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
 
 IMPORT_EXPORT_SKIP_ADMIN_CONFIRM = True
 
@@ -212,3 +236,154 @@ LEAFLET_CONFIG = {
     "SPATIAL_EXTENT": (3.2, 50.75, 7.22, 53.7),
     "RESET_VIEW": False,
 }
+
+# Django Logging settings
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "root": {
+        "level": "INFO",
+        "handlers": ["console", "sentry"],
+    },
+    "formatters": {
+        "console": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"},
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "console",
+        },
+        "sentry": {
+            "level": "WARNING",
+            "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
+        },
+    },
+    "loggers": {
+        "metingen": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "bouwblokken": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "referentie_tabellen": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "admin_chart": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv(
+                "DJANGO_LOG_LEVEL", "ERROR" if "pytest" in sys.argv[0] else "INFO"
+            ).upper(),
+            "propagate": False,
+        },
+        "raven": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "sentry.errors": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        # Debug all batch jobs
+        "doc": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "index": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "search": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "elasticsearch": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "urllib3": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "factory.containers": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "factory.generate": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "requests.packages.urllib3.connectionpool": {
+            "level": "ERROR",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        # Log all unhandled exceptions
+        "django.request": {
+            "level": "DEBUG" if DEBUG else "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+    },
+}
+
+APPLICATIONINSIGHTS_CONNECTION_STRING = os.getenv(
+    "APPLICATIONINSIGHTS_CONNECTION_STRING"
+)
+
+if APPLICATIONINSIGHTS_CONNECTION_STRING:
+    OPENCENSUS = {
+        "TRACE": {
+            "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
+            "EXPORTER": f"opencensus.ext.azure.trace_exporter.AzureExporter(connection_string='{APPLICATIONINSIGHTS_CONNECTION_STRING}')",
+        }
+    }
+    LOGGING["handlers"]["azure"] = {
+        "level": "DEBUG",
+        "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
+        "connection_string": APPLICATIONINSIGHTS_CONNECTION_STRING,
+    }
+    LOGGING["loggers"]["django"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["metingen"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["bouwblokken"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["referentie_tabellen"]["handlers"] = ["azure", "console"]
+    LOGGING["loggers"]["admin_chart"]["handlers"] = ["azure", "console"]
+
+# Sentry logging
+sentry_dsn = os.getenv("SENTRY_DSN")
+if sentry_dsn:
+    sentry_sdk.init(
+        dsn=sentry_dsn,
+        environment=os.getenv("ENVIRONMENT", "dev"),
+        release=os.getenv("VERSION", "dev"),
+        integrations=[
+            DjangoIntegration(),
+        ],
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )

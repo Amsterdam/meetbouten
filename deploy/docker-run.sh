@@ -5,4 +5,4 @@ set -e   # stop on any error
 set -x   # print all commands to the terminal
 
 # run uwsgi
-exec uwsgi --ini main/uwsgi.ini
+exec uwsgi --ini /src/main/uwsgi.ini

@@ -36,13 +36,13 @@ class Hoogtepunt(models.Model):
     nummer = models.CharField(
         max_length=8, blank=True, validators=[MinLengthValidator(8)]
     )
-    type = models.ForeignKey(Type, on_delete=models.CASCADE, db_column="typ_nummer")
+    type = models.ForeignKey(Type, on_delete=models.PROTECT, db_column="typ_nummer")
     agi_nummer = models.CharField(
         max_length=8, null=True, blank=True
     )  # Rijkswaterstaat nummer
     vervaldatum = models.DateField(null=True, blank=True)
     omschrijving = models.CharField(max_length=256, blank=True, null=True)
-    merk = models.ForeignKey(Merk, on_delete=models.CASCADE, db_column="mer_id")
+    merk = models.ForeignKey(Merk, on_delete=models.PROTECT, db_column="mer_id")
     xmuur = models.FloatField(blank=True, null=True)
     ymuur = models.FloatField(blank=True, null=True)
     windr = models.CharField(
@@ -52,7 +52,7 @@ class Hoogtepunt(models.Model):
     sigmay = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     geom = PointField(srid=28992, blank=True)
     status = models.ForeignKey(
-        Status, on_delete=models.CASCADE, db_column="sta_id", null=True, blank=True
+        Status, on_delete=models.PROTECT, db_column="sta_id", null=True, blank=True
     )
     orde = models.IntegerField(null=True, blank=True)
     picture = models.ImageField(upload_to="meetbouten_pictures/", blank=True, null=True)
@@ -67,8 +67,16 @@ class Hoogtepunt(models.Model):
 
     def picture_tag(self):
         if self.picture:
+            if settings.AZURE_CONNECTION_STRING:
+                STORAGE_ACCOUNT_NAME = settings.AZURE_CONNECTION_STRING.split(";")[1].split("=")[1]
+                AZURE_CUSTOM_DOMAIN = f'{STORAGE_ACCOUNT_NAME}.blob.core.windows.net'
+                media_url = f'https://{AZURE_CUSTOM_DOMAIN}/{settings.AZURE_CONTAINER}/'
+            else:
+                media_url = settings.MEDIA_URL
             return mark_safe(
-                f'<img src="{settings.MEDIA_URL}{self.picture}" width="50" height="50" />'
+                f'<a href="{media_url}{self.picture}" target="_blank">'
+                f'<img src="{media_url}{self.picture}" width="50" height="50"/>'
+                f'</a>'
             )
 
     picture_tag.short_description = "Picture"
@@ -80,17 +88,17 @@ class Grondslagpunt(models.Model):
 
     id = models.AutoField(primary_key=True)
     nummer = models.CharField(max_length=8)
-    type = models.ForeignKey(Type, on_delete=models.CASCADE, db_column="typ_nummer")
+    type = models.ForeignKey(Type, on_delete=models.PROTECT, db_column="typ_nummer")
     rdnummer = models.DecimalField(
         max_digits=8, decimal_places=0, null=True, blank=True
     )
     orde = models.DecimalField(max_digits=1, decimal_places=0)
     inwindatum = models.DateField()
     vervaldatum = models.DateField(null=True, blank=True)
-    bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
+    bron = models.ForeignKey(Bron, on_delete=models.PROTECT, db_column="bro_id")
     wijze_inwinning = models.ForeignKey(
         WijzenInwinning,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
         db_column="wijze_inwinning",
@@ -113,21 +121,21 @@ class Meting(models.Model):
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id"
+        Hoogtepunt, on_delete=models.PROTECT, db_column="hoo_id"
     )
     inwindatum = models.DateField()
     wijze_inwinning = models.ForeignKey(
         WijzenInwinning,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
         db_column="wijze_inwinning",
     )
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
-    bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
+    bron = models.ForeignKey(Bron, on_delete=models.PROTECT, db_column="bro_id")
     hoogte = models.DecimalField(max_digits=6, decimal_places=4)
     metingtype = models.ForeignKey(
-        Metingtype, on_delete=models.CASCADE, db_column="mty_id"
+        Metingtype, on_delete=models.PROTECT, db_column="mty_id"
     )
 
     def __str__(self):
@@ -140,24 +148,25 @@ class MetingHerzien(models.Model):
     class Meta:
         verbose_name = "Meting"
         verbose_name_plural = "Metingen"
+        get_latest_by = "inwindatum"
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id"
+        Hoogtepunt, on_delete=models.PROTECT, db_column="hoo_id"
     )
     inwindatum = models.DateField()
     wijze_inwinning = models.ForeignKey(
         WijzenInwinning,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
         db_column="wijze_inwinning",
     )
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
-    bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
+    bron = models.ForeignKey(Bron, on_delete=models.PROTECT, db_column="bro_id")
     hoogte = models.DecimalField(max_digits=6, decimal_places=4)
     metingtype = models.ForeignKey(
-        Metingtype, on_delete=models.CASCADE, db_column="mty_id"
+        Metingtype, on_delete=models.PROTECT, db_column="mty_id"
     )
 
     def __str__(self):
@@ -171,9 +180,9 @@ class MetingReferentiepunt(models.Model):
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id"
+        Hoogtepunt, on_delete=models.PROTECT, db_column="hoo_id"
     )
-    meting = models.ForeignKey(Meting, on_delete=models.CASCADE, db_column="met_id")
+    meting = models.ForeignKey(Meting, on_delete=models.PROTECT, db_column="met_id")
 
 
 class MetRefPuntenHerz(models.Model):
@@ -183,10 +192,10 @@ class MetRefPuntenHerz(models.Model):
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id"
+        Hoogtepunt, on_delete=models.PROTECT, db_column="hoo_id"
     )
     meting = models.ForeignKey(
-        MetingHerzien, on_delete=models.CASCADE, db_column="met_id"
+        MetingHerzien, on_delete=models.PROTECT, db_column="met_id"
     )
 
 
@@ -197,21 +206,21 @@ class MetingControle(models.Model):
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id"
+        Hoogtepunt, on_delete=models.PROTECT, db_column="hoo_id"
     )
     inwindatum = models.DateField()
     sigmaz = models.DecimalField(max_digits=6, decimal_places=4, null=True, blank=True)
     hoogte = models.DecimalField(max_digits=6, decimal_places=4)
     wijze_inwinning = models.ForeignKey(
         WijzenInwinning,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         null=True,
         blank=True,
         db_column="wijze_inwinning",
     )
-    bron = models.ForeignKey(Bron, on_delete=models.CASCADE, db_column="bro_id")
+    bron = models.ForeignKey(Bron, on_delete=models.PROTECT, db_column="bro_id")
     metingtype = models.ForeignKey(
-        Metingtype, on_delete=models.CASCADE, db_column="mty_id"
+        Metingtype, on_delete=models.PROTECT, db_column="mty_id"
     )
 
     def __str__(self):
@@ -225,7 +234,7 @@ class MetingVerrijking(models.Model):
 
     id = models.AutoField(primary_key=True)
     hoogtepunt = models.ForeignKey(
-        Hoogtepunt, on_delete=models.CASCADE, db_column="hoo_id"
+        Hoogtepunt, on_delete=models.PROTECT, db_column="hoo_id"
     )
     x = models.DecimalField(max_digits=10, decimal_places=4)
     y = models.DecimalField(max_digits=10, decimal_places=4)

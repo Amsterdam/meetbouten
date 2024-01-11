@@ -2,13 +2,11 @@
 # https://git.datapunt.amsterdam.nl/Datapunt/python-best-practices/blob/master/dependency_management/
 #
 # VERSION = 2020.01.29
-.PHONY: app
+.PHONY: app manifests
 
 dc = docker compose
 run = $(dc) run --rm
 manage = $(run) dev python manage.py
-
-PYTHON = python3
 
 help:                               ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -39,7 +37,7 @@ urls:                               ## Show available URLs
 build:                              ## Build docker image
 	$(dc) build
 
-push: build                         ## Push docker image to registry
+push:                               ## Push docker image to registry
 	$(dc) push
 
 app:                                ## Run app
@@ -66,8 +64,8 @@ clean:                              ## Clean docker stuff
 env:                                ## Print current env
 	env | sort
 
-load_csv: migrate                     ## Load csv file into database
-	$(manage) load_csv_data
+load_dump:
+	PGPASSWORD=insecure psql "host=localhost dbname=meetbouten user=meetbouten" < local/meetbouten.dump
 
 test_data: migrate
 	$(manage) generate_test_data --num 100
@@ -77,14 +75,7 @@ test_cor_load: migrate
 
 trivy: 								## Detect image vulnerabilities
 	$(dc) build --no-cache app
-	trivy image --ignore-unfixed docker-registry.data.amsterdam.nl/datapunt/meetbouten
-
-deploy_kubectl: build
-	$(dc) push dev
-	kubectl apply -f manifests
-
-undeploy_kubectl:
-	kubectl delete -f manifests
+	trivy image --ignore-unfixed localhost:5000/opdrachten/meetbouten:latest
 
 diff:
 	@python3 ./deploy/diff.py
@@ -103,3 +94,13 @@ lintfix:                            ## Execute lint fixes
 lint:                               ## Execute lint checks
 	$(run) test autoflake /src --check --recursive --quiet
 	$(run) test isort --diff --check /src/$(APP) /tests/$(APP)
+
+# Initiate migrations and superuser on kubernetes pod
+# Function called "fn", which references the Django commands $1
+fn = kubectl exec -it deployment/app -- /bin/bash -c "python manage.py $(1)"
+init_kubectl:
+	$(call fn, migrate)
+	$(call fn, createsuperuser --noinput)
+
+pgdump:
+	$(manage) pgdump
