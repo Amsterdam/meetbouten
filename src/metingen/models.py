@@ -68,15 +68,17 @@ class Hoogtepunt(models.Model):
     def picture_tag(self):
         if self.picture:
             if settings.AZURE_CONNECTION_STRING:
-                STORAGE_ACCOUNT_NAME = settings.AZURE_CONNECTION_STRING.split(";")[1].split("=")[1]
-                AZURE_CUSTOM_DOMAIN = f'{STORAGE_ACCOUNT_NAME}.blob.core.windows.net'
-                media_url = f'https://{AZURE_CUSTOM_DOMAIN}/{settings.AZURE_CONTAINER}/'
+                STORAGE_ACCOUNT_NAME = settings.AZURE_CONNECTION_STRING.split(";")[
+                    1
+                ].split("=")[1]
+                AZURE_CUSTOM_DOMAIN = f"{STORAGE_ACCOUNT_NAME}.blob.core.windows.net"
+                media_url = f"https://{AZURE_CUSTOM_DOMAIN}/{settings.AZURE_CONTAINER}/"
             else:
                 media_url = settings.MEDIA_URL
             return mark_safe(
                 f'<a href="{media_url}{self.picture}" target="_blank">'
                 f'<img src="{media_url}{self.picture}" width="50" height="50"/>'
-                f'</a>'
+                f"</a>"
             )
 
     picture_tag.short_description = "Picture"

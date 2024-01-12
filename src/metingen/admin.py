@@ -37,7 +37,6 @@ class BouwblokListFilter(admin.SimpleListFilter):
             )
 
 
-
 @admin.register(Hoogtepunt)
 class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     admin_priority = 1
@@ -94,11 +93,11 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
         ),
     )
 
-    @admin.display(description='Kringpunt in bouwblokken')
+    @admin.display(description="Kringpunt in bouwblokken")
     def get_bouwblokken(self, obj):
         return ", ".join([k.bouwblok.nummer for k in obj.kringpunt_set.all()])
 
-    @admin.display(description='Laatst gemeten hoogte')
+    @admin.display(description="Laatst gemeten hoogte")
     def get_hoogte(self, obj):
         return obj.metingherzien_set.latest().hoogte
 
@@ -216,17 +215,13 @@ class MetingHerzienAdmin(admin.ModelAdmin):
 @admin.register(MetRefPuntenHerz)
 class MetingReferentiepuntAdmin(admin.ModelAdmin):
     admin_priority = 5
-    list_display = (
-        "hoogtepunt",
-        "meting",
-        "get_bouwblok"
-    )
+    list_display = ("hoogtepunt", "meting", "get_bouwblok")
     raw_id_fields = ("hoogtepunt", "meting")
     search_fields = ("hoogtepunt__nummer", "meting__id")
     list_filter = ("meting__inwindatum",)
     ordering = ("-meting__inwindatum",)
 
-    @admin.display(description='Meting op Bouwblok')
+    @admin.display(description="Meting op Bouwblok")
     def get_bouwblok(self, obj):
         kringpunten = obj.meting.hoogtepunt.kringpunt_set.all()
         if kringpunten:

@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from typing import Any, Union
 
@@ -6,10 +7,8 @@ from django.db.models import Prefetch
 from django.http import HttpResponse
 from openpyxl import Workbook
 
-from bouwblokken.models import Kringpunt, Referentiepunt, Controlepunt, Bouwblok
+from bouwblokken.models import Bouwblok, Controlepunt, Kringpunt, Referentiepunt
 from metingen.models import Hoogtepunt, MetingHerzien
-
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +27,9 @@ class BouwblokActionsMixin:
             self.create_bouwblok_sheet(data, ws)
 
         filename = f"rapportage-bouwblok-{datetime.today().strftime('%Y-%m-%d')}.xlsx"
-        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
         response["Content-Disposition"] = f"attachment; filename={filename}"
         wb.save(response)
         return response
@@ -41,17 +42,26 @@ class BouwblokActionsMixin:
             "controlepunt": bouwblok.controlepunt_id,
             "referentiepunten": self._get_punten_data(
                 Referentiepunt.objects.filter(bouwblok=bouwblok).prefetch_related(
-                    Prefetch("hoogtepunt", queryset=Hoogtepunt.objects.prefetch_related("status"))
+                    Prefetch(
+                        "hoogtepunt",
+                        queryset=Hoogtepunt.objects.prefetch_related("status"),
+                    )
                 )
             ),
             "controlepunten": self._get_punten_data(
                 Controlepunt.objects.filter(bouwblok=bouwblok).prefetch_related(
-                    Prefetch("hoogtepunt", queryset=Hoogtepunt.objects.prefetch_related("status"))
+                    Prefetch(
+                        "hoogtepunt",
+                        queryset=Hoogtepunt.objects.prefetch_related("status"),
+                    )
                 )
             ),
             "kringpunten": self._get_punten_data(
                 Kringpunt.objects.filter(bouwblok=bouwblok).prefetch_related(
-                    Prefetch("hoogtepunt", queryset=Hoogtepunt.objects.prefetch_related("status"))
+                    Prefetch(
+                        "hoogtepunt",
+                        queryset=Hoogtepunt.objects.prefetch_related("status"),
+                    )
                 )
             ),
         }
@@ -63,9 +73,15 @@ class BouwblokActionsMixin:
         for punt in punten:
             hoogtepunt = punt.hoogtepunt
             if hoogtepunt.status.omschrijving == "Vervallen":
-                logger.warning(f"Vervallen hoogtepunt {hoogtepunt} in bouwblok {punt.bouwblok}")
+                logger.warning(
+                    f"Vervallen hoogtepunt {hoogtepunt} in bouwblok {punt.bouwblok}"
+                )
                 continue
-            last_meting = MetingHerzien.objects.filter(hoogtepunt=hoogtepunt).order_by("inwindatum").last()
+            last_meting = (
+                MetingHerzien.objects.filter(hoogtepunt=hoogtepunt)
+                .order_by("inwindatum")
+                .last()
+            )
             data.append(
                 dict(
                     Nummer=punt.id,
@@ -88,10 +104,26 @@ class BouwblokActionsMixin:
         ws.append(["Contr.punt blok", data["controlepunt"]])
         ws.append([""])
 
-        ws.append(["Nummer", "Omschrijving", "Merk", "Xmuur", "Ymuur", "Windrichting", "Hoogte", "Datum", "Hoogtepunt"])
+        ws.append(
+            [
+                "Nummer",
+                "Omschrijving",
+                "Merk",
+                "Xmuur",
+                "Ymuur",
+                "Windrichting",
+                "Hoogte",
+                "Datum",
+                "Hoogtepunt",
+            ]
+        )
         ws.append(["Referentiepunten:"])
         if len(data["referentiepunten"]) < 2:
-            ws.append([f"BOUWBLOK {data['block']} HEEFT TE WEINIG OF HEEFT VERVALLEN REFERENTIEPUNTEN"])
+            ws.append(
+                [
+                    f"BOUWBLOK {data['block']} HEEFT TE WEINIG OF HEEFT VERVALLEN REFERENTIEPUNTEN"
+                ]
+            )
         [ws.append(list(row.values())) for row in data["referentiepunten"]]
         ws.append([""])
         ws.append(["Controlepunten:"])
@@ -123,7 +155,9 @@ class BouwblokActionsMixin:
         ws.append(field_names)
         [ws.append(row) for row in data]
 
-        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
         response["Content-Disposition"] = f"attachment; filename={filename}"
         wb.save(response)
         return response
@@ -135,7 +169,9 @@ class BouwblokActionsMixin:
                 id__in=Kringpunt.objects.filter(bouwblok=bouwblok).values("hoogtepunt")
             ).order_by("nummer")
             for hoogtepunt in hoogtepunten:
-                metingen = MetingHerzien.objects.filter(hoogtepunt=hoogtepunt.id).order_by("inwindatum")
+                metingen = MetingHerzien.objects.filter(
+                    hoogtepunt=hoogtepunt.id
+                ).order_by("inwindatum")
                 start_meting = metingen.first()
                 if not start_meting:
                     continue

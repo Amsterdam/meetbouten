@@ -4,7 +4,11 @@ from decimal import Decimal
 import pytest
 
 from bouwblokken.admin import BouwblokAdmin
-from bouwblokken.factories import BouwblokFactory, KringpuntFactory, ReferentiepuntFactory
+from bouwblokken.factories import (
+    BouwblokFactory,
+    KringpuntFactory,
+    ReferentiepuntFactory,
+)
 from bouwblokken.models import Bouwblok, Kringpunt
 from metingen.factories import HoogtepuntFactory, MetingHerzFactory
 from metingen.models import Hoogtepunt, MetingHerzien
@@ -39,9 +43,15 @@ class TestBouwblokActionsMixin:
     def test_get_bouwblok_report(self):
         HoogtepuntFactory()
         bouwblok = BouwblokFactory()
-        ReferentiepuntFactory.create_batch(2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory())
-        ReferentiepuntFactory.create_batch(2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory())
-        KringpuntFactory.create_batch(2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory())
+        ReferentiepuntFactory.create_batch(
+            2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory()
+        )
+        ReferentiepuntFactory.create_batch(
+            2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory()
+        )
+        KringpuntFactory.create_batch(
+            2, bouwblok=bouwblok, hoogtepunt=HoogtepuntFactory()
+        )
 
         self._assert_get_report("get_report_bouwblok")
 
