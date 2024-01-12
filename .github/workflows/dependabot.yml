@@ -14,11 +14,9 @@ jobs:
     with:
       check_diff: true
       slack_channel: 'opdrachten-dependabot'
-      timetell_code: 21127
-      acceptance_pipeline: "https://ci.secure.amsterdam.nl/job/Opdrachten/job/Quotumtool/job/Quotumtool/job/main/"
-      production_pipeline: "https://ci.secure.amsterdam.nl/job/Opdrachten/job/Quotumtool/job/Quotumtool/view/tags/"
-      acceptance_urls: "https://acc.api.secure.amsterdam.nl/vergunningen/quota/kameromzettingen/dashboard/ \n
-      https://acc.api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
-      production_urls: "https://api.secure.amsterdam.nl/vergunningen/quota/kameromzettingen/dashboard/ \n
-      https://api.secure.amsterdam.nl/vergunningen/quota/bb/dashboard/"
+      timetell_code: 0000
+      acceptance_pipeline: "https://dev.azure.com/CloudCompetenceCenter/Opdrachten/_build?definitionId=2067"
+      production_pipeline: "https://dev.azure.com/CloudCompetenceCenter/Opdrachten/_build?definitionId=2067"
+      acceptance_urls: "https://acc.meetbouten.amsterdam.nl/"
+      production_urls: "https://meetbouten.amsterdam.nl/"
 
