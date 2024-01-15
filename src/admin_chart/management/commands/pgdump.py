@@ -1,4 +1,3 @@
-import csv
 import logging
 import os
 import shutil
@@ -34,7 +33,9 @@ class Command(BaseCommand):
             self.TMP_DIRECTORY, f"{table_name}.csv"
         )  # filename is model name
         with open(filepath, "w") as f:
-            sql = f"COPY (SELECT * FROM {model._meta.db_table}) TO STDOUT WITH CSV HEADER"
+            sql = (
+                f"COPY (SELECT * FROM {model._meta.db_table}) TO STDOUT WITH CSV HEADER"
+            )
             with connection.cursor() as cursor:
                 cursor.copy_expert(sql, f)
 
@@ -46,7 +47,7 @@ class Command(BaseCommand):
         for file in os.listdir(self.TMP_DIRECTORY):
             filepath = os.path.join(self.TMP_DIRECTORY, file)
             with open(filepath, "rb") as f:
-                storage.save(name=os.path.join('pgdump', file), content=f)
+                storage.save(name=os.path.join("pgdump", file), content=f)
             logger.info(f"Successfully uploaded {filepath} to blob")
 
     def remove_dump(self):
@@ -57,7 +58,8 @@ class Command(BaseCommand):
 
 
 class OverwriteStorage(get_storage_class()):
-    """ Overwrite existing files instead of using hash postfixes. """
+    """Overwrite existing files instead of using hash postfixes."""
+
     def _save(self, name, content):
         self.delete(name)
         return super(OverwriteStorage, self)._save(name, content)

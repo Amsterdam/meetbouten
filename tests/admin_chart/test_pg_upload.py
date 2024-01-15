@@ -38,7 +38,7 @@ class TestPgdumpCommand:
         assert os.path.isfile(os.path.join(Command.TMP_DIRECTORY, file_name))
 
         Command().upload_to_blob()
-        stored_file = os.path.join(settings.MEDIA_ROOT, 'pgdump', file_name)
+        stored_file = os.path.join(settings.MEDIA_ROOT, "pgdump", file_name)
         assert os.path.isfile(stored_file)
         os.remove(stored_file)
 
@@ -50,5 +50,5 @@ class TestPgdumpCommand:
         call_command("pgdump")
 
         assert not os.path.isdir(Command.TMP_DIRECTORY)
-        assert len(os.listdir(os.path.join(settings.MEDIA_ROOT, 'pgdump'))) > 1
-        shutil.rmtree(os.path.join(settings.MEDIA_ROOT, 'pgdump'))  # post cleanup
+        assert len(os.listdir(os.path.join(settings.MEDIA_ROOT, "pgdump"))) > 1
+        shutil.rmtree(os.path.join(settings.MEDIA_ROOT, "pgdump"))  # post cleanup
