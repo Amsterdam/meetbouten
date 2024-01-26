@@ -33,8 +33,11 @@ class Command(BaseCommand):
             self.TMP_DIRECTORY, f"{table_name}.csv"
         )  # filename is model name
         with open(filepath, "w") as f:
+            select_query = f"SELECT * FROM {table_name}"
+            if table_name in ["metingen_grondslagpunt", "metingen_hoogtepunt"]:
+                select_query = f"SELECT *, ST_AsText(geom) AS geom_wkt FROM {table_name}"
             sql = (
-                f"COPY (SELECT * FROM {model._meta.db_table}) TO STDOUT WITH CSV HEADER"
+                f"COPY ({select_query}) TO STDOUT WITH CSV HEADER"
             )
             with connection.cursor() as cursor:
                 cursor.copy_expert(sql, f)
