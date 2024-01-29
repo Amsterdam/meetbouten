@@ -11,7 +11,7 @@ pip-tools
 # Useful extra developer packages:
 factory-boy
 locust
-pytest
+pytest<8  # Pytest 8 is breaking with an error on /root/__init__.py
 pytest-cov
 pytest-django
 pytest-factoryboy
