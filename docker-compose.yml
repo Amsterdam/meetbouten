@@ -10,7 +10,7 @@ x-app: &base-app
     - ./src:/src
     - ./tests:/tests
     - ./deploy:/deploy
-    - /src/media
+    - /tmp:/src/media
   environment: &base-app-env
     SECRET_KEY: "insecure"
     DEBUG: "true"
