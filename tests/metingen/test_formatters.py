@@ -6,7 +6,7 @@ from metingen.formatters import CORFormatClass, Meting, TCOFormatClass
 @pytest.fixture
 def metingencor():
     return [
-        Meting("10389004", x=None, y=None, hoogte=0.7349, sigmaz=0.0003),
+        Meting("10389004", x=None, y=None, hoogte=-0.7349, sigmaz=0.0003),
         Meting("10381107", x=None, y=None, hoogte=1.4840, sigmaz=0.0004),
         Meting("10381105", x=None, y=None, hoogte=1.5192, sigmaz=0.0004),
         Meting("10381104", x=None, y=None, hoogte=1.5331, sigmaz=0.0004),
