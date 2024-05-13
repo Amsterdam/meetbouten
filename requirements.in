@@ -8,6 +8,7 @@ pytz
 requests
 pillow
 setuptools
+openpyxl
 
 # Django
 Django
