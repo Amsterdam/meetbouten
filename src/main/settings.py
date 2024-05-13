@@ -17,10 +17,6 @@ from .azure_settings import Azure
 
 azure = Azure()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -243,7 +239,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "root": {
         "level": "INFO",
-        "handlers": ["console", "sentry"],
+        "handlers": ["console"],
     },
     "formatters": {
         "console": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"},
@@ -253,11 +249,7 @@ LOGGING = {
             "level": "INFO",
             "class": "logging.StreamHandler",
             "formatter": "console",
-        },
-        "sentry": {
-            "level": "WARNING",
-            "class": "raven.contrib.django.raven_compat.handlers.SentryHandler",
-        },
+        }
     },
     "loggers": {
         "metingen": {
@@ -285,16 +277,6 @@ LOGGING = {
             "level": os.getenv(
                 "DJANGO_LOG_LEVEL", "ERROR" if "pytest" in sys.argv[0] else "INFO"
             ).upper(),
-            "propagate": False,
-        },
-        "raven": {
-            "level": "DEBUG",
-            "handlers": ["console"],
-            "propagate": False,
-        },
-        "sentry.errors": {
-            "level": "DEBUG",
-            "handlers": ["console"],
             "propagate": False,
         },
         # Debug all batch jobs
@@ -368,22 +350,3 @@ if APPLICATIONINSIGHTS_CONNECTION_STRING:
     LOGGING["loggers"]["bouwblokken"]["handlers"] = ["azure", "console"]
     LOGGING["loggers"]["referentie_tabellen"]["handlers"] = ["azure", "console"]
     LOGGING["loggers"]["admin_chart"]["handlers"] = ["azure", "console"]
-
-# Sentry logging
-sentry_dsn = os.getenv("SENTRY_DSN")
-if sentry_dsn:
-    sentry_sdk.init(
-        dsn=sentry_dsn,
-        environment=os.getenv("ENVIRONMENT", "dev"),
-        release=os.getenv("VERSION", "dev"),
-        integrations=[
-            DjangoIntegration(),
-        ],
-        # Set traces_sample_rate to 1.0 to capture 100%
-        # of transactions for performance monitoring.
-        # We recommend adjusting this value in production.
-        traces_sample_rate=1.0,
-        # If you wish to associate users to errors (assuming you are using
-        # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=True,
-    )
