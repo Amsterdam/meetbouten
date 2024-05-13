@@ -60,7 +60,7 @@ class BaseformatsClass:
 
         def clean_z(z):
             # Remove all non-numeric characters
-            return re.sub("[^.0-9]", "", z)
+            return re.sub("[^-.0-9]", "", z)
 
         if format == "cor":
             hoogtepunt, x, y, z, *_, sigmaz = values

@@ -13,6 +13,8 @@ import os
 import sys
 from pathlib import Path
 
+from azure.identity import WorkloadIdentityCredential
+
 from .azure_settings import Azure
 
 azure = Azure()
@@ -202,13 +204,30 @@ if DEBUG:
         "debug_toolbar.panels.profiling.ProfilingPanel",
     ]
 
-# AZURE
-AZURE_CONNECTION_STRING = os.getenv(
-    "AZURE_CONNECTION_STRING"
-)  # Note: Key and variable name differ
-AZURE_CONTAINER = os.getenv("AZURE_CONTAINER")
-if AZURE_CONNECTION_STRING:
-    DEFAULT_FILE_STORAGE = "storages.backends.azure_storage.AzureStorage"
+STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+
+# Azure Storageaccount settings
+if os.getenv("AZURE_FEDERATED_TOKEN_FILE"):
+    credential = WorkloadIdentityCredential()
+    STORAGE_AZURE = {
+        "default": {
+            "BACKEND": "storages.backends.azure_storage.AzureStorage",
+            "OPTIONS": {
+                "token_credential": credential,
+                "account_name": os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
+                "azure_container": os.getenv("AZURE_CONTAINER"),
+            },
+        },
+    }
+    STORAGES |= STORAGE_AZURE #update storages with storage_azure
+
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
 
