@@ -16,7 +16,7 @@ django-datetime-utc
 django-filter
 django-extensions
 django-debug-toolbar
-django-import-export>=3.0.1
+django-import-export==3.3.9
 django-leaflet
 djangorestframework-xml
 django-storages[azure]

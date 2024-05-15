@@ -4,7 +4,7 @@ import shutil
 
 import django.apps
 from django.conf import settings
-from django.core.files.storage import get_storage_class
+from django.core.files.storage import DefaultStorage
 from django.core.management.base import BaseCommand
 from django.db import connection
 
@@ -50,7 +50,7 @@ class Command(BaseCommand):
         for file in os.listdir(self.TMP_DIRECTORY):
             filepath = os.path.join(self.TMP_DIRECTORY, file)
             with open(filepath, "rb") as f:
-                storage.save(name=os.path.join("pgdump", file), content=f)
+                storage.save_without_postfix(name=os.path.join("pgdump", file), content=f)
             logger.info(f"Successfully uploaded {filepath} to blob")
 
     def remove_dump(self):
@@ -60,12 +60,13 @@ class Command(BaseCommand):
         shutil.rmtree(self.TMP_DIRECTORY)
 
 
-class OverwriteStorage(get_storage_class()):
+class OverwriteStorage(DefaultStorage):
     """Overwrite existing files instead of using hash postfixes."""
 
-    def _save(self, name, content):
-        self.delete(name)
-        return super(OverwriteStorage, self)._save(name, content)
+    def save_without_postfix(self, name, content):
+        if self.exists(name):
+            self.delete(name)
+        return self.save(name, content)
 
     def get_available_name(self, name, max_length=None):
         return name
