@@ -588,9 +588,7 @@ colorama==0.4.6
 configargparse==1.7
     # via locust
 coverage[toml]==7.5.1
-    # via
-    #   coverage
-    #   pytest-cov
+    # via pytest-cov
 cryptography==42.0.7
     # via
     #   -r ./requirements.txt
@@ -659,9 +657,7 @@ django-import-export==3.3.9
 django-leaflet==0.30.0
     # via -r ./requirements.txt
 django-storages[azure]==1.14.3
-    # via
-    #   -r ./requirements.txt
-    #   django-storages
+    # via -r ./requirements.txt
 djangorestframework==3.15.1
     # via
     #   -r ./requirements.txt
@@ -845,7 +841,6 @@ msal[broker]==1.28.0
     #   azure-cli-core
     #   azure-datalake-store
     #   azure-identity
-    #   msal
     #   msal-extensions
 msal-extensions==1.2.0b1
     # via
@@ -976,7 +971,7 @@ pkginfo==1.10.0
     # via
     #   -r ./requirements.txt
     #   azure-cli-core
-platformdirs==4.2.1
+platformdirs==4.2.2
     # via black
 pluggy==1.5.0
     # via pytest
@@ -1046,7 +1041,6 @@ pyjwt[crypto]==2.8.0
     #   azure-cli-core
     #   msal
     #   pygithub
-    #   pyjwt
 pynacl==1.5.0
     # via
     #   -r ./requirements.txt
@@ -1118,7 +1112,6 @@ requests[socks]==2.31.0
     #   opencensus-ext-azure
     #   opencensus-ext-requests
     #   pygithub
-    #   requests
     #   requests-oauthlib
 requests-oauthlib==2.0.0
     # via
@@ -1163,7 +1156,6 @@ tablib[html,ods,xls,xlsx,yaml]==3.5.0
     # via
     #   -r ./requirements.txt
     #   django-import-export
-    #   tablib
 tabulate==0.9.0
     # via
     #   -r ./requirements.txt
