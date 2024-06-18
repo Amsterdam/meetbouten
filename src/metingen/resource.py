@@ -26,11 +26,11 @@ class MetingControleResource(ModelResource):
         exclude = ("id",)
         use_bulk = True
 
-    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
-        if not dry_run:
+    def before_import(self, dataset, **kwargs):
+        if not kwargs['dry_run']:
             truncate(MetingControle)
 
-    def before_import_row(self, row, row_number=None, **kwargs):
+    def before_import_row(self, row, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
             error = ObjectDoesNotExist(
                 f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
@@ -63,11 +63,11 @@ class MetingVerrijkingResource(ModelResource):
         import_id_fields = ("hoogtepunt",)
         exclude = "id"
 
-    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
-        if not dry_run:
+    def before_import(self, dataset, **kwargs):
+        if not kwargs['dry_run']:
             truncate(MetingVerrijking)
 
-    def before_import_row(self, row, row_number=None, **kwargs):
+    def before_import_row(self, row, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
             error = ObjectDoesNotExist(
                 f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
@@ -102,9 +102,9 @@ def truncate(model):
     truncate db table and restart AutoField primary_key for import
 
     use as follows:
-    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+    def before_import(self, dataset, **kwargs):
         # truncate table before import when dry_run = False
-        if not dry_run:
+        if not kwargs['dry_run']:
             truncate(modelobject)
     """
 
