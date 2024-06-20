@@ -8,8 +8,8 @@ from .models import Hoogtepunt, MetingControle, MetingHerzien, MetingVerrijking
 
 
 class SimpleError(Error):
-    def __init__(self, error, traceback=None, row=None):
-        super().__init__(error, traceback=traceback, row=row)
+    def __init__(self, error, traceback=None, row=None, number=None):
+        super().__init__(error, traceback=traceback, row=row,  number=number)
         self.traceback = " "
 
 
@@ -27,7 +27,10 @@ class MetingControleResource(ModelResource):
         use_bulk = True
 
     def before_import(self, dataset, **kwargs):
-        if not kwargs['dry_run']:
+        # import_export Version 4 change: param dry-run passed in kwargs
+        # during 'confirm' step, dry_run is True
+        dry_run = kwargs.get("dry_run", False)
+        if not dry_run:
             truncate(MetingControle)
 
     def before_import_row(self, row, **kwargs):
@@ -64,7 +67,11 @@ class MetingVerrijkingResource(ModelResource):
         exclude = "id"
 
     def before_import(self, dataset, **kwargs):
-        if not kwargs['dry_run']:
+        # import_export Version 4 change: param dry-run passed in kwargs
+        print(kwargs)
+        # during 'confirm' step, dry_run is True
+        dry_run = kwargs.get("dry_run", False)
+        if not dry_run:
             truncate(MetingVerrijking)
 
     def before_import_row(self, row, **kwargs):
