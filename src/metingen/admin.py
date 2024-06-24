@@ -117,7 +117,7 @@ class MetingVerrijkingAdmin(ImportExportMixin, admin.ModelAdmin):
     )
     raw_id_fields = ("hoogtepunt",)
     ordering = ("hoogtepunt",)
-    resource_class = MetingVerrijkingResource
+    resource_classes = [MetingVerrijkingResource]
 
     def get_import_formats(self):
         return [TCOFormatClass]
@@ -162,7 +162,7 @@ class MetingControleAdmin(
     raw_id_fields = ("hoogtepunt",)
     actions = ["make_graph", "save_measurements"]
     tmp_storage_class = CacheStorage
-    resource_class = MetingControleResource
+    resource_classes = [MetingControleResource]
     import_form_class = CustomImportForm
     confirm_form_class = CustomConfirmImportForm
 

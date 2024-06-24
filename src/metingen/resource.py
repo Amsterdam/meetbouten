@@ -8,8 +8,8 @@ from .models import Hoogtepunt, MetingControle, MetingHerzien, MetingVerrijking
 
 
 class SimpleError(Error):
-    def __init__(self, error, traceback=None, row=None):
-        super().__init__(error, traceback=traceback, row=row)
+    def __init__(self, error, traceback=None, row=None, number=None):
+        super().__init__(error, traceback=traceback, row=row,  number=number)
         self.traceback = " "
 
 
@@ -26,11 +26,14 @@ class MetingControleResource(ModelResource):
         exclude = ("id",)
         use_bulk = True
 
-    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+    def before_import(self, dataset, **kwargs):
+        # import_export Version 4 change: param dry-run passed in kwargs
+        # during 'confirm' step, dry_run is True
+        dry_run = kwargs.get("dry_run", False)
         if not dry_run:
             truncate(MetingControle)
 
-    def before_import_row(self, row, row_number=None, **kwargs):
+    def before_import_row(self, row, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
             error = ObjectDoesNotExist(
                 f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
@@ -63,11 +66,15 @@ class MetingVerrijkingResource(ModelResource):
         import_id_fields = ("hoogtepunt",)
         exclude = "id"
 
-    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+    def before_import(self, dataset, **kwargs):
+        # import_export Version 4 change: param dry-run passed in kwargs
+        print(kwargs)
+        # during 'confirm' step, dry_run is True
+        dry_run = kwargs.get("dry_run", False)
         if not dry_run:
             truncate(MetingVerrijking)
 
-    def before_import_row(self, row, row_number=None, **kwargs):
+    def before_import_row(self, row, **kwargs):
         if not (Hoogtepunt.objects.filter(nummer=row["hoogtepunt"]).exists()):
             error = ObjectDoesNotExist(
                 f"Provided hoogtepunt {row['hoogtepunt']} does not exist."
@@ -102,9 +109,9 @@ def truncate(model):
     truncate db table and restart AutoField primary_key for import
 
     use as follows:
-    def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+    def before_import(self, dataset, **kwargs):
         # truncate table before import when dry_run = False
-        if not dry_run:
+        if not kwargs['dry_run']:
             truncate(modelobject)
     """
 
