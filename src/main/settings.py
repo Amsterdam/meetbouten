@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = [
     "import_export",
     "leaflet",
     "mozilla_django_oidc",  # load after django.contrib.auth!
+    "storages",
 ]
 LOCAL_APPS = [
     "admin_chart",
@@ -204,6 +205,7 @@ if DEBUG:
         "debug_toolbar.panels.profiling.ProfilingPanel",
     ]
 
+# Django-storages for Django > 4.2
 STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
