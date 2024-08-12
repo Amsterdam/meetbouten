@@ -8,7 +8,7 @@ adal==1.2.7
     # via
     #   -r ./requirements.txt
     #   msrestazure
-antlr4-python3-runtime==4.13.1
+antlr4-python3-runtime==4.13.2
     # via
     #   -r ./requirements.txt
     #   azure-cli
@@ -37,9 +37,9 @@ azure-batch==14.2.0
     # via
     #   -r ./requirements.txt
     #   azure-cli
-azure-cli==2.62.0
+azure-cli==2.63.0
     # via -r ./requirements.txt
-azure-cli-core==2.62.0
+azure-cli-core==2.63.0
     # via
     #   -r ./requirements.txt
     #   azure-cli
@@ -244,7 +244,7 @@ azure-mgmt-containerregistry==10.3.0
     # via
     #   -r ./requirements.txt
     #   azure-cli
-azure-mgmt-containerservice==30.0.0
+azure-mgmt-containerservice==31.0.0
     # via
     #   -r ./requirements.txt
     #   azure-cli
@@ -499,7 +499,7 @@ azure-multiapi-storage==1.2.0
     # via
     #   -r ./requirements.txt
     #   azure-cli
-azure-storage-blob==12.21.0
+azure-storage-blob==12.22.0
     # via
     #   -r ./requirements.txt
     #   django-storages
@@ -527,7 +527,7 @@ bcrypt==4.2.0
     # via
     #   -r ./requirements.txt
     #   paramiko
-black==24.4.2
+black==24.8.0
     # via -r requirements_dev.in
 blinker==1.8.2
     # via flask
@@ -545,7 +545,7 @@ certifi==2024.7.4
     #   geventhttpclient
     #   msrest
     #   requests
-cffi==1.16.0
+cffi==1.17.0
     # via
     #   -r ./requirements.txt
     #   azure-datalake-store
@@ -570,7 +570,7 @@ colorama==0.4.6
     #   azure-cli
 configargparse==1.7
     # via locust
-coverage[toml]==7.6.0
+coverage[toml]==7.6.1
     # via pytest-cov
 cryptography==43.0.0
     # via
@@ -611,7 +611,7 @@ distro==1.9.0
     #   -r ./requirements.txt
     #   azure-cli
     #   azure-cli-core
-django==5.0.7
+django==5.1
     # via
     #   -r ./requirements.txt
     #   django-datetime-utc
@@ -632,7 +632,7 @@ django-debug-toolbar==4.4.6
     # via -r ./requirements.txt
 django-extensions==3.2.3
     # via -r ./requirements.txt
-django-filter==24.2
+django-filter==24.3
     # via -r ./requirements.txt
 django-import-export==4.1.1
     # via -r ./requirements.txt
@@ -681,7 +681,7 @@ factory-boy==3.3.0
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==26.0.0
+faker==26.3.0
     # via factory-boy
 flask==3.0.3
     # via
@@ -702,7 +702,7 @@ google-api-core==2.19.1
     # via
     #   -r ./requirements.txt
     #   opencensus
-google-auth==2.32.0
+google-auth==2.33.0
     # via
     #   -r ./requirements.txt
     #   google-api-core
@@ -802,7 +802,7 @@ knack==0.11.0
     # via
     #   -r ./requirements.txt
     #   azure-cli-core
-locust==2.30.0
+locust==2.31.2
     # via -r requirements_dev.in
 markupsafe==2.1.5
     # via
@@ -810,18 +810,18 @@ markupsafe==2.1.5
     #   werkzeug
 matplotlib-inline==0.1.7
     # via ipython
-model-bakery==1.18.2
+model-bakery==1.19.1
     # via -r requirements_dev.in
 mozilla-django-oidc==4.0.1
     # via -r ./requirements.txt
-msal[broker]==1.28.1
+msal[broker]==1.30.0
     # via
     #   -r ./requirements.txt
     #   azure-cli-core
     #   azure-datalake-store
     #   azure-identity
     #   msal-extensions
-msal-extensions==1.2.0b1
+msal-extensions==1.2.0
     # via
     #   -r ./requirements.txt
     #   azure-cli-core
@@ -921,7 +921,7 @@ packaging==24.1
     #   knack
     #   pytest
     #   pytest-factoryboy
-paramiko==3.4.0
+paramiko==3.4.1
     # via
     #   -r ./requirements.txt
     #   azure-cli-core
@@ -963,7 +963,7 @@ protobuf==5.27.3
     #   google-api-core
     #   googleapis-common-protos
     #   proto-plus
-psutil==5.9.8
+psutil==6.0.0
     # via
     #   -r ./requirements.txt
     #   azure-cli-core
@@ -1005,7 +1005,7 @@ pygments==2.18.0
     #   -r ./requirements.txt
     #   ipython
     #   knack
-pyjwt[crypto]==2.8.0
+pyjwt[crypto]==2.9.0
     # via
     #   -r ./requirements.txt
     #   adal
@@ -1056,13 +1056,13 @@ pytz==2024.1
     # via
     #   -r ./requirements.txt
     #   drf-yasg
-pyyaml==6.0.1
+pyyaml==6.0.2
     # via
     #   -r ./requirements.txt
     #   drf-yasg
     #   knack
     #   pycomposefile
-pyzmq==26.0.3
+pyzmq==26.1.0
     # via locust
 requests[socks]==2.32.3
     # via
@@ -1131,7 +1131,7 @@ tabulate==0.9.0
     #   -r ./requirements.txt
     #   azure-cli
     #   knack
-time-machine==2.14.2
+time-machine==2.15.0
     # via -r requirements_dev.in
 tomli==2.0.1
     # via
@@ -1156,6 +1156,7 @@ typing-extensions==4.12.2
     #   azure-keyvault-certificates
     #   azure-keyvault-keys
     #   azure-keyvault-secrets
+    #   azure-mgmt-containerservice
     #   azure-monitor-query
     #   azure-storage-blob
     #   black
@@ -1183,7 +1184,7 @@ werkzeug==3.0.3
     #   flask
     #   flask-login
     #   locust
-wheel==0.43.0
+wheel==0.44.0
     # via pip-tools
 wrapt==1.16.0
     # via
@@ -1196,7 +1197,7 @@ xmltodict==0.13.0
     #   azure-cli
 zope-event==5.0
     # via gevent
-zope-interface==6.4.post2
+zope-interface==7.0.1
     # via gevent
 
 # The following packages are considered to be unsafe in a requirements file:
