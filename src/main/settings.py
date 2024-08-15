@@ -225,6 +225,7 @@ if os.getenv("AZURE_FEDERATED_TOKEN_FILE"):
                 "token_credential": credential,
                 "account_name": os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
                 "azure_container": os.getenv("AZURE_CONTAINER"),
+                "custom_domain": os.getenv("HOST_DOMAIN"),
             },
         },
     }
