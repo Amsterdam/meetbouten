@@ -385,8 +385,6 @@ cryptography==43.0.3
     #   pyopenssl
 decorator==5.1.1
     # via fabric
-defusedxml==0.7.1
-    # via djangorestframework-xml
 deprecated==1.2.14
     # via
     #   fabric
@@ -407,8 +405,6 @@ django==5.1.2
     #   django-import-export
     #   django-leaflet
     #   django-storages
-    #   djangorestframework
-    #   drf-yasg
     #   mozilla-django-oidc
     #   opencensus-ext-django
 django-datetime-utc==1.0.4
@@ -425,24 +421,6 @@ django-leaflet==0.31.0
     # via -r requirements.in
 django-storages[azure]==1.14.4
     # via -r requirements.in
-djangorestframework==3.15.2
-    # via
-    #   djangorestframework-csv
-    #   drf-amsterdam
-    #   drf-extensions
-    #   drf-yasg
-djangorestframework-csv==3.0.2
-    # via drf-amsterdam
-djangorestframework-xml==2.0.0
-    # via
-    #   -r requirements.in
-    #   drf-amsterdam
-drf-amsterdam==1.0.1
-    # via -r requirements.in
-drf-extensions==0.7.1
-    # via drf-amsterdam
-drf-yasg==1.21.8
-    # via -r requirements.in
 et-xmlfile==2.0.0
     # via openpyxl
 fabric==3.2.2
@@ -457,8 +435,6 @@ humanfriendly==10.0
     # via azure-cli-core
 idna==3.10
     # via requests
-inflection==0.5.1
-    # via drf-yasg
 invoke==2.2.0
     # via fabric
 isodate==0.7.2
@@ -601,7 +577,6 @@ packaging==24.1
     # via
     #   azure-cli
     #   azure-cli-core
-    #   drf-yasg
     #   knack
 paramiko==3.5.0
     # via
@@ -670,12 +645,9 @@ python-dateutil==2.9.0.post0
     #   azure-storage-common
     #   django-datetime-utc
 pytz==2024.2
-    # via
-    #   -r requirements.in
-    #   drf-yasg
+    # via -r requirements.in
 pyyaml==6.0.2
     # via
-    #   drf-yasg
     #   knack
     #   pycomposefile
 requests[socks]==2.32.3
@@ -743,8 +715,6 @@ typing-extensions==4.12.2
     #   azure-mgmt-sql
     #   azure-monitor-query
     #   azure-storage-blob
-uritemplate==4.1.1
-    # via drf-yasg
 urllib3==2.2.3
     # via
     #   azure-cli
