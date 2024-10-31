@@ -1,8 +1,6 @@
 # Define all requirements, only pin when necessary (and if so, add a comment explaining why).
 # See # https://git.datapunt.amsterdam.nl/Datapunt/python-best-practices/blob/master/dependency_management/
 
-drf_amsterdam
-drf-yasg
 psycopg2-binary
 pytz
 requests
@@ -18,7 +16,6 @@ django-extensions
 django-debug-toolbar
 django-import-export
 django-leaflet
-djangorestframework-xml
 django-storages[azure]
 mozilla-django-oidc
 
