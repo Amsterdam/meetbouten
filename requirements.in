@@ -20,7 +20,6 @@ django-storages[azure]
 mozilla-django-oidc
 
 # Azure
-azure-cli
 azure-core
 azure-identity
 azure-storage-blob
@@ -31,3 +30,5 @@ opencensus-ext-azure
 opencensus-ext-postgresql
 opencensus-ext-logging
 opencensus-ext-requests
+
+setuptools
