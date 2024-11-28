@@ -197,7 +197,3 @@ urllib3==2.2.3
     # via requests
 wrapt==1.17.0
     # via opencensus-ext-requests
-
-# The following packages are considered to be unsafe in a requirements file:
-setuptools==75.6.0
-    # via -r requirements.in

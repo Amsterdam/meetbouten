@@ -5,7 +5,6 @@ psycopg2-binary
 pytz
 requests
 pillow
-setuptools
 openpyxl
 
 # Django
