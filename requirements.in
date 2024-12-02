@@ -5,7 +5,6 @@ psycopg2-binary
 pytz
 requests
 pillow
-setuptools
 openpyxl
 
 # Django
@@ -20,7 +19,6 @@ django-storages[azure]
 mozilla-django-oidc
 
 # Azure
-azure-cli
 azure-core
 azure-identity
 azure-storage-blob
