@@ -74,7 +74,7 @@ django-extensions==3.2.3
     # via -r requirements.in
 django-filter==24.3
     # via -r requirements.in
-django-import-export==4.3.1
+django-import-export==4.3.3
     # via -r requirements.in
 django-leaflet==0.31.0
     # via -r requirements.in
