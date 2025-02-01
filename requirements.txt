@@ -36,7 +36,7 @@ azure-storage-blob==12.24.1
     #   django-storages
 cachetools==5.5.1
     # via google-auth
-certifi==2024.12.14
+certifi==2025.1.31
     # via requests
 cffi==1.17.1
     # via cryptography
@@ -66,7 +66,7 @@ django==5.1.5
     #   django-storages
     #   mozilla-django-oidc
     #   opencensus-ext-django
-django-datetime-utc==1.0.4
+django-datetime-utc==1.0.5
     # via -r requirements.in
 django-debug-toolbar==5.0.1
     # via -r requirements.in
@@ -158,9 +158,7 @@ pyjwt[crypto]==2.10.1
     #   pyjwt
 pyopenssl==25.0.0
     # via josepy
-python-dateutil==2.9.0.post0
-    # via django-datetime-utc
-pytz==2024.2
+pytz==2025.1
     # via -r requirements.in
 requests==2.32.3
     # via
@@ -177,7 +175,6 @@ six==1.17.0
     # via
     #   azure-core
     #   opencensus
-    #   python-dateutil
 sqlparse==0.5.3
     # via
     #   django
@@ -192,6 +189,7 @@ typing-extensions==4.12.2
     #   azure-keyvault-keys
     #   azure-keyvault-secrets
     #   azure-storage-blob
+    #   pyopenssl
 urllib3==2.3.0
     # via requests
 uwsgi==2.0.28
