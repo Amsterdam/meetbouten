@@ -18,7 +18,7 @@ class TestHoogtepuntNummerGenerator:
         generator = HoogtepuntNummerGenerator()
 
         bladen = generator.load_bladnummers(
-            filename="/tests/metingen/kaartbladen-test.csv"
+            filename="/app/tests/metingen/kaartbladen-test.csv"
         )
 
         assert bladen == [

@@ -1,6 +1,11 @@
+import os
+
 import pytest
 
 from metingen.formatters import CORFormatClass, Meting, TCOFormatClass
+
+CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+MOVE3_FILES_DIR = os.path.join(CURRENT_DIRECTORY, "..", "move3_files")
 
 
 @pytest.fixture
@@ -25,21 +30,21 @@ def metingentco():
 
 class TestFormats:
     def test_get_metingen_CORFormat(self, metingencor):
-        with open("move3_files/metingen1.cor") as f:
+        with open(f"{MOVE3_FILES_DIR}/metingen1.cor") as f:
             format = CORFormatClass()
             result, _ = format.get_metingen(f.read())
 
         assert result == metingencor
 
     def test_get_metingen_2(self):
-        with open("move3_files/metingen2.cor") as f:
+        with open(f"{MOVE3_FILES_DIR}/metingen2.cor") as f:
             format = CORFormatClass()
             dataset = format.create_dataset(f.read())
 
         assert len(dataset) == 17
 
     def test_get_metingen_TCOFormat(self, metingentco):
-        with open("move3_files/raw.tco") as f:
+        with open(f"{MOVE3_FILES_DIR}/raw.tco") as f:
             format = TCOFormatClass()
             result, header = format.get_metingen(f.read())
             print(header)

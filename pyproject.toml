@@ -1,3 +1,10 @@
+[tool.black]
+# Default is 88
+line-length = 88
+# Black will default to double quotes
+skip-string-normalization = true
+exclude = 'migrations|urls.py|tests|settings.py'
+
 [tool.isort]
 profile = "black"
 
@@ -8,27 +15,21 @@ ignore_init_module_imports = true
 markers = [
     "migration: mark a test as a migration test"
 ]
-addopts = "-s --cov --cov-config /pyproject.toml --disable-pytest-warnings"
-#; -ra       show extra test summary about (a)ll tests except those that passed
-#; -s        disable all capturing of stdout/stderr
-#; --ff      failed first
-#; --nf      new first
-#; --cov     show coverage
-#; --cov-config=pytest.ini       set coverage config to this file
+addopts = "-v -s --ff --nf --cov --cov-report term-missing --cov-config /app/pyproject.toml"
 
 [tool.coverage.run]
-source = ["/src"]
+source = [".", "/app/src"]
 omit = [
-    "/tests",
-    "/src/main/wsgi.py",
-    "/src/main/settings.py",
-    "/src/main/urls.py",
-    "/src/manage.py",
-    "/src/main/asgi.py",
-    "/src/main/auth.py",
+    "/app/tests",
+    "/app/src/main/wsgi.py",
+    "/app/src/main/settings.py",
+    "/app/src/main/urls.py",
+    "/app/src/manage.py",
+    "/app/src/main/asgi.py",
+    "/app/src/main/auth.py",
     "*/apps.py",
     "*/models.py",
-    "/src/metingen/management/commands/load_csv_data.py",
+    "/app/src/metingen/management/commands/load_csv_data.py",
 ]
 
 [tool.coverage.report]

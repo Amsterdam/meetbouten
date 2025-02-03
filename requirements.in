@@ -6,6 +6,7 @@ pytz
 requests
 pillow
 openpyxl
+uwsgi
 
 # Django
 Django

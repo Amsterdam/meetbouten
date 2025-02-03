@@ -4,7 +4,6 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.safestring import mark_safe
 
-from main import settings
 from metingen.hoogtepunt_nummer_generator import HoogtepuntNummerGenerator
 from referentie_tabellen.models import (
     Bron,
@@ -74,7 +73,7 @@ class Hoogtepunt(models.Model):
                 f'<img src="{media_url}" width="50" height="50"/>'
                 f"</a>"
             )
-        
+
     picture_tag.short_description = "Picture"
 
 

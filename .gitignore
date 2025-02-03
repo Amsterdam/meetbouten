@@ -109,6 +109,7 @@ venv.bak/
 
 # docker
 docker-compose.override.yml
+compose.override.yml
 
 # local
 local/

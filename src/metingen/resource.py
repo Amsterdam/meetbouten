@@ -9,7 +9,7 @@ from .models import Hoogtepunt, MetingControle, MetingHerzien, MetingVerrijking
 
 class SimpleError(Error):
     def __init__(self, error, traceback=None, row=None, number=None):
-        super().__init__(error, traceback=traceback, row=row,  number=number)
+        super().__init__(error, traceback=traceback, row=row, number=number)
         self.traceback = " "
 
 

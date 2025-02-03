@@ -57,9 +57,9 @@ class AdminChartMixin:
             changelist = response.context_data["cl"]
             chart_queryset = self.get_list_chart_queryset(changelist)
             response.context_data["adminchart_queryset"] = chart_queryset
-            response.context_data[
-                "adminchart_chartjs_config"
-            ] = self.get_list_chart_config(chart_queryset)
+            response.context_data["adminchart_chartjs_config"] = (
+                self.get_list_chart_config(chart_queryset)
+            )
             print(response.context_data["adminchart_chartjs_config"])
         else:
             response.context_data["adminchart_queryset"] = None

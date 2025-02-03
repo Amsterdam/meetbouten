@@ -4,7 +4,6 @@ Project specifiek gedefinieerde import_export formats voor het
 - schrijven van .tco files
 """
 
-
 import re
 from io import StringIO
 from typing import NamedTuple
