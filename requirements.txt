@@ -74,7 +74,7 @@ django-extensions==3.2.3
     # via -r requirements.in
 django-filter==24.3
     # via -r requirements.in
-django-import-export==4.3.4
+django-import-export==4.3.5
     # via -r requirements.in
 django-leaflet==0.31.0
     # via -r requirements.in
@@ -189,7 +189,6 @@ typing-extensions==4.12.2
     #   azure-keyvault-keys
     #   azure-keyvault-secrets
     #   azure-storage-blob
-    #   pyopenssl
 urllib3==2.3.0
     # via requests
 uwsgi==2.0.28
