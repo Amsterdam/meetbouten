@@ -1,24 +1,18 @@
-version: "3.5"
-
 x-app: &base-app
   build:
     context: .
     target: app
   depends_on:
-    - database
+    database:
+      condition: service_healthy
   volumes:
-    - ./src:/src
-    - ./tests:/tests
-    - ./deploy:/deploy
-    - /tmp:/src/media
+    - /tmp:/app/src/media
   environment: &base-app-env
     SECRET_KEY: "insecure"
-    DEBUG: "true"
     OIDC_BASE_URL: "https://login.microsoftonline.com/72fca1b1-2c2e-4376-a445-294d80196804"
     OIDC_RP_CLIENT_ID:
     OIDC_RP_CLIENT_SECRET:
     APPLICATIONINSIGHTS_CONNECTION_STRING:
-  entrypoint: /deploy/wait-for-it.sh database:5432 --
 
 services:
   database:
@@ -29,9 +23,12 @@ services:
       POSTGRES_DB: meetbouten
       POSTGRES_USER: meetbouten
       POSTGRES_PASSWORD: insecure
-#    volumes:
-#      - ./local/csv_dump:/csv_dump
     command: postgres -c datestyle='iso, dmy'
+    healthcheck:
+      test: pg_isready -U meetbouten -d meetbouten
+      interval: 10s
+      timeout: 1s
+      retries: 5
 
   app:
     <<: *base-app
@@ -39,15 +36,18 @@ services:
       context: .
       target: app
     image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/meetbouten}:${VERSION:-latest}
-    command: /deploy/docker-run.sh
+    command: /app/deploy/docker-run.sh
       
   dev:
     <<: *base-app
     build:
       context: .
       target: dev
+    volumes:
+      - .:/app/
     environment:
       <<: *base-app-env
+      DEBUG: "true"
       DJANGO_SUPERUSER_PASSWORD: "0000"
       DJANGO_SUPERUSER_USERNAME: "admin"
       DJANGO_SUPERUSER_EMAIL: "admin@amsterdam.nl"
@@ -60,8 +60,20 @@ services:
       context: .
       target: tests
     image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/meetbouten}-test:${VERSION:-latest}
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./media:/app/media
     environment:
       <<: *base-app-env
       DJANGO_SETTINGS_MODULE: "main.settings"
       OIDC_RP_CLIENT_ID: tests
       OIDC_RP_CLIENT_SECRET: tests
+
+  linting:
+    build:
+      context: .
+      target: linting
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests

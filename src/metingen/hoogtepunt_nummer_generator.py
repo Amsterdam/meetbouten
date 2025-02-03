@@ -15,7 +15,7 @@ class HoogtepuntNummerGenerator:
         self.bladnummers = []
 
     def load_bladnummers(
-        self, filename: str = "/src/metingen/files/kaartbladen.csv"
+        self, filename: str = "/app/src/metingen/files/kaartbladen.csv"
     ) -> list[Kaartblad]:
         if len(self.bladnummers) > 0:
             return self.bladnummers

@@ -1,25 +1,45 @@
-FROM python:3.11-bookworm as app
-MAINTAINER datapunt@amsterdam.nl
+ARG PYTHON_VERSION=3.13
 
-ENV PYTHONUNBUFFERED 1 \
-    PIP_NO_CACHE_DIR=off
+# Builder
+FROM python:${PYTHON_VERSION}-slim-bookworm AS builder
 
-RUN  apt-get update \
- && apt-get dist-upgrade -y \
- && apt-get install --no-install-recommends -y \
-        gdal-bin \
-        postgresql-client-15 \
- && pip install --upgrade pip \
- && pip install uwsgi \
- && useradd --user-group --system datapunt
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app_install
+RUN set -eux && \
+    python -m ensurepip --upgrade && \
+    apt-get update && apt-get install -y gcc && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+WORKDIR /app/install
+
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY deploy /deploy
+# Application
+FROM python:${PYTHON_VERSION}-slim-bookworm AS app
 
-WORKDIR /src
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN set -eux && \
+    python -m ensurepip --upgrade && \
+    apt-get update && apt-get install -y \
+        postgresql-client-15 \
+        gdal-bin && \
+    useradd --user-group --system datapunt && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy the Python dependencies from the builder stage
+COPY --from=builder /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/
+COPY --from=builder /usr/local/bin/ /usr/local/bin
+
+WORKDIR /app/deploy
+COPY deploy .
+
+WORKDIR /app/src
 COPY src .
 
 ARG SECRET_KEY=not-used
@@ -29,19 +49,21 @@ RUN python manage.py collectstatic --no-input
 
 USER datapunt
 
-CMD ["/deploy/docker-run.sh"]
+CMD ["/app/deploy/docker-run.sh"]
 
 # stage 2, dev
-FROM app as dev
+FROM app AS dev
 
 USER root
-WORKDIR /app_install
-ADD requirements_dev.txt requirements_dev.txt
-RUN pip install -r requirements_dev.txt
-RUN mkdir /src/media -p \
-    && chmod 777 /src/media
+WORKDIR /app/install
 
-WORKDIR /src
+COPY requirements_dev.txt requirements_dev.txt
+
+RUN pip install --no-cache-dir -r requirements_dev.txt && \
+    mkdir /app/media/pgdump -p && \
+    chmod 777 /app/media
+
+WORKDIR /app/src
 USER datapunt
 
 # Any process that requires to write in the home dir
@@ -51,13 +73,23 @@ ENV HOME /tmp
 CMD ["./manage.py", "runserver", "0.0.0.0:8000"]
 
 # stage 3, tests
-FROM dev as tests
+FROM dev AS tests
+
+WORKDIR /app
+COPY tests tests
+COPY pyproject.toml pyproject.toml
 
 USER datapunt
-WORKDIR /tests
-ADD tests .
-COPY pyproject.toml /.
+
 ENV COVERAGE_FILE=/tmp/.coverage
-ENV PYTHONPATH=/src
+ENV PYTHONPATH=/app/src
 
 CMD ["pytest"]
+
+# linting
+FROM python:${PYTHON_VERSION}-alpine AS linting
+
+WORKDIR /app
+COPY . .
+
+RUN pip install --no-cache-dir -r requirements_linting.txt

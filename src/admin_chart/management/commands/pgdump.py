@@ -35,10 +35,10 @@ class Command(BaseCommand):
         with open(filepath, "w") as f:
             select_query = f"SELECT * FROM {table_name}"
             if table_name in ["metingen_grondslagpunt", "metingen_hoogtepunt"]:
-                select_query = f"SELECT *, ST_AsText(geom) AS geom_wkt FROM {table_name}"
-            sql = (
-                f"COPY ({select_query}) TO STDOUT WITH CSV HEADER"
-            )
+                select_query = (
+                    f"SELECT *, ST_AsText(geom) AS geom_wkt FROM {table_name}"
+                )
+            sql = f"COPY ({select_query}) TO STDOUT WITH CSV HEADER"
             with connection.cursor() as cursor:
                 cursor.copy_expert(sql, f)
 
@@ -50,7 +50,9 @@ class Command(BaseCommand):
         for file in os.listdir(self.TMP_DIRECTORY):
             filepath = os.path.join(self.TMP_DIRECTORY, file)
             with open(filepath, "rb") as f:
-                storage.save_without_postfix(name=os.path.join("pgdump", file), content=f)
+                storage.save_without_postfix(
+                    name=os.path.join("pgdump", file), content=f
+                )
             logger.info(f"Successfully uploaded {filepath} to blob")
 
     def remove_dump(self):
