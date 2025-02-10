@@ -73,7 +73,7 @@ class BouwblokActionsMixin:
         for punt in punten:
             hoogtepunt = punt.hoogtepunt
             if hoogtepunt.status.omschrijving == "Vervallen":
-                #TODO logger geeft error -> later naar kijken nu eerst oplossen op productie
+                # TODO logger geeft error -> later naar kijken nu eerst oplossen op productie
                 # logger.warning(
                 #     f"Vervallen hoogtepunt {hoogtepunt} in bouwblok {punt.bouwblok}"
                 # )
