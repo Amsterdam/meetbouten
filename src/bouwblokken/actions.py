@@ -73,9 +73,10 @@ class BouwblokActionsMixin:
         for punt in punten:
             hoogtepunt = punt.hoogtepunt
             if hoogtepunt.status.omschrijving == "Vervallen":
-                logger.warning(
-                    f"Vervallen hoogtepunt {hoogtepunt} in bouwblok {punt.bouwblok}"
-                )
+                #TODO logger geeft error -> later naar kijken nu eerst oplossen op productie
+                # logger.warning(
+                #     f"Vervallen hoogtepunt {hoogtepunt} in bouwblok {punt.bouwblok}"
+                # )
                 continue
             last_meting = (
                 MetingHerzien.objects.filter(hoogtepunt=hoogtepunt)
