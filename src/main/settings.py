@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
-import sys
 from pathlib import Path
 
 from azure.identity import WorkloadIdentityCredential
@@ -256,11 +255,14 @@ LEAFLET_CONFIG = {
 }
 
 # Django Logging settings
+LOG_LEVEL = os.getenv("LOG_LEVEL", "WARNING").upper()
+DJANGO_LOG_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "WARNING").upper()
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "root": {
-        "level": "INFO",
+        "level": LOG_LEVEL,
         "handlers": ["console"],
     },
     "formatters": {
@@ -268,83 +270,81 @@ LOGGING = {
     },
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "class": "logging.StreamHandler",
             "formatter": "console",
         }
     },
     "loggers": {
         "metingen": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "bouwblokken": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "referentie_tabellen": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "admin_chart": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "django": {
             "handlers": ["console"],
-            "level": os.getenv(
-                "DJANGO_LOG_LEVEL", "ERROR" if "pytest" in sys.argv[0] else "INFO"
-            ).upper(),
+            "level": DJANGO_LOG_LEVEL,
             "propagate": False,
         },
         # Debug all batch jobs
         "doc": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "index": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "search": {
-            "level": "ERROR",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "elasticsearch": {
-            "level": "ERROR",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "urllib3": {
-            "level": "ERROR",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "factory.containers": {
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         "factory.generate": {
             "handlers": ["console"],
-            "level": "INFO",
+            "level": LOG_LEVEL,
             "propagate": False,
         },
         "requests.packages.urllib3.connectionpool": {
-            "level": "ERROR",
+            "level": LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
         # Log all unhandled exceptions
         "django.request": {
-            "level": "DEBUG" if DEBUG else "INFO",
+            "level": "DEBUG" if DEBUG else LOG_LEVEL,
             "handlers": ["console"],
             "propagate": False,
         },
