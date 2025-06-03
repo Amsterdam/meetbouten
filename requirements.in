@@ -17,7 +17,9 @@ django-debug-toolbar
 django-import-export
 django-leaflet
 django-storages[azure]
-mozilla-django-oidc
+
+# Amsterdam packages
+amsterdam-django-oidc
 
 # Azure
 azure-core

@@ -1,4 +1,4 @@
-import mozilla_django_oidc.auth
+import amsterdam_django_oidc
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -10,7 +10,7 @@ def oidc_login(request, **kwargs):
     return HttpResponseRedirect(redirect)
 
 
-class OIDCAuthenticationBackend(mozilla_django_oidc.auth.OIDCAuthenticationBackend):
+class OIDCAuthenticationBackend(amsterdam_django_oidc.OIDCAuthenticationBackend):
     def create_user(self, claims):
         user = super(OIDCAuthenticationBackend, self).create_user(claims)
         return self.update_user(user, claims)
