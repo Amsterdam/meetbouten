@@ -139,7 +139,7 @@ pytest-cov==6.2.1
     # via -r requirements_dev.in
 pytest-django==4.11.1
     # via -r requirements_dev.in
-pytest-factoryboy==2.7.0
+pytest-factoryboy==2.8.1
     # via -r requirements_dev.in
 python-dateutil==2.9.0.post0
     # via time-machine
@@ -191,7 +191,7 @@ wheel==0.45.1
     # via pip-tools
 wsproto==1.2.0
     # via simple-websocket
-zope-event==5.0
+zope-event==5.1
     # via gevent
 zope-interface==7.2
     # via gevent
