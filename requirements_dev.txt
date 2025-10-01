@@ -4,7 +4,7 @@
 #
 #    pip-compile --allow-unsafe --output-file=requirements_dev.txt requirements_dev.in
 #
-asgiref==3.9.1
+asgiref==3.9.2
     # via django
 asttokens==3.0.0
     # via stack-data
@@ -22,7 +22,7 @@ certifi==2025.8.3
     #   requests
 charset-normalizer==3.4.3
     # via requests
-click==8.2.1
+click==8.3.0
     # via
     #   flask
     #   pip-tools
@@ -30,19 +30,19 @@ configargparse==1.7.1
     # via
     #   locust
     #   locust-cloud
-coverage[toml]==7.10.6
+coverage[toml]==7.10.7
     # via pytest-cov
 decorator==5.2.1
     # via ipython
 django==5.2.6
     # via model-bakery
-executing==2.2.0
+executing==2.2.1
     # via stack-data
 factory-boy==3.3.3
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==37.6.0
+faker==37.8.0
     # via factory-boy
 flask==3.1.2
     # via
@@ -70,7 +70,7 @@ inflection==0.5.1
     # via pytest-factoryboy
 iniconfig==2.1.0
     # via pytest
-ipython==9.5.0
+ipython==9.6.0
     # via -r requirements_dev.in
 ipython-pygments-lexers==1.1.1
     # via ipython
@@ -80,11 +80,11 @@ jedi==0.19.2
     # via ipython
 jinja2==3.1.6
     # via flask
-locust==2.39.1
+locust==2.41.2
     # via -r requirements_dev.in
-locust-cloud==1.26.3
+locust-cloud==1.27.1
     # via locust
-markupsafe==3.0.2
+markupsafe==3.0.3
     # via
     #   flask
     #   jinja2
@@ -114,7 +114,7 @@ pluggy==1.6.0
     #   pytest-cov
 prompt-toolkit==3.0.52
     # via ipython
-psutil==7.0.0
+psutil==7.1.0
     # via locust
 ptyprocess==0.7.0
     # via pexpect
@@ -129,13 +129,14 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-pytest==8.4.1
+pytest==8.4.2
     # via
     #   -r requirements_dev.in
+    #   locust
     #   pytest-cov
     #   pytest-django
     #   pytest-factoryboy
-pytest-cov==6.2.1
+pytest-cov==7.0.0
     # via -r requirements_dev.in
 pytest-django==4.11.1
     # via -r requirements_dev.in
@@ -143,7 +144,7 @@ pytest-factoryboy==2.8.1
     # via -r requirements_dev.in
 python-dateutil==2.9.0.post0
     # via time-machine
-python-engineio==4.12.2
+python-engineio==4.12.3
     # via
     #   locust
     #   locust-cloud
@@ -152,7 +153,7 @@ python-socketio[client]==5.13.0
     # via
     #   locust
     #   locust-cloud
-pyzmq==27.0.2
+pyzmq==27.1.0
     # via locust
 requests==2.32.5
     # via
@@ -180,7 +181,7 @@ urllib3==2.5.0
     # via
     #   geventhttpclient
     #   requests
-wcwidth==0.2.13
+wcwidth==0.2.14
     # via prompt-toolkit
 websocket-client==1.8.0
     # via python-socketio
@@ -194,9 +195,9 @@ wheel==0.45.1
     # via pip-tools
 wsproto==1.2.0
     # via simple-websocket
-zope-event==5.1.1
+zope-event==6.0
     # via gevent
-zope-interface==7.2
+zope-interface==8.0.1
     # via gevent
 
 # The following packages are considered to be unsafe in a requirements file:
@@ -207,4 +208,3 @@ setuptools==80.9.0
     #   locust
     #   pip-tools
     #   zope-event
-    #   zope-interface
