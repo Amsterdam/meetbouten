@@ -34,7 +34,7 @@ coverage[toml]==7.12.0
     # via pytest-cov
 decorator==5.2.1
     # via ipython
-django==5.2.8
+django==5.2.9
     # via model-bakery
 executing==2.2.1
     # via stack-data
