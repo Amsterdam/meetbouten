@@ -184,7 +184,7 @@ typing-extensions==4.15.0
     #   azure-keyvault-keys
     #   azure-keyvault-secrets
     #   azure-storage-blob
-urllib3==2.5.0
+urllib3==2.6.0
     # via requests
 uwsgi==2.0.31
     # via -r requirements.in
