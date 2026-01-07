@@ -4,6 +4,9 @@
 # VERSION = 2020.01.29
 .PHONY: app manifests
 
+UID := $(shell id -u)
+GID := $(shell id -g)
+
 dc = docker compose
 run = $(dc) run --rm -u ${UID}:${GID}
 manage = $(run) dev python manage.py
