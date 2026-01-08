@@ -2,7 +2,7 @@ import mimetypes
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.files.storage import default_storage
-from django.http import Http404, HttpResponse
+from django.http import FileResponse, Http404
 
 
 @staff_member_required
@@ -17,10 +17,8 @@ def proxy_image(request, path):
         if content_type is None:
             content_type = "application/octet-stream"
 
-        response = HttpResponse(file.read(), content_type=content_type)
+        response = FileResponse(file, content_type=content_type)
         response["Cache-Control"] = "private, max-age=3600"
-
-        file.close()
         return response
 
     except Exception as e:
