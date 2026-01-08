@@ -3,6 +3,7 @@ from django.contrib.gis.geos import Point
 from import_export.forms import ConfirmImportForm, ImportForm
 
 from metingen.models import Hoogtepunt
+from metingen.widgets import ProxyImageWidget
 from referentie_tabellen.models import Bron, Metingtype, WijzenInwinning
 
 
@@ -17,6 +18,9 @@ class HoogtepuntForm(forms.ModelForm):
     class Meta:
         model = Hoogtepunt
         exclude = [""]
+        widgets = {
+            "picture": ProxyImageWidget,
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
