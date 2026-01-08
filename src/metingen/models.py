@@ -1,8 +1,6 @@
 from django.contrib.gis.db.models import PointField
-from django.core.files.storage import default_storage
 from django.core.validators import MinLengthValidator
 from django.db import models
-from django.utils.safestring import mark_safe
 
 from metingen.hoogtepunt_nummer_generator import HoogtepuntNummerGenerator
 from referentie_tabellen.models import (
@@ -64,17 +62,6 @@ class Hoogtepunt(models.Model):
         if not self.nummer:
             self.nummer = GENERATOR.generate(self)
         super().save(*args, **kwargs)
-
-    def picture_tag(self):
-        if self.picture:
-            media_url = default_storage.url(self.picture.name)
-            return mark_safe(
-                f'<a href="{media_url}" target="_blank">'
-                f'<img src="{media_url}" width="50" height="50"/>'
-                f"</a>"
-            )
-
-    picture_tag.short_description = "Picture"
 
 
 class Grondslagpunt(models.Model):

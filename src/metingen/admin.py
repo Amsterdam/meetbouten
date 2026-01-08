@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count
+from django.urls import reverse
+from django.utils.html import format_html
 from import_export.admin import ImportExportMixin, ImportMixin
 from import_export.tmp_storages import CacheStorage
 from leaflet.admin import LeafletGeoAdminMixin
@@ -100,6 +102,16 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     @admin.display(description="Laatst gemeten hoogte")
     def get_hoogte(self, obj):
         return obj.metingherzien_set.latest().hoogte
+
+    @admin.display(description="Picture")
+    def picture_tag(self, obj):
+        if obj.picture:
+            filename = obj.picture.name.replace("meetbouten_pictures/", "")
+            proxy_url = reverse("proxy_image", kwargs={"path": filename})
+            return format_html(
+                '<img src="{}" style="max-width: 50px; max-height: 50px;" />', proxy_url
+            )
+        return "No image"
 
 
 @admin.register(MetingVerrijking)

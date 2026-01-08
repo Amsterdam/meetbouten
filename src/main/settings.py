@@ -221,21 +221,35 @@ STORAGES = {
         },
     }
 
-# Azure Storageaccount settings
-if os.getenv("AZURE_FEDERATED_TOKEN_FILE"):
-    credential = WorkloadIdentityCredential()
-    STORAGE_AZURE = {
-        "default": {
-            "BACKEND": "storages.backends.azure_storage.AzureStorage",
-            "OPTIONS": {
-                "token_credential": credential,
-                "account_name": os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
-                "azure_container": os.getenv("AZURE_CONTAINER"),
-                "custom_domain": os.getenv("HOST_DOMAIN"),
-            },
-        },
+# Configure Azure storage if credentials are available
+AZURITE_CONNECTION_STRING = os.getenv("AZURITE_CONNECTION_STRING")
+if AZURITE_CONNECTION_STRING and not os.getenv("AZURE_FEDERATED_TOKEN_FILE"):
+    # Using connection string (Azurite or development)
+    azure_storage_options = {
+        "connection_string": AZURITE_CONNECTION_STRING,
+        "azure_container": "django",
     }
-    STORAGES |= STORAGE_AZURE #update storages with storage_azure
+elif os.getenv("AZURE_FEDERATED_TOKEN_FILE"):
+    # Using workload identity (production)
+    azure_storage_options = {
+        "token_credential": WorkloadIdentityCredential(),
+        "account_name": os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
+        "azure_container": os.getenv("AZURE_CONTAINER"),
+        "custom_domain": os.getenv("HOST_DOMAIN"),
+    }
+else:
+    azure_storage_options = None
+
+if azure_storage_options:
+    azure_backend = "storages.backends.azure_storage.AzureStorage"
+    STORAGES.update(
+        {
+            "default": {
+                "BACKEND": azure_backend,
+                "OPTIONS": azure_storage_options,
+            }
+        }
+    )
 
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB
