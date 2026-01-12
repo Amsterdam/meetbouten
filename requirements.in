@@ -9,7 +9,7 @@ openpyxl
 uwsgi
 
 # Django
-Django<6  # Do not upgrade to Django 6 yet!
+Django
 django-datetime-utc
 django-filter
 django-extensions
@@ -24,7 +24,7 @@ amsterdam-django-oidc
 # Azure
 azure-core
 azure-identity
-azure-storage-blob
+azure-storage-blob==12.27.1
 azure-keyvault
 azure-keyvault-secrets
 opencensus-ext-django
