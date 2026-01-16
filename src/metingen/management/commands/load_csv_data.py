@@ -2,9 +2,12 @@ import logging
 
 from django.core.management.base import BaseCommand
 from django.db import connection
+from opentelemetry import trace
 
 from bouwblokken.models import *
 from metingen.models import *
+
+tracer = trace.get_tracer(__name__)
 
 log = logging.getLogger(__name__)
 
@@ -116,14 +119,11 @@ data_config = [
 
 
 class Command(BaseCommand):
-    # def add_arguments(self, parser):
-    #     parser.add_argument(
-    #         '--num-bb',
-    #         type=int,
-    #         help='The number of BB permits to create',
-    #     )
+    def handle(self, *args, **options) -> None:
+        with tracer.start_as_current_span("Load CSV Data") as span:
+            self._handle(*args, **options)
 
-    def handle(self, *args, **options):
+    def _handle(self, *args, **options):
         for dump in data_config:
             model = dump["model"]
             table_name = model._meta.db_table
@@ -137,7 +137,7 @@ class Command(BaseCommand):
                 f"FROM '/csv_dump/{dump['file']}' "
                 f"WITH (FORMAT CSV, DELIMITER ',', HEADER {force_null});"
             )
-            print(command)
+            log.debug(command)
             with connection.cursor() as cursor:
                 cursor.execute(command)
 
@@ -148,6 +148,6 @@ class Command(BaseCommand):
         command = f"""SELECT setval('{table_name}_id_seq', (
                         select max(id) from {table_name}  where id <> '99999999'
                 ), true);"""
-        print(command)
+        log.debug(command)
         with connection.cursor() as cursor:
             cursor.execute(command)

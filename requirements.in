@@ -27,8 +27,10 @@ azure-identity
 azure-storage-blob==12.27.1
 azure-keyvault
 azure-keyvault-secrets
-opencensus-ext-django
-opencensus-ext-azure
-opencensus-ext-postgresql
-opencensus-ext-logging
-opencensus-ext-requests
+
+# OTEL
+opentelemetry-exporter-otlp-proto-grpc
+opentelemetry-instrumentation-django
+opentelemetry-instrumentation-psycopg2
+opentelemetry-instrumentation-logging
+opentelemetry-instrumentation-requests

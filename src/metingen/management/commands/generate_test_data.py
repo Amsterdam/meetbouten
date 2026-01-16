@@ -1,6 +1,7 @@
 import logging
 
 from django.core.management.base import BaseCommand
+from opentelemetry import trace
 
 from bouwblokken.factories import (
     BouwblokFactory,
@@ -26,6 +27,8 @@ from metingen.models import (
     MetRefPuntenHerz,
 )
 
+tracer = trace.get_tracer(__name__)
+
 log = logging.getLogger(__name__)
 
 
@@ -37,7 +40,11 @@ class Command(BaseCommand):
             help="The number of records to create of every kind",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
+        with tracer.start_as_current_span("Generate test data") as span:
+            self._handle(*args, **options)
+
+    def _handle(self, *args, **options):
         num = options.get("num", 1000)
         self.create_data(num)
 
