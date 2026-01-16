@@ -42,7 +42,7 @@ factory-boy==3.3.3
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==40.1.0
+faker==40.1.2
     # via factory-boy
 flask==3.1.2
     # via
@@ -79,7 +79,7 @@ jedi==0.19.2
     # via ipython
 jinja2==3.1.6
     # via flask
-locust==2.43.0
+locust==2.43.1
     # via -r requirements_dev.in
 markupsafe==3.0.3
     # via
@@ -163,8 +163,6 @@ traitlets==5.14.3
     #   matplotlib-inline
 typing-extensions==4.15.0
     # via pytest-factoryboy
-tzdata==2025.3
-    # via faker
 urllib3==2.6.3
     # via
     #   geventhttpclient

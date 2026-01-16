@@ -380,20 +380,29 @@ APPLICATIONINSIGHTS_CONNECTION_STRING = os.getenv(
     "APPLICATIONINSIGHTS_CONNECTION_STRING"
 )
 
-if APPLICATIONINSIGHTS_CONNECTION_STRING:
-    OPENCENSUS = {
-        "TRACE": {
-            "SAMPLER": "opencensus.trace.samplers.ProbabilitySampler(rate=1)",
-            "EXPORTER": f"opencensus.ext.azure.trace_exporter.AzureExporter(connection_string='{APPLICATIONINSIGHTS_CONNECTION_STRING}')",
-        }
-    }
-    LOGGING["handlers"]["azure"] = {
-        "level": "DEBUG",
-        "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
-        "connection_string": APPLICATIONINSIGHTS_CONNECTION_STRING,
-    }
-    LOGGING["loggers"]["django"]["handlers"] = ["azure", "console"]
-    LOGGING["loggers"]["metingen"]["handlers"] = ["azure", "console"]
-    LOGGING["loggers"]["bouwblokken"]["handlers"] = ["azure", "console"]
-    LOGGING["loggers"]["referentie_tabellen"]["handlers"] = ["azure", "console"]
-    LOGGING["loggers"]["admin_chart"]["handlers"] = ["azure", "console"]
+
+from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.django import DjangoInstrumentor
+from opentelemetry.instrumentation.psycopg2 import Psycopg2Instrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+
+resource = Resource(attributes={"service.name": "fblocatielijst"})
+
+trace.set_tracer_provider(TracerProvider(resource=resource))
+tracer = trace.get_tracer(__name__)
+
+exporter_name = os.environ.get("OTEL_EXPORTER", "otlp")
+if exporter_name == "otlp":
+    otlp_exporter = OTLPSpanExporter()
+    span_processor = BatchSpanProcessor(otlp_exporter)
+    trace.get_tracer_provider().add_span_processor(span_processor)
+else:
+    pass
+
+DjangoInstrumentor().instrument()
+Psycopg2Instrumentor().instrument()
+RequestsInstrumentor().instrument()
