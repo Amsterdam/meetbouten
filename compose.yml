@@ -159,6 +159,8 @@ services:
       OIDC_RP_CLIENT_SECRET: tests
       OTEL_EXPORTER: "none"
       OTEL_SDK_DISABLED: true
+      MEDIA_ROOT: "/tmp/media"
+      COVERAGE_FILE: /tmp/.coverage
     command: pytest /app/tests -m 'not migration'
     user: 1000:1000
 
