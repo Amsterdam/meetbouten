@@ -24,7 +24,7 @@ class Hoogtepunt(models.Model):
         N = "N", "Noord"
         NO = "NO", "Noord-Oost"
         NW = "NW", "Noord-West"
-        O = "O", "Oost"
+        O = "O", "Oost"  # noqa: E741
         W = "W", "West"
         Z = "Z", "Zuid"
         ZO = "ZO", "Zuid-Oost"
@@ -50,7 +50,10 @@ class Hoogtepunt(models.Model):
     sigmay = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     geom = PointField(srid=28992, blank=True)
     status = models.ForeignKey(
-        Status, on_delete=models.PROTECT, db_column="sta_id", default=1  # Actueel
+        Status,
+        on_delete=models.PROTECT,
+        db_column="sta_id",
+        default=1,  # Actueel
     )
     orde = models.IntegerField(null=True, blank=True)
     picture = models.ImageField(upload_to="meetbouten_pictures/", blank=True, null=True)
