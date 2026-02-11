@@ -65,4 +65,4 @@ class Command(BaseCommand):
             factory_data = factory.build_batch(size=num)
             model.objects.bulk_create(factory_data)
 
-        log.info(f"Created data")
+        log.info("Created data")
