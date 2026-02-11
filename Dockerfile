@@ -61,7 +61,7 @@ COPY requirements_dev.txt requirements_dev.txt
 
 RUN pip install --no-cache-dir -r requirements_dev.txt && \
     mkdir /app/media/pgdump -p && \
-    chmod 777 /app/media
+    chmod -R 777 /app/media
 
 WORKDIR /app/src
 USER datapunt

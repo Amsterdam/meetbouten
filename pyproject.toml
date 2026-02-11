@@ -1,3 +1,9 @@
+[project]
+name = "meetbouten"
+readme = "README.md"
+requires-python = ">=3.12, <3.13"
+dynamic = ["version"]
+
 [tool.black]
 # Default is 88
 line-length = 88
