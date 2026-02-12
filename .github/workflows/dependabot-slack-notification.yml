@@ -30,7 +30,7 @@ jobs:
           token: ${{ secrets.VAKGROEP_DEPENDABOT_SLACK_BOT_TOKEN }}
           payload: |
             channel: ${{ secrets.VAKGROEP_DEPENDABOT_SLACK_CHANNEL_ID }}
-            username: "Sensorenregister Backend"
+            username: "Meetbouten"
             text: "A PR has been created in repository ${{ github.repository }}: #${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}"
 
       - name: Post a detailed message in a thread
@@ -40,7 +40,7 @@ jobs:
           token: ${{ secrets.VAKGROEP_DEPENDABOT_SLACK_BOT_TOKEN }}
           payload: |
             channel: ${{ secrets.VAKGROEP_DEPENDABOT_SLACK_CHANNEL_ID }}
-            username: "Sensorenregister Backend"
+            username: "Meetbouten"
             thread_ts: "${{ steps.message.outputs.ts }}"
             unfurl_links: false
             unfurl_media: false
