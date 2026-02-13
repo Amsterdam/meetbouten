@@ -21,6 +21,10 @@ updates:
     allow:
       - dependency-type: "all"
     open-pull-requests-limit: 1
+    ignore:
+      - dependency-name: "azure-storage-blob"
+        versions:
+          - "> 12.27.1"
 
   - package-ecosystem: "github-actions"
     directory: "/"
