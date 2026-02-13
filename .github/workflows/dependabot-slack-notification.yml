@@ -4,8 +4,10 @@ on:
   pull_request:
     types:
       - opened
+      - synchronize
 
-permissions: read-all
+permissions:
+  actions: write
 
 defaults:
   run:
@@ -16,13 +18,19 @@ jobs:
     runs-on: ubuntu-latest
     name: Sends a message to Slack when a PR is opened
     if: |
-      github.event.action == 'opened' &&
       github.actor == 'dependabot[bot]' &&
       contains(github.event.pull_request.labels.*.name, 'dependencies') &&
       !contains(github.event.pull_request.labels.*.name, 'github-actions')
     steps:
+      - name: Restore cached Slack message timestamp
+        id: slack-message-timestamp-cache
+        uses: actions/cache/restore@v5
+        with:
+          path: slack-ts.txt
+          key: slack-ts-pr-${{ github.event.pull_request.number }}
+
       - name: Post PR summary message to slack
-        if: steps.slack-message-timestamp-cache.outputs.cache-hit != 'true'
+        if: github.event.action == 'opened'
         id: message
         uses: slackapi/slack-github-action@v2.1.1
         with:
@@ -33,7 +41,19 @@ jobs:
             username: "Meetbouten"
             text: "A PR has been created in repository ${{ github.repository }}: #${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}"
 
+      - name: Save Slack message timestamp to file
+        if: github.event.action == 'opened'
+        run: echo "${{ steps.message.outputs.ts }}" > slack-ts.txt
+
+      - name: Cache Slack message timestamp
+        if: github.event.action == 'opened'
+        uses: actions/cache/save@v5
+        with:
+          path: slack-ts.txt
+          key: slack-ts-pr-${{ github.event.pull_request.number }}
+
       - name: Post a detailed message in a thread
+        if: github.event.action == 'opened'
         uses: slackapi/slack-github-action@v2.1.1
         with:
           method: chat.postMessage
@@ -106,6 +126,33 @@ jobs:
                 "text": {
                   "type": "mrkdwn",
                   "text": ":clock1: *9. Timetell code*\nCode: *${{ secrets.TIMETELL_CODE }}*"
+                }
+              }
+            ]
+
+      - name: Read cached Slack timestamp
+        if: github.event.action == 'synchronize' && steps.slack-message-timestamp-cache.outputs.cache-hit == 'true'
+        id: read-ts
+        run: echo "ts=$(cat slack-ts.txt)" >> $GITHUB_OUTPUT
+
+      - name: Post update message to thread
+        if: github.event.action == 'synchronize' && steps.slack-message-timestamp-cache.outputs.cache-hit == 'true'
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.VAKGROEP_DEPENDABOT_SLACK_BOT_TOKEN }}
+          payload: |
+            channel: ${{ secrets.VAKGROEP_DEPENDABOT_SLACK_CHANNEL_ID }}
+            username: "Meetbouten"
+            thread_ts: "${{ steps.read-ts.outputs.ts }}"
+            unfurl_links: false
+            unfurl_media: false
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": ":robot_face: *X. Dependabot update the PR*\nXPR <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}> has been updated by Dependabot"
                 }
               }
             ]
