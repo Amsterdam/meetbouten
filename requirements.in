@@ -24,7 +24,7 @@ amsterdam-django-oidc
 # Azure
 azure-core
 azure-identity
-azure-storage-blob==12.27.1
+azure-storage-blob==12.28.0
 azure-keyvault
 azure-keyvault-secrets
 

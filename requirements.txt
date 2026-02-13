@@ -4,11 +4,11 @@
 #
 #    pip-compile --allow-unsafe --output-file=requirements.txt requirements.in
 #
-amsterdam-django-oidc==0.2.3
+amsterdam-django-oidc==0.2.4
     # via -r requirements.in
 asgiref==3.11.1
     # via django
-azure-core==1.38.0
+azure-core==1.38.1
     # via
     #   -r requirements.in
     #   azure-identity
@@ -17,7 +17,7 @@ azure-core==1.38.0
     #   azure-keyvault-secrets
     #   azure-storage-blob
     #   django-storages
-azure-identity==1.25.1
+azure-identity==1.25.2
     # via -r requirements.in
 azure-keyvault==4.2.0
     # via -r requirements.in
@@ -29,7 +29,7 @@ azure-keyvault-secrets==4.10.0
     # via
     #   -r requirements.in
     #   azure-keyvault
-azure-storage-blob==12.27.1
+azure-storage-blob==12.28.0
     # via
     #   -r requirements.in
     #   django-storages
@@ -78,7 +78,7 @@ et-xmlfile==2.0.0
     # via openpyxl
 googleapis-common-protos==1.72.0
     # via opentelemetry-exporter-otlp-proto-grpc
-grpcio==1.76.0
+grpcio==1.78.0
     # via opentelemetry-exporter-otlp-proto-grpc
 idna==3.11
     # via requests
@@ -157,7 +157,7 @@ opentelemetry-util-http==0.60b1
     #   opentelemetry-instrumentation-wsgi
 packaging==26.0
     # via opentelemetry-instrumentation
-pillow==12.1.0
+pillow==12.1.1
     # via -r requirements.in
 protobuf==6.33.5
     # via
