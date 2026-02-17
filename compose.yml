@@ -116,7 +116,6 @@ services:
       - .:/app/
     environment:
       <<: *common-env
-    command: /app/deploy/docker-run.sh
     user: 1000:1000
       
   dev:
@@ -137,7 +136,6 @@ services:
       DJANGO_SUPERUSER_PASSWORD: "0000"
       DJANGO_SUPERUSER_USERNAME: "admin"
       DJANGO_SUPERUSER_EMAIL: "admin@amsterdam.nl"
-    command: python manage.py runserver 0.0.0.0:8000
     user: 1000:1000
 
   test:
