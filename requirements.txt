@@ -157,7 +157,7 @@ opentelemetry-util-http==0.60b1
     #   opentelemetry-instrumentation-wsgi
 packaging==26.0
     # via opentelemetry-instrumentation
-pillow==12.1.1
+pillow==12.2.0
     # via -r requirements.in
 protobuf==6.33.6
     # via
