@@ -90,7 +90,7 @@ matplotlib-inline==0.2.2
     # via ipython
 model-bakery==1.23.4
     # via -r requirements_dev.in
-msgpack==1.1.2
+msgpack==1.2.1
     # via locust
 packaging==26.2
     # via
