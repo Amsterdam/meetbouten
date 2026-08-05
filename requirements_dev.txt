@@ -4,9 +4,9 @@
 #
 #    pip-compile --allow-unsafe --output-file=requirements_dev.txt requirements_dev.in
 #
-asgiref==3.11.1
+asgiref==3.12.1
     # via django
-asttokens==3.0.1
+asttokens==3.0.2
     # via stack-data
 bidict==0.23.1
     # via python-socketio
@@ -16,23 +16,23 @@ brotli==1.2.0
     # via geventhttpclient
 build==1.5.0
     # via pip-tools
-certifi==2026.5.20
+certifi==2026.7.22
     # via
     #   geventhttpclient
     #   requests
-charset-normalizer==3.4.7
+charset-normalizer==3.4.9
     # via requests
-click==8.4.1
+click==8.4.2
     # via
     #   flask
     #   pip-tools
 configargparse==1.7.5
     # via locust
-coverage[toml]==7.14.1
+coverage[toml]==7.15.2
     # via pytest-cov
 decorator==5.3.1
     # via ipython
-django==6.0.5
+django==6.0.7
     # via
     #   -r requirements_dev.in
     #   model-bakery
@@ -42,14 +42,14 @@ factory-boy==3.3.3
     # via
     #   -r requirements_dev.in
     #   pytest-factoryboy
-faker==40.19.1
+faker==40.36.0
     # via factory-boy
 flask==3.1.3
     # via
     #   flask-cors
     #   flask-login
     #   locust
-flask-cors==6.0.2
+flask-cors==6.0.5
     # via locust
 flask-login==0.6.3
     # via locust
@@ -59,17 +59,17 @@ gevent==25.9.1
     #   locust
 geventhttpclient==2.3.9
     # via locust
-greenlet==3.5.1
+greenlet==3.5.4
     # via gevent
 h11==0.16.0
     # via wsproto
-idna==3.17
+idna==3.18
     # via requests
 inflection==0.5.1
     # via pytest-factoryboy
 iniconfig==2.3.0
     # via pytest
-ipython==9.14.0
+ipython==9.15.0
     # via -r requirements_dev.in
 ipython-pygments-lexers==1.1.1
     # via ipython
@@ -79,7 +79,7 @@ jedi==0.20.0
     # via ipython
 jinja2==3.1.6
     # via flask
-locust==2.44.0
+locust==2.46.2
     # via -r requirements_dev.in
 markupsafe==3.0.3
     # via
@@ -88,7 +88,7 @@ markupsafe==3.0.3
     #   werkzeug
 matplotlib-inline==0.2.2
     # via ipython
-model-bakery==1.23.4
+model-bakery==1.24.0
     # via -r requirements_dev.in
 msgpack==1.2.1
     # via locust
@@ -102,13 +102,13 @@ parso==0.8.7
     # via jedi
 pexpect==4.9.0
     # via ipython
-pip-tools==7.5.3
+pip-tools==7.6.0
     # via -r requirements_dev.in
 pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
-prompt-toolkit==3.0.52
+prompt-toolkit==3.0.53
     # via ipython
 psutil==7.2.2
     # via
@@ -127,7 +127,7 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-pytest==9.0.3
+pytest==9.1.1
     # via
     #   -r requirements_dev.in
     #   locust
@@ -140,11 +140,11 @@ pytest-django==4.12.0
     # via -r requirements_dev.in
 pytest-factoryboy==2.8.1
     # via -r requirements_dev.in
-python-engineio==4.13.2
+python-engineio==4.13.3
     # via
     #   locust
     #   python-socketio
-python-socketio[client]==5.16.2
+python-socketio[client]==5.16.3
     # via locust
 pyzmq==27.1.0
     # via locust
@@ -160,17 +160,17 @@ stack-data==0.6.3
     # via ipython
 time-machine==3.2.0
     # via -r requirements_dev.in
-traitlets==5.15.0
+traitlets==5.15.1
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.15.0
+typing-extensions==4.16.0
     # via pytest-factoryboy
 urllib3==2.7.0
     # via
     #   geventhttpclient
     #   requests
-wcwidth==0.7.0
+wcwidth==0.8.2
     # via prompt-toolkit
 websocket-client==1.9.0
     # via python-socketio
@@ -192,5 +192,5 @@ zope-interface==8.5
 # The following packages are considered to be unsafe in a requirements file:
 pip==26.1.2
     # via pip-tools
-setuptools==82.0.1
+setuptools==83.0.0
     # via pip-tools
