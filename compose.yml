@@ -77,7 +77,7 @@ services:
   otel-collector:
     build:
       context: otel-collector
-    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-opdrachten/statistiekhub-otel-collector}:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5000}/${REPOSITORY:-ams-opdr/statistiekhub-otel-collector}:${VERSION:-latest}
     volumes:
       - ./otel-collector/config.local.yaml:/etc/otelcol-contrib/config.yaml
     depends_on:
@@ -107,7 +107,7 @@ services:
     build:
       context: .
       target: app
-    image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-opdrachten/meetbouten}:${VERSION:-latest}
+    image: ${REGISTRY:-localhost:5001}/${REPOSITORY:-ams-opdr/meetbouten}:${VERSION:-latest}
     depends_on:
       <<: *common-depends-on
       otel-collector:
