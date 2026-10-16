@@ -106,7 +106,7 @@ class HoogtepuntAdmin(LeafletGeoAdminMixin, admin.ModelAdmin):
     @admin.display(description="Picture")
     def picture_tag(self, obj):
         if obj.picture:
-            filename = obj.picture.name.replace("meetbouten_pictures/", "")
+            filename = obj.picture.name.removeprefix("meetbouten_pictures/")
             proxy_url = reverse("proxy_image", kwargs={"path": filename})
             return format_html(
                 '<img src="{}" style="max-width: 50px; max-height: 50px;" />', proxy_url
