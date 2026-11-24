@@ -9,7 +9,7 @@ openpyxl
 uwsgi
 
 # Django
-Django >= 6.1
+Django
 django-datetime-utc
 django-filter
 django-extensions
